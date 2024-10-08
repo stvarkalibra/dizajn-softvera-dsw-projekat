@@ -1,13 +1,23 @@
 package raf.draft.dsw.gui.swing;
 
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
     //buduca polja za sve komponente view-a na glavnom prozoru
+    private static MainFrame mainFrameInstance;
 
-    public MainFrame(){
+    private MainFrame(){
         initialize();
+    }
+
+    public static MainFrame getInstance(){
+        if(mainFrameInstance==null){
+            mainFrameInstance=new MainFrame();
+        }
+        return mainFrameInstance;
     }
 
     private void initialize(){
