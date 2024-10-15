@@ -1,12 +1,11 @@
 package raf.draft.dsw.gui.swing;
 
 import com.sun.tools.javac.Main;
-import lombok.Getter;
 import raf.draft.dsw.core.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;
-@Getter
+
 public class MainFrame extends JFrame {
 
     private ActionManager actionManager = new ActionManager();
