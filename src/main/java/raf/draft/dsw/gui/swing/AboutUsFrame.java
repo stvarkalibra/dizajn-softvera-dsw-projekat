@@ -22,7 +22,7 @@ public class AboutUsFrame extends JFrame {
 
     }
 
-    private void addElemnts(){
+    public void addElemnts(){
         JTextPane student1 = new JTextPane();
         JTextPane student2 = new JTextPane();
 
@@ -30,9 +30,11 @@ public class AboutUsFrame extends JFrame {
         student2.setText("Ilija Ivkovic 92/24 SI");
 
         JPanel aboutUsPanel = new JPanel();
-        aboutUsPanel.setLayout(new BorderLayout());
+        aboutUsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 50));
 
-        aboutUsPanel.add(student1, BorderLayout.NORTH);
-        aboutUsPanel.add(student2, BorderLayout.SOUTH);
+        aboutUsPanel.add(student1);
+        aboutUsPanel.add(student2);
+
+        super.add(aboutUsPanel, BorderLayout.CENTER);
     }
 }
