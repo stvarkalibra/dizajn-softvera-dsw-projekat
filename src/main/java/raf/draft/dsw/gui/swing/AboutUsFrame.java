@@ -23,6 +23,9 @@ public class AboutUsFrame extends JFrame {
     }
 
     public void addElements(){
+
+        JFrame aboutUsFrame=new JFrame();
+
         JTextPane student1Text = new JTextPane();
         student1Text.setText("Mihajlo Marinkovic 127/24 SI");
 
@@ -36,26 +39,26 @@ public class AboutUsFrame extends JFrame {
         JLabel student2Label=new JLabel(student2Image);
 
         JPanel aboutUsPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(25, 150, 25, 150);  // Add some padding
 
-        // Place student1 and its image in the grid
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        aboutUsPanel.add(student1Text, gbc);
+        GridBagConstraints aboutUsGbc = new GridBagConstraints();
+        aboutUsGbc.insets = new Insets(25, 150, 25, 150);
 
-        gbc.gridy = 1;  // Move to next row
-        aboutUsPanel.add(student1Label, gbc);
+        aboutUsGbc.gridx = 0;
+        aboutUsGbc.gridy = 0;
+        aboutUsPanel.add(student1Text, aboutUsGbc);
 
-        // Place student2 and its image in the grid
-        gbc.gridx = 1;
-        gbc.gridy=0;// Move to next row
-        aboutUsPanel.add(student2Text, gbc);
+        aboutUsGbc.gridy = 1;
+        aboutUsPanel.add(student1Label, aboutUsGbc);
 
-        gbc.gridy = 1;  // Move to next row
-        aboutUsPanel.add(student2Label, gbc);
+        aboutUsGbc.gridx = 1;
+        aboutUsGbc.gridy=0;
+        aboutUsPanel.add(student2Text, aboutUsGbc);
 
-        // Add the panel to the frame
+        aboutUsGbc.gridy = 1;
+        aboutUsPanel.add(student2Label, aboutUsGbc);
+
+        aboutUsFrame.add(aboutUsPanel);
+
         super.add(aboutUsPanel, BorderLayout.NORTH);
     }
 }
