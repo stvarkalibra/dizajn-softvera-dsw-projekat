@@ -1,7 +1,5 @@
 package raf.draft.dsw.controller;
 
-import lombok.Getter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +21,7 @@ public abstract class AbstractRoomAction extends AbstractAction {
         }
         else
         {
-            System.err.println("File " + "images/exit.png" + " not found");
+            System.err.println("File " + path + " not found");
         }
         return icon;
     }
