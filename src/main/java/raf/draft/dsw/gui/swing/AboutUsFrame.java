@@ -57,8 +57,12 @@ public class AboutUsFrame extends JFrame {
         aboutUsGbc.gridy = 1;
         aboutUsPanel.add(student2Label, aboutUsGbc);
 
+        aboutUsPanel.setBackground(Color.MAGENTA);
         aboutUsFrame.add(aboutUsPanel);
 
+        JPanel a=new JPanel(new BorderLayout());
+        a.setBackground(Color.MAGENTA);
         super.add(aboutUsPanel, BorderLayout.NORTH);
+        super.add(a,BorderLayout.CENTER);
     }
 }
