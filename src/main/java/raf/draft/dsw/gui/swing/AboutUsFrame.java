@@ -18,13 +18,30 @@ public class AboutUsFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("About Us");
+    }
 
+    private class BackgroundPanel extends JPanel {
+        private Image bgImage;
 
+        public BackgroundPanel(Image bgImage) {
+            this.bgImage = bgImage;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (bgImage != null) {
+                g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 
     public void addElements(){
+        ImageIcon bgImageIcon = new ImageIcon(getClass().getResource("/images/knezevac.png"));
+        Image bgImage = bgImageIcon.getImage();
 
-        JFrame aboutUsFrame=new JFrame();
+        BackgroundPanel bgPanel = new BackgroundPanel(bgImage);
+        bgPanel.setLayout(new GridBagLayout());
 
         JTextPane student1Text = new JTextPane();
         student1Text.setText("Mihajlo Marinkovic 127/24 SI");
@@ -32,37 +49,29 @@ public class AboutUsFrame extends JFrame {
         JTextPane student2Text = new JTextPane();
         student2Text.setText("Ilija Ivkovic 92/24 SI");
 
-        ImageIcon student1Image=new ImageIcon(getClass().getResource("/images/exit.png"));
-        ImageIcon student2Image=new ImageIcon(getClass().getResource("/images/exit.png"));
+        ImageIcon student1Image = new ImageIcon(getClass().getResource("/images/exit.png"));
+        ImageIcon student2Image = new ImageIcon(getClass().getResource("/images/exit.png"));
 
-        JLabel student1Label=new JLabel(student1Image);
-        JLabel student2Label=new JLabel(student2Image);
-
-        JPanel aboutUsPanel = new JPanel(new GridBagLayout());
+        JLabel student1Label = new JLabel(student1Image);
+        JLabel student2Label = new JLabel(student2Image);
 
         GridBagConstraints aboutUsGbc = new GridBagConstraints();
         aboutUsGbc.insets = new Insets(25, 150, 25, 150);
 
         aboutUsGbc.gridx = 0;
         aboutUsGbc.gridy = 0;
-        aboutUsPanel.add(student1Text, aboutUsGbc);
+        bgPanel.add(student1Text, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        aboutUsPanel.add(student1Label, aboutUsGbc);
+        bgPanel.add(student1Label, aboutUsGbc);
 
         aboutUsGbc.gridx = 1;
-        aboutUsGbc.gridy=0;
-        aboutUsPanel.add(student2Text, aboutUsGbc);
+        aboutUsGbc.gridy = 0;
+        bgPanel.add(student2Text, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        aboutUsPanel.add(student2Label, aboutUsGbc);
+        bgPanel.add(student2Label, aboutUsGbc);
 
-        aboutUsPanel.setBackground(Color.MAGENTA);
-        aboutUsFrame.add(aboutUsPanel);
-
-        JPanel a=new JPanel(new BorderLayout());
-        a.setBackground(Color.MAGENTA);
-        super.add(aboutUsPanel, BorderLayout.NORTH);
-        super.add(a,BorderLayout.CENTER);
+        super.setContentPane(bgPanel);
     }
 }
