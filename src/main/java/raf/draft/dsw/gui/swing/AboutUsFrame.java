@@ -18,13 +18,30 @@ public class AboutUsFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("About Us");
+    }
 
+    private class BackgroundPanel extends JPanel {
+        private Image backGroundImage;
 
+        public BackgroundPanel(Image backGroundImage) {
+            this.backGroundImage = backGroundImage;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backGroundImage != null) {
+                g.drawImage(backGroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 
     public void addElements(){
+        ImageIcon backGroundImageIcon = new ImageIcon(getClass().getResource("/images/knezevac.png"));
+        Image backGroundImage = backGroundImageIcon.getImage();
 
-        JFrame aboutUsFrame=new JFrame();
+        BackgroundPanel backGroundPanel = new BackgroundPanel(backGroundImage);
+        backGroundPanel.setLayout(new GridBagLayout());
 
         JTextPane student1Text = new JTextPane();
         student1Text.setText("Mihajlo Marinkovic 127/24 SI");
@@ -32,33 +49,29 @@ public class AboutUsFrame extends JFrame {
         JTextPane student2Text = new JTextPane();
         student2Text.setText("Ilija Ivkovic 92/24 SI");
 
-        ImageIcon student1Image=new ImageIcon(getClass().getResource("/images/exit.png"));
-        ImageIcon student2Image=new ImageIcon(getClass().getResource("/images/exit.png"));
+        ImageIcon student1Image = new ImageIcon(getClass().getResource("/images/exit.png"));
+        ImageIcon student2Image = new ImageIcon(getClass().getResource("/images/exit.png"));
 
-        JLabel student1Label=new JLabel(student1Image);
-        JLabel student2Label=new JLabel(student2Image);
-
-        JPanel aboutUsPanel = new JPanel(new GridBagLayout());
+        JLabel student1Label = new JLabel(student1Image);
+        JLabel student2Label = new JLabel(student2Image);
 
         GridBagConstraints aboutUsGbc = new GridBagConstraints();
         aboutUsGbc.insets = new Insets(25, 150, 25, 150);
 
         aboutUsGbc.gridx = 0;
         aboutUsGbc.gridy = 0;
-        aboutUsPanel.add(student1Text, aboutUsGbc);
+        backGroundPanel.add(student1Text, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        aboutUsPanel.add(student1Label, aboutUsGbc);
+        backGroundPanel.add(student1Label, aboutUsGbc);
 
         aboutUsGbc.gridx = 1;
-        aboutUsGbc.gridy=0;
-        aboutUsPanel.add(student2Text, aboutUsGbc);
+        aboutUsGbc.gridy = 0;
+        backGroundPanel.add(student2Text, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        aboutUsPanel.add(student2Label, aboutUsGbc);
+        backGroundPanel.add(student2Label, aboutUsGbc);
 
-        aboutUsFrame.add(aboutUsPanel);
-
-        super.add(aboutUsPanel, BorderLayout.NORTH);
+        super.setContentPane(backGroundPanel);
     }
 }
