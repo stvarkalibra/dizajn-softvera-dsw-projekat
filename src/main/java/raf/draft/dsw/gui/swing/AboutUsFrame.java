@@ -21,27 +21,27 @@ public class AboutUsFrame extends JFrame {
     }
 
     private class BackgroundPanel extends JPanel {
-        private Image bgImage;
+        private Image backGroundImage;
 
-        public BackgroundPanel(Image bgImage) {
-            this.bgImage = bgImage;
+        public BackgroundPanel(Image backGroundImage) {
+            this.backGroundImage = backGroundImage;
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if (bgImage != null) {
-                g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+            if (backGroundImage != null) {
+                g.drawImage(backGroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         }
     }
 
     public void addElements(){
-        ImageIcon bgImageIcon = new ImageIcon(getClass().getResource("/images/knezevac.png"));
-        Image bgImage = bgImageIcon.getImage();
+        ImageIcon backGroundImageIcon = new ImageIcon(getClass().getResource("/images/knezevac.png"));
+        Image backGroundImage = backGroundImageIcon.getImage();
 
-        BackgroundPanel bgPanel = new BackgroundPanel(bgImage);
-        bgPanel.setLayout(new GridBagLayout());
+        BackgroundPanel backGroundPanel = new BackgroundPanel(backGroundImage);
+        backGroundPanel.setLayout(new GridBagLayout());
 
         JTextPane student1Text = new JTextPane();
         student1Text.setText("Mihajlo Marinkovic 127/24 SI");
@@ -60,18 +60,18 @@ public class AboutUsFrame extends JFrame {
 
         aboutUsGbc.gridx = 0;
         aboutUsGbc.gridy = 0;
-        bgPanel.add(student1Text, aboutUsGbc);
+        backGroundPanel.add(student1Text, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        bgPanel.add(student1Label, aboutUsGbc);
+        backGroundPanel.add(student1Label, aboutUsGbc);
 
         aboutUsGbc.gridx = 1;
         aboutUsGbc.gridy = 0;
-        bgPanel.add(student2Text, aboutUsGbc);
+        backGroundPanel.add(student2Text, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        bgPanel.add(student2Label, aboutUsGbc);
+        backGroundPanel.add(student2Label, aboutUsGbc);
 
-        super.setContentPane(bgPanel);
+        super.setContentPane(backGroundPanel);
     }
 }
