@@ -37,7 +37,7 @@ public class AboutUsFrame extends JFrame {
     }
 
     public void addElements(){
-        ImageIcon backGroundImageIcon = new ImageIcon(getClass().getResource("/images/knezevac.png"));
+        ImageIcon backGroundImageIcon = new ImageIcon(getClass().getResource("/images/wall1.jpeg"));
         Image backGroundImage = backGroundImageIcon.getImage();
 
         BackgroundPanel backGroundPanel = new BackgroundPanel(backGroundImage);
@@ -49,8 +49,8 @@ public class AboutUsFrame extends JFrame {
         JTextPane student2Text = new JTextPane();
         student2Text.setText("Ilija Ivkovic 92/24 SI");
 
-        ImageIcon student1Image = new ImageIcon(getClass().getResource("/images/exit.png"));
-        ImageIcon student2Image = new ImageIcon(getClass().getResource("/images/exit.png"));
+        ImageIcon student1Image = new ImageIcon(getClass().getResource("/images/mihajlo_marinkovic.png"));
+        ImageIcon student2Image = new ImageIcon(getClass().getResource("/images/ilija_ivkovic.png"));
 
         JLabel student1Label = new JLabel(student1Image);
         JLabel student2Label = new JLabel(student2Image);
