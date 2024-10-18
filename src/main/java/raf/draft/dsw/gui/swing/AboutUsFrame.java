@@ -55,6 +55,15 @@ public class AboutUsFrame extends JFrame {
         JLabel student1Label = new JLabel(student1Image);
         JLabel student2Label = new JLabel(student2Image);
 
+        student1Text.setOpaque(false);
+        student1Text.setBackground(new Color(0,0,0));
+        student1Text.setForeground(Color.WHITE);
+
+
+        student2Text.setOpaque(false);
+        student2Text.setBackground(new Color(0,0,0));
+        student2Text.setForeground(Color.WHITE);
+
         GridBagConstraints aboutUsGbc = new GridBagConstraints();
         aboutUsGbc.insets = new Insets(25, 150, 25, 150);
 
