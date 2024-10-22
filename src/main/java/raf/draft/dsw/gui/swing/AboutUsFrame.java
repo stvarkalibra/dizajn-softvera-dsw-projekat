@@ -43,43 +43,45 @@ public class AboutUsFrame extends JFrame {
         BackgroundPanel backGroundPanel = new BackgroundPanel(backGroundImage);
         backGroundPanel.setLayout(new GridBagLayout());
 
-        JTextPane student1Text = new JTextPane();
-        student1Text.setText("Mihajlo Marinkovic 127/24 SI");
+        JLabel student1NameLabel = new JLabel();
+        student1NameLabel.setText("Mihajlo Marinkovic 127/24 SI");
 
-        JTextPane student2Text = new JTextPane();
-        student2Text.setText("Ilija Ivkovic 92/24 SI");
+        JLabel student2NameLabel = new JLabel();
+        student2NameLabel.setText("Ilija Ivkovic 92/24 SI");
 
         ImageIcon student1Image = new ImageIcon(getClass().getResource("/images/mihajlo_marinkovic.png"));
         ImageIcon student2Image = new ImageIcon(getClass().getResource("/images/ilija_ivkovic.png"));
 
-        JLabel student1Label = new JLabel(student1Image);
-        JLabel student2Label = new JLabel(student2Image);
+        JLabel student1IconLabel = new JLabel(student1Image);
+        JLabel student2IconLabel = new JLabel(student2Image);
 
-        student1Text.setOpaque(false);
-        student1Text.setBackground(new Color(0,0,0));
-        student1Text.setForeground(Color.WHITE);
+        Font font=new Font("Courier", Font.BOLD,20);
+
+        student1NameLabel.setOpaque(false);
+        student1NameLabel.setForeground(Color.PINK);
+        student1NameLabel.setFont(font);
 
 
-        student2Text.setOpaque(false);
-        student2Text.setBackground(new Color(0,0,0));
-        student2Text.setForeground(Color.WHITE);
+        student2NameLabel.setOpaque(false);
+        student2NameLabel.setForeground(Color.PINK);
+        student2NameLabel.setFont(font);
 
         GridBagConstraints aboutUsGbc = new GridBagConstraints();
         aboutUsGbc.insets = new Insets(25, 150, 25, 150);
 
         aboutUsGbc.gridx = 0;
         aboutUsGbc.gridy = 0;
-        backGroundPanel.add(student1Text, aboutUsGbc);
+        backGroundPanel.add(student1NameLabel, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        backGroundPanel.add(student1Label, aboutUsGbc);
+        backGroundPanel.add(student1IconLabel, aboutUsGbc);
 
         aboutUsGbc.gridx = 1;
         aboutUsGbc.gridy = 0;
-        backGroundPanel.add(student2Text, aboutUsGbc);
+        backGroundPanel.add(student2NameLabel, aboutUsGbc);
 
         aboutUsGbc.gridy = 1;
-        backGroundPanel.add(student2Label, aboutUsGbc);
+        backGroundPanel.add(student2IconLabel, aboutUsGbc);
 
         super.setContentPane(backGroundPanel);
     }
