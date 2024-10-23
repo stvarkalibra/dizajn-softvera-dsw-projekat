@@ -1,9 +1,8 @@
-package raf.draft.dsw.controller;
+package raf.draft.dsw.controller.actions;
 
 import raf.draft.dsw.gui.swing.AboutUsFrame;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 

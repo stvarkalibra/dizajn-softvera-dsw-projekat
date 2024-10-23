@@ -1,7 +1,7 @@
 package raf.draft.dsw.core;
 
-import raf.draft.dsw.controller.AboutUsAction;
-import raf.draft.dsw.controller.ExitAction;
+import raf.draft.dsw.controller.actions.AboutUsAction;
+import raf.draft.dsw.controller.actions.ExitAction;
 
 
 public class ActionManager {
