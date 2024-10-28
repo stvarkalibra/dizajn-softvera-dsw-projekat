@@ -7,10 +7,10 @@ public class Message {
     private MessageType type;
     private LocalDateTime timeStamp;
 
-    public Message(String content, MessageType type, LocalDateTime timeStamp) {
+    public Message(String content, MessageType type) {
         this.content = content;
         this.type = type;
-        this.timeStamp = timeStamp;
+        this.timeStamp = LocalDateTime.now();
     }
 
     @Override

@@ -46,31 +46,11 @@ public class MainFrame extends JFrame implements ISubscriber {
         add(toolBar, BorderLayout.NORTH);
     }
 
+
     @Override
-    public void update(Message message) {
-        if(message.getType()== MessageType.ERROR){
-            JOptionPane.showMessageDialog(null,message,message.getType().toString(),JOptionPane.ERROR_MESSAGE,loadIcon("/images/wall1.jpeg"));
-        }
-        if(message.getType()==MessageType.INFORMATION){
-            JOptionPane.showMessageDialog(null,message,message.getType().toString(),JOptionPane.INFORMATION_MESSAGE,loadIcon("/images/wall1.jpeg"));
-        }
-        if(message.getType()==MessageType.WARNING){
-            JOptionPane.showMessageDialog(null,message,message.getType().toString(),JOptionPane.WARNING_MESSAGE,loadIcon("/images/wall1.jpeg"));
-        }
-    }
-    public Icon loadIcon(String path){
-        Icon icon = null;
-        URL ImageURL = getClass().getResource(path);
-        if(ImageURL != null)
-        {
-            Image img = new ImageIcon(ImageURL).getImage();
-            Image newImg = img.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
-            icon = new ImageIcon(newImg);
-        }
-        else
-        {
-            System.err.println("File " + path + " not found");
-        }
-        return icon;
+    public void update(Object o) {
+        
+        JOptionPane.showMessageDialog(null, o, "About Us",      JOptionPane.INFORMATION_MESSAGE);
+
     }
 }
