@@ -15,11 +15,19 @@ public class FileLogger implements ILogger {
 
     @Override
     public void update(Object o) {
-        if (o instanceof Message){
-            File file = new File(filePath);
+        if (o instanceof Message) {
             try {
-                FileWriter fw = new FileWriter(file, true);
-                fw.write(o.toString());
+                File file = new File(filePath);
+
+                // Create parent directories if they don’t exist
+                file.getParentFile().mkdirs();
+
+                // Use try-with-resources to handle closing the FileWriter
+                try (FileWriter fw = new FileWriter(file, true)) {
+                    fw.write(o.toString());
+                }
+
+                System.out.println("File written successfully.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
