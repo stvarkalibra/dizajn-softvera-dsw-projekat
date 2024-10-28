@@ -13,27 +13,6 @@ public class FileLogger implements ILogger {
         this.filePath = filePath;
     }
 
-//    @Override
-//    public void update(Object o) {
-//        if (o instanceof Message) {
-//            try {
-//                File file = new File(filePath);
-//
-//                // Create parent directories if they don’t exist
-//                file.getParentFile().mkdirs();
-//
-//                // Use try-with-resources to handle closing the FileWriter
-//                try (FileWriter fw = new FileWriter(file, true)) {
-//                    fw.write(o.toString());
-//                }
-//
-//                System.out.println("File written successfully.");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
     @Override
     public void update(Object o) {
         if (o instanceof Message){
