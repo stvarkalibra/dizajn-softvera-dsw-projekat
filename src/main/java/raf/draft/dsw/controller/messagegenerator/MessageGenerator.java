@@ -8,6 +8,7 @@ import raf.draft.dsw.model.message.MessageType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MessageGenerator implements IPublisher {
     private List<ISubscriber> listSubscriber=new ArrayList<>();
@@ -27,13 +28,15 @@ public class MessageGenerator implements IPublisher {
     }
 
     @Override
-    public void notifySubscriber(Message message) {
+    public void notifySubscriber(Object o) {
         for(ISubscriber subscriber: listSubscriber){
-            subscriber.update(message);
+            subscriber.update(o);
         }
+
     }
 
-    @Override
-    public void update(Message message) {
+    public void createMessage(String content, MessageType type){
+        Message message = new Message(content, type);
+        notifySubscriber(message);
     }
 }

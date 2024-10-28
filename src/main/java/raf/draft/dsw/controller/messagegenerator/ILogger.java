@@ -5,5 +5,5 @@ import raf.draft.dsw.model.message.Message;
 
 public interface ILogger extends ISubscriber {
     @Override
-    void update(Message message);
+    void update(Object o);
 }
