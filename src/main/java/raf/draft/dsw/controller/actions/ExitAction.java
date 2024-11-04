@@ -12,10 +12,6 @@ public class  ExitAction extends AbstractRoomAction{
         putValue(NAME, "Exit");
         putValue(SHORT_DESCRIPTION, "Exit");
     }
-
-    //deo koda za ucitavanje ikonice...
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         System.exit(0);

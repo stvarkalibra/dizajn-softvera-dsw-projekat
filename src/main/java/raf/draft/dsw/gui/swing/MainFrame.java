@@ -3,8 +3,12 @@ package raf.draft.dsw.gui.swing;
 import com.sun.tools.javac.Main;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ActionManager;
+import raf.draft.dsw.core.ApplicationFramework;
+import raf.draft.dsw.jtree.DraftTree;
+import raf.draft.dsw.jtree.DraftTreeImplementation;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
+import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +18,8 @@ import java.time.LocalDateTime;
 public class MainFrame extends JFrame implements ISubscriber {
 
     private ActionManager actionManager = new ActionManager();
-
-    //buduca polja za sve komponente view-a na glavnom prozoru
     private static MainFrame mainFrameInstance;
+    private DraftTree draftTree;
 
     private MainFrame(){
         initialize();
@@ -44,13 +47,42 @@ public class MainFrame extends JFrame implements ISubscriber {
 
         MyToolBar toolBar = new MyToolBar(actionManager);
         add(toolBar, BorderLayout.NORTH);
+
+        draftTree=new DraftTreeImplementation();
+        ProjectExplorer projectExplorer=new ProjectExplorer("ProjectExplorer");
+        JTree jTree = draftTree.generateTree(projectExplorer);
+        JPanel desktop = new JPanel();
+
+        JScrollPane scroll=new JScrollPane(jTree);
+        scroll.setMinimumSize(new Dimension(200,150));
+        JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,desktop);
+        getContentPane().add(split,BorderLayout.CENTER);
+        split.setDividerLocation(250);
+        split.setOneTouchExpandable(true);
+
+
     }
 
+    public ActionManager getActionManager() {
+        return actionManager;
+    }
+
+    public void setActionManager(ActionManager actionManager) {
+        this.actionManager = actionManager;
+    }
+
+    public DraftTree getDraftTree() {
+        return draftTree;
+    }
+
+    public void setDraftTree(DraftTree draftTree) {
+        this.draftTree = draftTree;
+    }
 
     @Override
     public void update(Object o) {
         
-        JOptionPane.showMessageDialog(null, o, "About Us",      JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, o, "ERROR",JOptionPane.INFORMATION_MESSAGE);
 
     }
 }
