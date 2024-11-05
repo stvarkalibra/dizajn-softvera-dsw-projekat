@@ -1,5 +1,7 @@
 package raf.draft.dsw.jtree;
 
+import raf.draft.dsw.core.ActionManager;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.jtree.view.DraftTreeView;
 import raf.draft.dsw.model.nodes.DraftNode;
@@ -32,7 +34,6 @@ public class DraftTreeImplementation implements DraftTree{
     public void addChild(DraftTreeItem parent) {
         if (!(parent.getDraftNode() instanceof DraftNodeComposite))
             return;
-
         DraftNode child = createChild(parent.getDraftNode());
         parent.add(new DraftTreeItem(child));
         ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
@@ -63,8 +64,27 @@ public class DraftTreeImplementation implements DraftTree{
         return new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", " ");
         }
         else if(parent instanceof Project){
-            buildingNumber++;
-            return  new Building("Building" + buildingNumber++,parent);
+
+            Object[] options = {"Building", "Room"};
+            int choice = JOptionPane.showOptionDialog(
+                    null,
+                    "Choose type of child to create:",
+                    "Select Child Type",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+
+            if (choice == 0){
+                buildingNumber++;
+                return  new Building("Building" + buildingNumber++,parent);
+            }
+            else {
+                roomNumber++;
+                return new Room("Room",parent);
+            }
         }else if(parent instanceof Building){
             roomNumber++;
             return new Room("Room",parent);

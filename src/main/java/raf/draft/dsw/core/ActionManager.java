@@ -1,9 +1,6 @@
 package raf.draft.dsw.core;
 
-import raf.draft.dsw.controller.actions.AboutUsAction;
-import raf.draft.dsw.controller.actions.ExitAction;
-import raf.draft.dsw.controller.actions.NewNodeAction;
-import raf.draft.dsw.controller.actions.RemoveNodeAction;
+import raf.draft.dsw.controller.actions.*;
 
 
 public class ActionManager {
@@ -25,5 +22,4 @@ public class ActionManager {
     public AboutUsAction getAboutUsAction() {
         return aboutUsAction;
     }
-
 }
