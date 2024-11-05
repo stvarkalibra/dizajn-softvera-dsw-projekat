@@ -5,10 +5,12 @@ import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.model.message.MessageType;
+import raf.draft.dsw.model.repository.DraftExplorerImplementation;
 
 public class ApplicationFramework {
     //buduca polja za model celog projekta
     private static ApplicationFramework appCore;
+    protected DraftExplorerImplementation draftExplorerImplementation;
 
     private ApplicationFramework(){
         initialize();
@@ -37,5 +39,6 @@ public class ApplicationFramework {
         MessageType type = MessageType.ERROR;
 
         messageGenerator.createMessage(content, type);
+
     }
 }
