@@ -8,18 +8,22 @@ import raf.draft.dsw.jtree.DraftTree;
 import raf.draft.dsw.jtree.DraftTreeImplementation;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
+import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.LocalDateTime;
 
-public class MainFrame extends JFrame implements ISubscriber {
+public class MainFrame extends JFrame implements ISubscriber{
 
     private ActionManager actionManager = new ActionManager();
     private static MainFrame mainFrameInstance;
     private DraftTree draftTree;
+    private JTree jTree;
 
     private MainFrame(){
         initialize();
@@ -48,27 +52,52 @@ public class MainFrame extends JFrame implements ISubscriber {
         MyToolBar toolBar = new MyToolBar(actionManager);
         add(toolBar, BorderLayout.NORTH);
 
+        JTabbedPane jTabbedPane=new JTabbedPane();
+        jTabbedPane.setPreferredSize(new Dimension(400,200));
+        add(jTabbedPane,BorderLayout.CENTER);
+
         draftTree=new DraftTreeImplementation();
         ProjectExplorer projectExplorer=new ProjectExplorer("ProjectExplorer");
-        JTree jTree = draftTree.generateTree(projectExplorer);
+        jTree = draftTree.generateTree(projectExplorer);
+
         JPanel desktop = new JPanel();
 
         JScrollPane scroll=new JScrollPane(jTree);
-        scroll.setMinimumSize(new Dimension(200,150));
+        scroll.setMinimumSize(new Dimension(400,150));
         JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,desktop);
-        getContentPane().add(split,BorderLayout.CENTER);
+        getContentPane().add(split,BorderLayout.WEST);
         split.setDividerLocation(250);
         split.setOneTouchExpandable(true);
 
+        jTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    for(DraftNode draftNode:projectExplorer.getChildrenList()){
+
+                        Label label1=new Label();
+                        jTabbedPane.addTab("A",label1);
+                    }
+                }
+            }
+        });
+
 
     }
-
     public ActionManager getActionManager() {
         return actionManager;
     }
 
     public void setActionManager(ActionManager actionManager) {
         this.actionManager = actionManager;
+    }
+
+    public JTree getjTree() {
+        return jTree;
+    }
+
+    public void setjTree(JTree jTree) {
+        this.jTree = jTree;
     }
 
     public DraftTree getDraftTree() {
@@ -81,8 +110,6 @@ public class MainFrame extends JFrame implements ISubscriber {
 
     @Override
     public void update(Object o) {
-        
         JOptionPane.showMessageDialog(null, o, "ERROR",JOptionPane.INFORMATION_MESSAGE);
-
     }
 }

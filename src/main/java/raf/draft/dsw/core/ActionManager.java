@@ -1,15 +1,13 @@
 package raf.draft.dsw.core;
 
-import raf.draft.dsw.controller.actions.AboutUsAction;
-import raf.draft.dsw.controller.actions.ExitAction;
-import raf.draft.dsw.controller.actions.NewNodeAction;
-import raf.draft.dsw.controller.actions.RemoveNodeAction;
+import raf.draft.dsw.controller.actions.*;
 
 
 public class ActionManager {
     private ExitAction exitAction = new ExitAction();
     private AboutUsAction aboutUsAction = new AboutUsAction();
     private NewNodeAction newNodeAction=new NewNodeAction();
+    private JTabbedPaneAction newNodeAction1=new JTabbedPaneAction();
     private RemoveNodeAction removeNodeAction=new RemoveNodeAction();
     public NewNodeAction getNewNodeAction(){
         return this.newNodeAction;
@@ -20,6 +18,9 @@ public class ActionManager {
 
     public ExitAction getExitAction(){
         return  this.exitAction;
+    }
+    public JTabbedPaneAction jTabbedPaneAction(){
+        return  this.newNodeAction1;
     }
 
     public AboutUsAction getAboutUsAction() {
