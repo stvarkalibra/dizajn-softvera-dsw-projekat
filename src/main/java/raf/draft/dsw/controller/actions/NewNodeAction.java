@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 
 public class NewNodeAction extends AbstractRoomAction{
     public NewNodeAction(){
-        putValue(SMALL_ICON, loadIcon("/images/exit.png"));
+        putValue(SMALL_ICON, loadIcon("/images/addNode.png"));
         putValue(NAME, "AddNode");
         putValue(SHORT_DESCRIPTION, "Node");
     }

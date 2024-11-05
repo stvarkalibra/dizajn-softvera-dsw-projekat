@@ -12,10 +12,15 @@ public abstract class DraftNodeComposite extends DraftNode {
     }
 
     public void addChild(DraftNode node){
+        if(!childrenList.contains(node)){
+            childrenList.add(node);
+        }
 
     }
     public void removeChild(DraftNode node){
-
+        if(childrenList.contains(node)){
+            childrenList.remove(node);
+        }
     }
 
     public DraftNode getChildByName(String name){

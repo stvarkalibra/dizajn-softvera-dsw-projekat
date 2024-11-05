@@ -18,6 +18,7 @@ public class DraftTreeImplementation implements DraftTree{
     private DefaultTreeModel treeModel;
     private static int projectNumber=0;
     private static int buildingNumber=0;
+    private static int roomNumber=0;
 
     @Override
     public DraftTreeView generateTree(ProjectExplorer projectExplorer) {
@@ -40,6 +41,18 @@ public class DraftTreeImplementation implements DraftTree{
     }
 
     @Override
+    public void removeChild(DraftTreeItem parent) {
+        if (!(parent.getDraftNode() instanceof DraftNodeComposite)){
+            ((DraftTreeItem)parent.getParent()).remove(parent);
+        }else{
+            parent.removeAllChildren();
+            ((DraftTreeItem)parent.getParent()).remove(parent);
+        }
+        treeView.expandPath(treeView.getSelectionPath());
+        SwingUtilities.updateComponentTreeUI(treeView);
+    }
+
+    @Override
     public DraftTreeItem getSelectedNode() {
         return (DraftTreeItem)treeView.getLastSelectedPathComponent();
     }
@@ -53,7 +66,7 @@ public class DraftTreeImplementation implements DraftTree{
             buildingNumber++;
             return  new Building("Building" + buildingNumber++,parent);
         }else if(parent instanceof Building){
-            buildingNumber++;
+            roomNumber++;
             return new Room("Room",parent);
         }
         return null;
