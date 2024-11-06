@@ -3,11 +3,18 @@ package raf.draft.dsw.model.structures;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
+import java.awt.*;
+import java.util.Random;
+
 public class Project extends DraftNodeComposite {
     private String projectName;
     private String projectAutor;
     private String pathToFolder;
-
+    private Random rand=new Random();
+    private float r=rand.nextFloat();
+    private float g=rand.nextFloat();
+    private float b=rand.nextFloat();
+    private Color color=new Color(r,g,b);
     public Project(String nodeName, DraftNode parent, String projectName, String projectAutor, String pathToFolder) {
         super(nodeName, parent);
         this.projectName = projectName;
@@ -70,4 +77,13 @@ public class Project extends DraftNodeComposite {
     public void setPathToFolder(String pathToFolder) {
         this.pathToFolder = pathToFolder;
     }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }

@@ -6,4 +6,5 @@ public class Room extends DraftNode {
     public Room(String nodeName, DraftNode parent) {
         super(nodeName, parent);
     }
+
 }

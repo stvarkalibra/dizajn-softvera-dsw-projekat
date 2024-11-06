@@ -12,11 +12,16 @@ public abstract class DraftNode {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DraftNode draftNode = (DraftNode) o;
-        return Objects.equals(parent, draftNode.parent);
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        DraftNode draftNode = (DraftNode) object;
+        return Objects.equals(nodeName, draftNode.nodeName) && Objects.equals(parent, draftNode.parent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nodeName, parent);
     }
 
     public String getNodeName() {

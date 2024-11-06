@@ -6,13 +6,18 @@ import raf.draft.dsw.core.ActionManager;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.jtree.DraftTree;
 import raf.draft.dsw.jtree.DraftTreeImplementation;
+import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.model.structures.Building;
+import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -53,7 +58,7 @@ public class MainFrame extends JFrame implements ISubscriber{
         add(toolBar, BorderLayout.NORTH);
 
         JTabbedPane jTabbedPane=new JTabbedPane();
-        jTabbedPane.setPreferredSize(new Dimension(700,screenHeight));
+        jTabbedPane.setPreferredSize(new Dimension(600,screenHeight));
 
 
         draftTree=new DraftTreeImplementation();
@@ -63,22 +68,53 @@ public class MainFrame extends JFrame implements ISubscriber{
         JPanel desktop = new JPanel();
 
         JScrollPane scroll=new JScrollPane(jTree);
-        scroll.setPreferredSize(new Dimension(300,screenHeight));
+        scroll.setPreferredSize(new Dimension(200,screenHeight));
         JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,desktop);
-        add(split,BorderLayout.CENTER);
-        add(jTabbedPane,BorderLayout.EAST);
+        add(split,BorderLayout.WEST);
+        add(jTabbedPane,BorderLayout.CENTER);
         split.setDividerLocation(250);
         split.setOneTouchExpandable(true);
 
+
+        JPanel rightPanel=new JPanel();
+        Label labelProject=new Label("Project");
+        rightPanel.add(labelProject);
+        rightPanel.setPreferredSize(new Dimension(200,screenHeight));
+        add(rightPanel,BorderLayout.EAST);
+
         jTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            int indexOfTab=0;
             @Override
             public void mouseClicked(MouseEvent evt) {
-                if (evt.getClickCount() == 2) {
-                    for(DraftNode draftNode:projectExplorer.getChildrenList()){
+                TreePath path=jTree.getPathForLocation(evt.getX(), evt.getY());
 
-                        Label label1=new Label();
-                        jTabbedPane.addTab("A",label1);
+                if(path==null){
+                    return;
+                }
+                DraftTreeItem selectedNode=(DraftTreeItem) path.getLastPathComponent();
+
+
+                if (evt.getClickCount() == 2 && selectedNode.getDraftNode() instanceof Project) {
+
+                    Project project = (Project) selectedNode.getDraftNode();
+                    for(DraftNode draftNode:project.getChildrenList()){
+                        if(draftNode instanceof Room){
+                            Label labelRoom=new Label();
+                            jTabbedPane.addTab(draftNode.getNodeName(),labelRoom);
+                            jTabbedPane.setBackgroundAt(indexOfTab,project.getColor());
+                            indexOfTab++;
+                        }
+                        else if(draftNode instanceof Building){
+                            for(DraftNode draftNodeBuilding: ((Building) draftNode).getChildrenList()){
+                                Label labelRoom=new Label();
+                                jTabbedPane.addTab(draftNodeBuilding.getNodeName(),labelRoom);
+                                jTabbedPane.setBackgroundAt(indexOfTab,((Building) draftNode).getColor());
+                                indexOfTab++;
+                            }
+                        }
+
                     }
+
                 }
             }
         });

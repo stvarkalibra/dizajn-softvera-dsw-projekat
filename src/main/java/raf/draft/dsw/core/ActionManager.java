@@ -9,6 +9,7 @@ public class ActionManager {
     private NewNodeAction newNodeAction=new NewNodeAction();
     private JTabbedPaneAction newNodeAction1=new JTabbedPaneAction();
     private RemoveNodeAction removeNodeAction=new RemoveNodeAction();
+    private ChangeInfoAction changeInfoAction=new ChangeInfoAction();
     public NewNodeAction getNewNodeAction(){
         return this.newNodeAction;
     }
@@ -26,4 +27,5 @@ public class ActionManager {
     public AboutUsAction getAboutUsAction() {
         return aboutUsAction;
     }
+    public ChangeInfoAction getChangeInfoAction() {return changeInfoAction;}
 }
