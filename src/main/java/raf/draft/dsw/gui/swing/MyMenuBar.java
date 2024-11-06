@@ -1,9 +1,6 @@
 package raf.draft.dsw.gui.swing;
 
-import raf.draft.dsw.controller.actions.ChangeInfoAction;
-import raf.draft.dsw.controller.actions.ExitAction;
-import raf.draft.dsw.controller.actions.NewNodeAction;
-import raf.draft.dsw.controller.actions.RemoveNodeAction;
+import raf.draft.dsw.controller.actions.*;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -16,10 +13,12 @@ public class MyMenuBar extends JMenuBar {
         NewNodeAction newNodeAction=new NewNodeAction();
         RemoveNodeAction removeNodeAction=new RemoveNodeAction();
         ChangeInfoAction changeInfoAction=new ChangeInfoAction();
+        AboutUsAction aboutUsAction=new AboutUsAction();
         fileMenu.add(exitAction);
-        fileMenu.add(removeNodeAction);
         fileMenu.add(newNodeAction);
         fileMenu.add(changeInfoAction);
+        fileMenu.add(removeNodeAction);
+        fileMenu.add(aboutUsAction);
         add(fileMenu);
     }
 }

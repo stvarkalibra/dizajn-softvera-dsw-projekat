@@ -37,7 +37,7 @@ public class AboutUsFrame extends JFrame {
     }
 
     public void addElements(){
-        ImageIcon backGroundImageIcon = new ImageIcon(getClass().getResource("/images/wall1.jpeg"));
+        ImageIcon backGroundImageIcon = new ImageIcon(getClass().getResource("/images/wall.jpeg"));
         Image backGroundImage = backGroundImageIcon.getImage();
 
         BackgroundPanel backGroundPanel = new BackgroundPanel(backGroundImage);

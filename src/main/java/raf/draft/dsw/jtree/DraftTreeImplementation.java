@@ -26,9 +26,6 @@ import java.util.Random;
 public class DraftTreeImplementation implements DraftTree, ISubscriber {
     private DraftTreeView treeView;
     private DefaultTreeModel treeModel;
-    private static int projectNumber=0;
-    private static int buildingNumber=0;
-    private static int roomNumber=0;
 
     @Override
     public DraftTreeView generateTree(ProjectExplorer projectExplorer) {

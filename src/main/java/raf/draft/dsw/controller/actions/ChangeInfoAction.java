@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 public class ChangeInfoAction extends AbstractRoomAction{
 
     public ChangeInfoAction() {
-        putValue(SMALL_ICON, loadIcon("/images/addNode.png"));
+        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
         putValue(NAME, "AddNode");
         putValue(SHORT_DESCRIPTION, "Node");
     }

@@ -62,7 +62,6 @@ public class MainFrame extends JFrame{
         JTabbedPane jTabbedPane=new JTabbedPane();
         jTabbedPane.setPreferredSize(new Dimension(600,screenHeight));
 
-
         draftTree=new DraftTreeImplementation();
         ProjectExplorer projectExplorer=new ProjectExplorer("ProjectExplorer");
         jTree = draftTree.generateTree(projectExplorer);
@@ -77,6 +76,7 @@ public class MainFrame extends JFrame{
         split.setDividerLocation(250);
         split.setOneTouchExpandable(true);
 
+        ImageIcon tabIcon = new ImageIcon(getClass().getResource("/images/room.png"));
 
         JPanel rightPanel=new JPanel();
         Label labelProject=new Label("Project");
@@ -104,6 +104,7 @@ public class MainFrame extends JFrame{
                             jTabbedPane.addTab(draftNode.getNodeName(),labelRoom);
                             jTabbedPane.setBackgroundAt(indexOfTab,project.getColor());
                             roomList.add((Room) draftNode);
+                            jTabbedPane.setIconAt(indexOfTab, tabIcon);
                             indexOfTab++;
                         }
                         else if(draftNode instanceof Building){
@@ -113,6 +114,7 @@ public class MainFrame extends JFrame{
                                     jTabbedPane.addTab(draftNodeBuilding.getNodeName(),labelRoom);
                                     jTabbedPane.setBackgroundAt(indexOfTab,((Building) draftNode).getColor());
                                     roomList.add((Room) draftNodeBuilding);
+                                    jTabbedPane.setIconAt(indexOfTab, tabIcon);
                                     indexOfTab++;
                                 }
 

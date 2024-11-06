@@ -9,7 +9,7 @@ import static javax.swing.Action.SMALL_ICON;
 
 public class RemoveNodeAction extends AbstractRoomAction{
     public RemoveNodeAction(){
-        putValue(SMALL_ICON, loadIcon("/images/removeNode.png"));
+        putValue(SMALL_ICON, loadIcon("/images/delete.png"));
         putValue(NAME, "RemoveNode");
         putValue(SHORT_DESCRIPTION, "Node");
     }
