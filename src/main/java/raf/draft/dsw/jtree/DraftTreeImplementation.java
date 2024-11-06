@@ -77,15 +77,15 @@ public class DraftTreeImplementation implements DraftTree{
 
             if (choice == 0){
                 buildingNumber++;
-                return  new Building("Building" + buildingNumber++,parent);
+                return  new Building("Building" + buildingNumber,parent);
             }
             else {
                 roomNumber++;
-                return new Room("Room",parent);
+                return new Room("Room"+roomNumber,parent);
             }
         }else if(parent instanceof Building){
             roomNumber++;
-            return new Room("Room",parent);
+            return new Room("Room"+roomNumber,parent);
         }
         return null;
     }
