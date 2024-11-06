@@ -63,8 +63,26 @@ public class DraftTreeImplementation implements DraftTree{
         return new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", " ");
         }
         else if(parent instanceof Project){
-            buildingNumber++;
-            return  new Building("Building" + buildingNumber++,parent);
+            Object[] options = {"Building", "Room"};
+            int choice = JOptionPane.showOptionDialog(
+                    null,
+                    "Choose type of child to create:",
+                    "Select Child Type",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+
+            if (choice == 0){
+                buildingNumber++;
+                return  new Building("Building" + buildingNumber++,parent);
+            }
+            else {
+                roomNumber++;
+                return new Room("Room",parent);
+            }
         }else if(parent instanceof Building){
             roomNumber++;
             return new Room("Room",parent);

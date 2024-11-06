@@ -53,8 +53,8 @@ public class MainFrame extends JFrame implements ISubscriber{
         add(toolBar, BorderLayout.NORTH);
 
         JTabbedPane jTabbedPane=new JTabbedPane();
-        jTabbedPane.setPreferredSize(new Dimension(400,200));
-        add(jTabbedPane,BorderLayout.CENTER);
+        jTabbedPane.setPreferredSize(new Dimension(700,screenHeight));
+
 
         draftTree=new DraftTreeImplementation();
         ProjectExplorer projectExplorer=new ProjectExplorer("ProjectExplorer");
@@ -63,9 +63,10 @@ public class MainFrame extends JFrame implements ISubscriber{
         JPanel desktop = new JPanel();
 
         JScrollPane scroll=new JScrollPane(jTree);
-        scroll.setMinimumSize(new Dimension(400,150));
+        scroll.setPreferredSize(new Dimension(300,screenHeight));
         JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,desktop);
-        getContentPane().add(split,BorderLayout.WEST);
+        add(split,BorderLayout.CENTER);
+        add(jTabbedPane,BorderLayout.EAST);
         split.setDividerLocation(250);
         split.setOneTouchExpandable(true);
 
@@ -81,7 +82,6 @@ public class MainFrame extends JFrame implements ISubscriber{
                 }
             }
         });
-
 
     }
     public ActionManager getActionManager() {
