@@ -26,5 +26,4 @@ public class ActionManager {
     public AboutUsAction getAboutUsAction() {
         return aboutUsAction;
     }
-
 }
