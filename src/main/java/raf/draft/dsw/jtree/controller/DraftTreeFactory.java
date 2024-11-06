@@ -19,6 +19,7 @@ public class DraftTreeFactory {
             return new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", " ");
         }
         else if(parent instanceof Project){
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/images/matrix.png"));
             Object[] options = {"Building", "Room"};
             int choice = JOptionPane.showOptionDialog(
                     null,
@@ -26,7 +27,7 @@ public class DraftTreeFactory {
                     "Select Child Type",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    null,
+                    imageIcon,
                     options,
                     options[0]
             );
@@ -35,10 +36,11 @@ public class DraftTreeFactory {
                 buildingNumber++;
                 return  new Building("Building" + buildingNumber,parent);
             }
-            else {
+            else if (choice == 1){
                 roomNumber++;
                 return new Room("Room"+roomNumber,parent);
             }
+            else return null;
         }else if(parent instanceof Building){
             roomNumber++;
             return new Room("Room"+roomNumber,parent);
