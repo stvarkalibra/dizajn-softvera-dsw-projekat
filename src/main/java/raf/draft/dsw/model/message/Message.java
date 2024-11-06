@@ -1,21 +1,26 @@
 package raf.draft.dsw.model.message;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.SimpleTimeZone;
 
 public class Message {
     private String content;
     private MessageType type;
-    private LocalDateTime timeStamp;
+    private Date timeStamp;
 
     public Message(String content, MessageType type) {
         this.content = content;
         this.type = type;
-        this.timeStamp = LocalDateTime.now();
+        this.timeStamp = new Date();
     }
 
     @Override
     public String toString() {
-        return "[" + type + "]" + " [" + timeStamp + "]" + " " + content;
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd.MM.yyyy. HH:mm");
+        String formattedTimeStamp=simpleDateFormat.format(timeStamp);
+        return "[" + type + "]" + " [" + formattedTimeStamp + "]" + " " + content;
     }
 
     public String getContent() {
@@ -34,11 +39,11 @@ public class Message {
         this.type = type;
     }
 
-    public LocalDateTime getTimeStamp() {
+    public Date getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDateTime timeStamp) {
+    public void setTimeStamp(Date timeStamp) {
         this.timeStamp = timeStamp;
     }
 }

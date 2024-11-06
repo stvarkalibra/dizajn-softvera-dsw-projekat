@@ -37,6 +37,7 @@ public class DraftTreeCellEditor extends DefaultTreeCellEditor implements Action
             return;
 
         DraftTreeItem clicked = (DraftTreeItem) clickedOn;
+
         clicked.setName(e.getActionCommand());
 
     }
