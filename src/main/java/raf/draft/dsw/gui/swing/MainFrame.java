@@ -23,7 +23,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.LocalDateTime;
 
-public class MainFrame extends JFrame implements ISubscriber{
+public class MainFrame extends JFrame{
 
     private ActionManager actionManager = new ActionManager();
     private static MainFrame mainFrameInstance;
@@ -142,10 +142,5 @@ public class MainFrame extends JFrame implements ISubscriber{
 
     public void setDraftTree(DraftTree draftTree) {
         this.draftTree = draftTree;
-    }
-
-    @Override
-    public void update(Object o) {
-        JOptionPane.showMessageDialog(null, o, "ERROR",JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -38,5 +38,6 @@ public class MessageGenerator implements IPublisher {
     public void createMessage(String content, MessageType type){
         Message message = new Message(content, type);
         notifySubscriber(message);
+
     }
 }

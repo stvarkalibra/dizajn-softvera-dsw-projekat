@@ -26,19 +26,5 @@ public class ApplicationFramework {
     public void initialize(){
         MainFrame mainFrame=MainFrame.getInstance();
         mainFrame.setVisible(true);
-
-        MessageGenerator messageGenerator = new MessageGenerator();
-        FileLogger fileLogger = new FileLogger("files/log.txt");
-        ConsoleLogger consoleLogger = new ConsoleLogger();
-
-        messageGenerator.addSubscriber(fileLogger);
-        messageGenerator.addSubscriber(consoleLogger);
-        messageGenerator.addSubscriber(mainFrame);
-
-        String content = "NODE_CANNOT_BE_DELETED";
-        MessageType type = MessageType.ERROR;
-
-        messageGenerator.createMessage(content, type);
-
     }
 }

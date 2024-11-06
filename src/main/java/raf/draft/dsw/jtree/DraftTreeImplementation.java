@@ -1,10 +1,16 @@
 package raf.draft.dsw.jtree;
 
+import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
+import raf.draft.dsw.controller.messagegenerator.FileLogger;
+import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ActionManager;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.jtree.controller.DraftTreeFactory;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.jtree.view.DraftTreeView;
+import raf.draft.dsw.model.message.Message;
+import raf.draft.dsw.model.message.MessageType;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.Building;
@@ -14,9 +20,10 @@ import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
+import java.io.IOException;
 import java.util.Random;
 
-public class DraftTreeImplementation implements DraftTree{
+public class DraftTreeImplementation implements DraftTree, ISubscriber {
     private DraftTreeView treeView;
     private DefaultTreeModel treeModel;
     private static int projectNumber=0;
@@ -33,6 +40,18 @@ public class DraftTreeImplementation implements DraftTree{
 
     @Override
     public void addChild(DraftTreeItem parent) {
+        if(parent.getDraftNode() instanceof Room){
+            MessageGenerator messageGenerator = new MessageGenerator();
+            FileLogger fileLogger = new FileLogger("files/log.txt");
+            ConsoleLogger consoleLogger = new ConsoleLogger();
+
+            messageGenerator.addSubscriber(consoleLogger);
+            messageGenerator.addSubscriber(fileLogger);
+
+            Message message=new Message("NODE_IS_LEAF",MessageType.INFORMATION);
+            messageGenerator.createMessage(message.getContent(),message.getType());
+            update(message);
+        }
         if (!(parent.getDraftNode() instanceof DraftNodeComposite))
             return;
         DraftTreeFactory draftTreeFactory = new DraftTreeFactory();
@@ -45,7 +64,19 @@ public class DraftTreeImplementation implements DraftTree{
 
     @Override
     public void removeChild(DraftTreeItem parent) {
-        if (!(parent.getDraftNode() instanceof DraftNodeComposite)){
+        if((parent.getDraftNode() instanceof ProjectExplorer)){
+            MessageGenerator messageGenerator = new MessageGenerator();
+            FileLogger fileLogger = new FileLogger("files/log.txt");
+            ConsoleLogger consoleLogger = new ConsoleLogger();
+
+            messageGenerator.addSubscriber(consoleLogger);
+            messageGenerator.addSubscriber(fileLogger);
+
+            Message message=new Message("NODE_CANNOT_BE_DELETED",MessageType.ERROR);
+            messageGenerator.createMessage(message.getContent(),message.getType());
+            update(message);
+        }
+        if (!(parent.getDraftNode() instanceof DraftNodeComposite) && !(parent.getDraftNode() instanceof ProjectExplorer)){
             ((DraftTreeItem)parent.getParent()).remove(parent);
         }else{
             parent.removeAllChildren();
@@ -74,5 +105,17 @@ public class DraftTreeImplementation implements DraftTree{
 
     public void setTreeModel(DefaultTreeModel treeModel) {
         this.treeModel = treeModel;
+    }
+
+    @Override
+    public void update(Object o) {
+        if(o instanceof Message && ((Message) o).getType().equals(MessageType.ERROR)){
+            JOptionPane.showMessageDialog(null,o,((Message) o).getType().toString(),JOptionPane.ERROR_MESSAGE);
+        }if(o instanceof Message && ((Message) o).getType().equals(MessageType.INFORMATION)){
+            JOptionPane.showMessageDialog(null,o,((Message) o).getType().toString(),JOptionPane.INFORMATION_MESSAGE);
+        }if(o instanceof Message && ((Message) o).getType().equals(MessageType.WARNING)){
+            JOptionPane.showMessageDialog(null,o,((Message) o).getType().toString(),JOptionPane.WARNING_MESSAGE);
+        }
+
     }
 }
