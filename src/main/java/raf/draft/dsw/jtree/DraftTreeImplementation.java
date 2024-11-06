@@ -6,6 +6,7 @@ import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ActionManager;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.jtree.controller.DraftTreeFactory;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.jtree.view.DraftTreeView;
 import raf.draft.dsw.model.message.Message;
@@ -53,7 +54,8 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
         }
         if (!(parent.getDraftNode() instanceof DraftNodeComposite))
             return;
-        DraftNode child = createChild(parent.getDraftNode());
+        DraftTreeFactory draftTreeFactory = new DraftTreeFactory();
+        DraftNode child = draftTreeFactory.createChild(parent.getDraftNode());
         parent.add(new DraftTreeItem(child));
         ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
         treeView.expandPath(treeView.getSelectionPath());
@@ -87,39 +89,6 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
     @Override
     public DraftTreeItem getSelectedNode() {
         return (DraftTreeItem)treeView.getLastSelectedPathComponent();
-    }
-
-    private DraftNode createChild(DraftNode parent) {
-        if (parent instanceof ProjectExplorer){
-            projectNumber++;
-        return new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", " ");
-        }
-        else if(parent instanceof Project){
-            Object[] options = {"Building", "Room"};
-            int choice = JOptionPane.showOptionDialog(
-                    null,
-                    "Choose type of child to create:",
-                    "Select Child Type",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]
-            );
-
-            if (choice == 0){
-                buildingNumber++;
-                return  new Building("Building" + buildingNumber,parent);
-            }
-            else {
-                roomNumber++;
-                return new Room("Room"+roomNumber,parent);
-            }
-        }else if(parent instanceof Building){
-            roomNumber++;
-            return new Room("Room"+roomNumber,parent);
-        }
-        return null;
     }
 
     public DraftTreeView getTreeView() {
