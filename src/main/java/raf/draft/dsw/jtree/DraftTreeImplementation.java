@@ -64,7 +64,6 @@ public class DraftTreeImplementation implements DraftTree{
         return new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", " ");
         }
         else if(parent instanceof Project){
-
             Object[] options = {"Building", "Room"};
             int choice = JOptionPane.showOptionDialog(
                     null,

@@ -13,9 +13,11 @@ public class MyToolBar extends JToolBar {
         AboutUsAction aboutUsAction = actionManager.getAboutUsAction();
         NewNodeAction newNodeAction = actionManager.getNewNodeAction();
         RemoveNodeAction removeNodeAction = actionManager.getRemoveNodeAction();
+        ChangeInfoAction changeInfoAction =actionManager.getChangeInfoAction();
         add(exitAction);
         add(aboutUsAction);
         add(newNodeAction);
         add(removeNodeAction);
+        add(changeInfoAction);
     }
 }
