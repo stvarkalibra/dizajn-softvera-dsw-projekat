@@ -22,6 +22,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame{
 
@@ -29,6 +30,7 @@ public class MainFrame extends JFrame{
     private static MainFrame mainFrameInstance;
     private DraftTree draftTree;
     private JTree jTree;
+    private java.util.List<Room> roomList=new ArrayList<Room>();
 
     private MainFrame(){
         initialize();
@@ -81,7 +83,6 @@ public class MainFrame extends JFrame{
         rightPanel.add(labelProject);
         rightPanel.setPreferredSize(new Dimension(200,screenHeight));
         add(rightPanel,BorderLayout.EAST);
-
         jTree.addMouseListener(new java.awt.event.MouseAdapter() {
             int indexOfTab=0;
             @Override
@@ -98,18 +99,23 @@ public class MainFrame extends JFrame{
 
                     Project project = (Project) selectedNode.getDraftNode();
                     for(DraftNode draftNode:project.getChildrenList()){
-                        if(draftNode instanceof Room){
+                        if(draftNode instanceof Room && !roomList.contains((Room) draftNode)){
                             Label labelRoom=new Label();
                             jTabbedPane.addTab(draftNode.getNodeName(),labelRoom);
                             jTabbedPane.setBackgroundAt(indexOfTab,project.getColor());
+                            roomList.add((Room) draftNode);
                             indexOfTab++;
                         }
                         else if(draftNode instanceof Building){
                             for(DraftNode draftNodeBuilding: ((Building) draftNode).getChildrenList()){
-                                Label labelRoom=new Label();
-                                jTabbedPane.addTab(draftNodeBuilding.getNodeName(),labelRoom);
-                                jTabbedPane.setBackgroundAt(indexOfTab,((Building) draftNode).getColor());
-                                indexOfTab++;
+                                if(draftNodeBuilding instanceof Room && !roomList.contains((Room)draftNodeBuilding)){
+                                    Label labelRoom=new Label();
+                                    jTabbedPane.addTab(draftNodeBuilding.getNodeName(),labelRoom);
+                                    jTabbedPane.setBackgroundAt(indexOfTab,((Building) draftNode).getColor());
+                                    roomList.add((Room) draftNodeBuilding);
+                                    indexOfTab++;
+                                }
+
                             }
                         }
 
