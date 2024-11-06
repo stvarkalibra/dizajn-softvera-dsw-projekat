@@ -1,9 +1,6 @@
 package raf.draft.dsw.gui.swing;
 
-import raf.draft.dsw.controller.actions.AboutUsAction;
-import raf.draft.dsw.controller.actions.ExitAction;
-import raf.draft.dsw.controller.actions.NewNodeAction;
-import raf.draft.dsw.controller.actions.RemoveNodeAction;
+import raf.draft.dsw.controller.actions.*;
 import raf.draft.dsw.core.ActionManager;
 
 import javax.swing.*;

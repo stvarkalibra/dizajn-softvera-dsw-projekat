@@ -1,5 +1,7 @@
 package raf.draft.dsw.jtree;
 
+import raf.draft.dsw.core.ActionManager;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.jtree.view.DraftTreeView;
 import raf.draft.dsw.model.nodes.DraftNode;
@@ -32,7 +34,6 @@ public class DraftTreeImplementation implements DraftTree{
     public void addChild(DraftTreeItem parent) {
         if (!(parent.getDraftNode() instanceof DraftNodeComposite))
             return;
-
         DraftNode child = createChild(parent.getDraftNode());
         parent.add(new DraftTreeItem(child));
         ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
@@ -63,6 +64,7 @@ public class DraftTreeImplementation implements DraftTree{
         return new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", " ");
         }
         else if(parent instanceof Project){
+
             Object[] options = {"Building", "Room"};
             int choice = JOptionPane.showOptionDialog(
                     null,
