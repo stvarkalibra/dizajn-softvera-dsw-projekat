@@ -40,7 +40,7 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
 
     @Override
     public void addChild(DraftTreeItem parent) {
-        if(parent.getDraftNode() instanceof Room){
+        if (parent.getDraftNode() instanceof Room){
             MessageGenerator messageGenerator = new MessageGenerator();
             FileLogger fileLogger = new FileLogger("files/log.txt");
             ConsoleLogger consoleLogger = new ConsoleLogger();
@@ -48,19 +48,25 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
             messageGenerator.addSubscriber(consoleLogger);
             messageGenerator.addSubscriber(fileLogger);
 
-            Message message=new Message("NODE_IS_LEAF",MessageType.INFORMATION);
-            messageGenerator.createMessage(message.getContent(),message.getType());
+            Message message = new Message("NODE_IS_LEAF", MessageType.INFORMATION);
+            messageGenerator.createMessage(message.getContent(), message.getType());
             update(message);
         }
-        if (!(parent.getDraftNode() instanceof DraftNodeComposite))
-            return;
+
+        // Exit early if the node is a Room and no other action is required
+        if (parent.getDraftNode() instanceof Room) return;
+
         DraftTreeFactory draftTreeFactory = new DraftTreeFactory();
         DraftNode child = draftTreeFactory.createChild(parent.getDraftNode());
-        parent.add(new DraftTreeItem(child));
-        ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
-        treeView.expandPath(treeView.getSelectionPath());
-        SwingUtilities.updateComponentTreeUI(treeView);
+
+        if (child != null) {
+            parent.add(new DraftTreeItem(child));
+            ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
+            treeView.expandPath(treeView.getSelectionPath());
+            SwingUtilities.updateComponentTreeUI(treeView);
+        }
     }
+
 
     @Override
     public void removeChild(DraftTreeItem parent) {
