@@ -15,7 +15,12 @@ public class NewNodeAction extends AbstractRoomAction{
         putValue(SHORT_DESCRIPTION, "Node");
     }
     public void actionPerformed(ActionEvent arg0) {
-        DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedNode();
-        MainFrame.getInstance().getDraftTree().addChild(selected);
+        if(MainFrame.getInstance().isFlag()==true){
+            DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedNode();
+            MainFrame.getInstance().getDraftTree().addChild(selected);
+        }else{
+            MainFrame.getInstance().getDraftTree().addChild(null);
+        }
+
     }
 }

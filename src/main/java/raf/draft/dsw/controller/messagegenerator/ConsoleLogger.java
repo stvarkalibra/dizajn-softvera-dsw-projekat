@@ -8,5 +8,6 @@ public class ConsoleLogger implements ILogger {
         if (o instanceof Message){
             System.out.println(o);
         }
+
     }
 }

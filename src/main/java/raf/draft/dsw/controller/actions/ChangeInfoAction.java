@@ -23,6 +23,7 @@ public class ChangeInfoAction extends AbstractRoomAction{
             ChangeInfoFrame changeInfoFrame = new ChangeInfoFrame((Project) selected.getDraftNode());
             changeInfoFrame.addElements((Project) selected.getDraftNode());
             changeInfoFrame.setVisible(true);
+
         }
     }
 }

@@ -15,60 +15,68 @@ public class ChangeInfoFrame extends JFrame {
     public void initialize() {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
-        int screenHeight = screenSize.height;
-        int screenWidth = screenSize.width;
-        setSize(screenWidth/2, screenHeight/2);
+        int screenHeight = screenSize.height/3;
+        int screenWidth = screenSize.width/3;
+        setSize(screenWidth / 2, screenHeight / 2);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Change Project Information");
     }
 
     public void addElements(Project project) {
-        JFrame frame = new JFrame("Change Project Information");
-
-        JTextField authorField = new JTextField(20);
-        JTextField nameField = new JTextField(20);
-        JTextField pathField = new JTextField(20);
+        JTextField authorField = new JTextField(10);
+        JTextField nameField = new JTextField(10);
+        JTextField pathField = new JTextField(10);
         Button changeButton = new Button("Change Info");
 
         JLabel authorLabel = new JLabel("Author:");
         JLabel nameLabel = new JLabel("Name:");
         JLabel pathLabel = new JLabel("Path:");
 
-
         changeButton.addActionListener(e -> {
             project.setProjectAutor(authorField.getText());
             project.setProjectName(nameField.getText());
             project.setPathToFolder(pathField.getText());
-
-            JOptionPane.showMessageDialog(frame, "Author changed to: " + authorField.getText() + " Name changed to: " + nameField.getText() + " Path changed to: " + pathField.getText());
-            //System.out.println(project.getProjectAutor() + " " + project.getProjectName() + " " + project.getPathToFolder());
+            JOptionPane.showMessageDialog(this, "Author changed to: " + authorField.getText() + " Name changed to: " + nameField.getText() + " Path changed to: " + pathField.getText());
+            dispose();
         });
+
         JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
 
-        GridBagConstraints changeInfoGBC = new GridBagConstraints();
-        changeInfoGBC.insets = new Insets(5, 5, 5, 5);
-        changeInfoGBC.gridx = 0;
-        changeInfoGBC.gridy = 0;
-        panel.add(authorLabel, changeInfoGBC);
-        changeInfoGBC.gridx = 1;
-        panel.add(authorField, changeInfoGBC);
-        changeInfoGBC.gridy = 1;
-        changeInfoGBC.gridx = 0;
-        panel.add(nameLabel, changeInfoGBC);
-        changeInfoGBC.gridx = 1;
-        panel.add(nameField, changeInfoGBC);
-        changeInfoGBC.gridy = 2;
-        changeInfoGBC.gridx = 0;
-        panel.add(pathLabel, changeInfoGBC);
-        changeInfoGBC.gridx = 1;
-        panel.add(pathField, changeInfoGBC);
-        changeInfoGBC.gridy = 3;
-        changeInfoGBC.gridx = 0;
-        panel.add(changeButton, changeInfoGBC);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(authorLabel, gbc);
 
-        super.setContentPane(panel);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panel.add(authorField, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(nameLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(nameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(pathLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panel.add(pathField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        panel.add(changeButton, gbc);
+
+        setContentPane(panel);
     }
 }
