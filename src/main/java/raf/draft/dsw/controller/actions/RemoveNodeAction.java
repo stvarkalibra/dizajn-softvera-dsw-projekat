@@ -14,7 +14,13 @@ public class RemoveNodeAction extends AbstractRoomAction{
         putValue(SHORT_DESCRIPTION, "Node");
     }
     public void actionPerformed(ActionEvent arg0) {
-        DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedNode();
-        MainFrame.getInstance().getDraftTree().removeChild(selected);
+        if(MainFrame.getInstance().isFlag()==true){
+            DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedNode();
+            MainFrame.getInstance().getDraftTree().removeChild(selected);
+        }else{
+            MainFrame.getInstance().getDraftTree().removeChild(null);
+        }
+
+
     }
 }

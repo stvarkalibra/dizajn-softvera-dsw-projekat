@@ -37,6 +37,19 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
 
     @Override
     public void addChild(DraftTreeItem parent) {
+        if(parent==null){
+            MessageGenerator messageGenerator = new MessageGenerator();
+            FileLogger fileLogger = new FileLogger("files/log.txt");
+            ConsoleLogger consoleLogger = new ConsoleLogger();
+
+            messageGenerator.addSubscriber(consoleLogger);
+            messageGenerator.addSubscriber(fileLogger);
+
+            Message message = new Message("YOU_NEED_TO_SELECT_NODE", MessageType.ERROR);
+            messageGenerator.createMessage(message.getContent(), message.getType());
+            update(message);
+        }
+
         if (parent.getDraftNode() instanceof Room){
             MessageGenerator messageGenerator = new MessageGenerator();
             FileLogger fileLogger = new FileLogger("files/log.txt");
@@ -48,10 +61,8 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
             Message message = new Message("NODE_IS_LEAF", MessageType.INFORMATION);
             messageGenerator.createMessage(message.getContent(), message.getType());
             update(message);
+            return;
         }
-
-        // Exit early if the node is a Room and no other action is required
-        if (parent.getDraftNode() instanceof Room) return;
 
         DraftTreeFactory draftTreeFactory = new DraftTreeFactory();
         DraftNode child = draftTreeFactory.createChild(parent.getDraftNode());
@@ -67,7 +78,19 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
 
     @Override
     public void removeChild(DraftTreeItem parent) {
-        if((parent.getDraftNode() instanceof ProjectExplorer)){
+        if(parent==null){
+            MessageGenerator messageGenerator = new MessageGenerator();
+            FileLogger fileLogger = new FileLogger("files/log.txt");
+            ConsoleLogger consoleLogger = new ConsoleLogger();
+
+            messageGenerator.addSubscriber(consoleLogger);
+            messageGenerator.addSubscriber(fileLogger);
+
+            Message message = new Message("YOU_NEED_TO_SELECT_NODE", MessageType.ERROR);
+            messageGenerator.createMessage(message.getContent(), message.getType());
+            update(message);
+        }
+        else if((parent.getDraftNode() instanceof ProjectExplorer)){
             MessageGenerator messageGenerator = new MessageGenerator();
             FileLogger fileLogger = new FileLogger("files/log.txt");
             ConsoleLogger consoleLogger = new ConsoleLogger();
@@ -78,13 +101,18 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
             Message message=new Message("NODE_CANNOT_BE_DELETED",MessageType.ERROR);
             messageGenerator.createMessage(message.getContent(),message.getType());
             update(message);
+            MainFrame.getInstance().setFlag(true);
         }
-        if (!(parent.getDraftNode() instanceof DraftNodeComposite) && !(parent.getDraftNode() instanceof ProjectExplorer)){
-            ((DraftTreeItem)parent.getParent()).remove(parent);
-        }else{
-            parent.removeAllChildren();
-            ((DraftTreeItem)parent.getParent()).remove(parent);
+        else{
+            if (!(parent.getDraftNode() instanceof DraftNodeComposite) && !(parent.getDraftNode() instanceof ProjectExplorer)){
+                ((DraftTreeItem)parent.getParent()).remove(parent);
+            }else{
+                parent.removeAllChildren();
+                ((DraftTreeItem)parent.getParent()).remove(parent);
+            }
         }
+
+        MainFrame.getInstance().setFlag(false);
         treeView.expandPath(treeView.getSelectionPath());
         SwingUtilities.updateComponentTreeUI(treeView);
     }
