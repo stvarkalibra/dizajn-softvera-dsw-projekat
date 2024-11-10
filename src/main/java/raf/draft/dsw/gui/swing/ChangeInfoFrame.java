@@ -1,12 +1,19 @@
 package raf.draft.dsw.gui.swing;
 
+import raf.draft.dsw.controller.observer.IPublisher;
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ChangeInfoFrame extends JFrame {
+public class ChangeInfoFrame extends JFrame implements ISubscriber{
+    private Button changeButton = new Button("Change Info");
     public ChangeInfoFrame(Project project) {
         initialize();
         addElements(project);
@@ -27,7 +34,7 @@ public class ChangeInfoFrame extends JFrame {
         JTextField authorField = new JTextField(10);
         JTextField nameField = new JTextField(10);
         JTextField pathField = new JTextField(10);
-        Button changeButton = new Button("Change Info");
+
 
         JLabel authorLabel = new JLabel("Author:");
         JLabel nameLabel = new JLabel("Name:");
@@ -78,5 +85,21 @@ public class ChangeInfoFrame extends JFrame {
         panel.add(changeButton, gbc);
 
         setContentPane(panel);
+    }
+
+    public Button getChangeButton() {
+        return changeButton;
+    }
+
+    public void setChangeButton(Button changeButton) {
+        this.changeButton = changeButton;
+    }
+
+    @Override
+    public void update(Object o) {
+        if(o instanceof Project){
+            MainFrame.getInstance().getLabelAutor().setText(((Project) o).getProjectAutor());
+        }
+
     }
 }

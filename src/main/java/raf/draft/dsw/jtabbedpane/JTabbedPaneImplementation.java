@@ -1,0 +1,122 @@
+package raf.draft.dsw.jtabbedpane;
+
+import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.jtree.DraftTree;
+import raf.draft.dsw.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.structures.Building;
+import raf.draft.dsw.model.structures.Project;
+import raf.draft.dsw.model.structures.Room;
+
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+public class JTabbedPaneImplementation extends JTabbedPane implements ISubscriber {
+    private JTabbedPane jTabbedPane;
+    private List<Room> roomList;
+    private final Icon roomIcon = new ImageIcon(new ImageIcon(getClass().getResource("/images/room.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
+    private JTree jTree;
+    private int indexOfTab=0;
+    public JTabbedPaneImplementation(JTabbedPane jTabbedPane, JTree jTree,List<Room> roomList){
+        this.jTabbedPane=jTabbedPane;
+        this.jTree=jTree;
+        this.roomList=roomList;
+    }
+    public void generate(){
+        jTree.addMouseListener(new java.awt.event.MouseAdapter(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                TreePath path = jTree.getPathForLocation(e.getX(), e.getY());
+
+                if (path == null) {
+                    return;
+                }
+                DraftTreeItem selectedNode = (DraftTreeItem) path.getLastPathComponent();
+
+                if (e.getClickCount() == 2 && selectedNode.getDraftNode() instanceof Project) {
+
+                    Project project = (Project) selectedNode.getDraftNode();
+                    for (DraftNode draftNode : project.getChildrenList()) {
+                        if (draftNode instanceof Room && !roomList.contains((Room) draftNode)) {
+                            Label labelRoom = new Label();
+                            roomList.add((Room) draftNode);
+                            jTabbedPane.addTab(draftNode.getNodeName(), labelRoom);
+                            jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
+
+                            jTabbedPane.setIconAt(indexOfTab, roomIcon);
+                            indexOfTab++;
+                        } else if (draftNode instanceof Building) {
+                            for (DraftNode draftNodeBuilding : ((Building) draftNode).getChildrenList()) {
+                                if (draftNodeBuilding instanceof Room && !roomList.contains((Room) draftNodeBuilding)) {
+                                    Label labelRoom = new Label();
+                                    roomList.add((Room) draftNodeBuilding);
+                                    jTabbedPane.addTab(draftNodeBuilding.getNodeName(), labelRoom);
+                                    jTabbedPane.setBackgroundAt(indexOfTab, ((Building) draftNode).getColor());
+                                    jTabbedPane.setIconAt(indexOfTab, roomIcon);
+                                    indexOfTab++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public JTabbedPane getjTabbedPane() {
+        return jTabbedPane;
+    }
+
+    public void setjTabbedPane(JTabbedPane jTabbedPane) {
+        this.jTabbedPane = jTabbedPane;
+    }
+
+    public List<Room> getRoomList() {
+        return roomList;
+    }
+
+    public void setRoomList(List<Room> roomList) {
+        this.roomList = roomList;
+    }
+
+    public Icon getRoomIcon() {
+        return roomIcon;
+    }
+
+    public JTree getjTree() {
+        return jTree;
+    }
+
+    public void setjTree(JTree jTree) {
+        this.jTree = jTree;
+    }
+
+    public int getIndexOfTab() {
+        return indexOfTab;
+    }
+
+    public void setIndexOfTab(int indexOfTab) {
+        this.indexOfTab = indexOfTab;
+    }
+
+    @Override
+    public void update(Object o) {
+        if(o instanceof Room){
+            Label labelRoom = new Label();
+            roomList.add((Room) o);
+            jTabbedPane.addTab(((Room) o).getNodeName(), labelRoom);
+            if(((Room) o).getParent() instanceof Project){
+                jTabbedPane.setBackgroundAt(indexOfTab, ((Project) ((Room) o).getParent()).getColor());
+            }else if(((Room) o).getParent() instanceof Building){
+                jTabbedPane.setBackgroundAt(indexOfTab, ((Building) ((Room) o).getParent()).getColor());
+            }
+            jTabbedPane.setIconAt(indexOfTab, roomIcon);
+            indexOfTab++;
+        }
+    }
+}
