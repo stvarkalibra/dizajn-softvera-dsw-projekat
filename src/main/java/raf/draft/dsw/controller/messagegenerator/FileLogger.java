@@ -19,10 +19,8 @@ public class FileLogger implements ILogger {
             try {
                 File file = new File(filePath);
 
-                // Create parent directories if they don’t exist
                 file.getParentFile().mkdirs();
 
-                // Use try-with-resources to handle closing the FileWriter
                 try (FileWriter fw = new FileWriter(file, true)) {
                     fw.write(o.toString());
                 }

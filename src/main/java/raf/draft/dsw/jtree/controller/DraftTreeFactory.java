@@ -45,13 +45,13 @@ public class DraftTreeFactory {
                 x = new Room("Room" + roomNumber, parent);
             }
             else {
-                x = null; // If the user cancels, no node is created
+                x = null;
             }
         } else if(parent instanceof Building){
             roomNumber++;
             x = new Room("Room" + roomNumber, parent);
         } else {
-            x = null; // No node created for other types
+            x = null;
         }
 
         return x;

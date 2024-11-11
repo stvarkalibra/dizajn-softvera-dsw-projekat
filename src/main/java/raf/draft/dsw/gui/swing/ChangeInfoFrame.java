@@ -44,7 +44,6 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber{
             project.setProjectAutor(authorField.getText());
             project.setProjectName(nameField.getText());
             project.setPathToFolder(pathField.getText());
-            JOptionPane.showMessageDialog(this, "Author changed to: " + authorField.getText() + " Name changed to: " + nameField.getText() + " Path changed to: " + pathField.getText());
             dispose();
         });
 

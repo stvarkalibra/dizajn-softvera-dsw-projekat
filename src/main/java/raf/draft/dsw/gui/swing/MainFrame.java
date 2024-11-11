@@ -164,7 +164,6 @@ public class MainFrame extends JFrame implements ISubscriber{
 
     @Override
     public void update(Object o) {
-        // Removing tabs associated with a Project
         if (o instanceof Project) {
             Project project = (Project) o;
             List<DraftNode> projectChildren = new ArrayList<>(project.getChildrenList()); // Copy to avoid ConcurrentModificationException
@@ -183,7 +182,6 @@ public class MainFrame extends JFrame implements ISubscriber{
                 }
             }
         }
-        // Removing tabs associated with a Building
         else if (o instanceof Building) {
             Building building = (Building) o;
             List<DraftNode> buildingChildren = new ArrayList<>(building.getChildrenList()); // Copy to avoid ConcurrentModificationException
@@ -195,12 +193,10 @@ public class MainFrame extends JFrame implements ISubscriber{
             }
             building.getChildrenList().clear();
         }
-        // Removing a single Room tab
         else if (o instanceof Room) {
             removeTabAndRoom((Room) o);
         }
 
-        // Reset indexOfTab to align with the current number of tabs
         jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneView.getjTabbedPane().getTabCount());
     }
 
@@ -210,9 +206,7 @@ public class MainFrame extends JFrame implements ISubscriber{
             jTabbedPaneView.getjTabbedPane().remove(tabIndex);
             jTabbedPaneImplementation.getRoomList().remove(room);
 
-            // After removal, set a valid selected index
             if (jTabbedPaneView.getjTabbedPane().getTabCount() > 0) {
-                // Select the first tab, or set to -1 if no tabs are left
                 jTabbedPaneView.getjTabbedPane().setSelectedIndex(0);
             } else {
                 jTabbedPaneView.getjTabbedPane().setSelectedIndex(-1);

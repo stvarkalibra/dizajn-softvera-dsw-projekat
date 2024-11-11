@@ -16,7 +16,6 @@ public class JTabbedPanePublisher implements IPublisher {
     private JTabbedPane jTabbedPane;
     private List<Room> roomList;
 
-    // Constructor now accepts JTabbedPane and roomList as arguments
     public JTabbedPanePublisher(JTabbedPane jTabbedPane, List<Room> roomList) {
         this.jTabbedPane = jTabbedPane;
         this.roomList = roomList;
@@ -27,7 +26,6 @@ public class JTabbedPanePublisher implements IPublisher {
             public void stateChanged(ChangeEvent e) {
                 int index = jTabbedPane.getSelectedIndex();
 
-                // Check if the index is valid before accessing roomList
                 if (index >= 0 && index < roomList.size()) {
                     notifySubscriber(roomList.get(index));
                 }
