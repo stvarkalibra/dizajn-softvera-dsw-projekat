@@ -164,54 +164,55 @@ public class MainFrame extends JFrame implements ISubscriber{
 
     @Override
     public void update(Object o) {
+        // Removing tabs associated with a Project
+        if (o instanceof Project) {
+            Project project = (Project) o;
+            List<DraftNode> projectChildren = new ArrayList<>(project.getChildrenList()); // Copy to avoid ConcurrentModificationException
 
-        if(o instanceof Project) {
-
-            for (DraftNode draftNode : ((Project) o).getChildrenList()) {
+            for (DraftNode draftNode : projectChildren) {
                 if (draftNode instanceof Room) {
-                    jTabbedPaneView.getjTabbedPane().remove(jTabbedPaneImplementation.getRoomList().indexOf(draftNode));
-                    ((Project) o).getChildrenList().remove(draftNode);
-                    jTabbedPaneImplementation.getRoomList().remove(draftNode);
-                    jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneImplementation.getIndexOfTab()-1);
-                }
-
-                else if (draftNode instanceof Building) {
-                    for (DraftNode draftNodeBuilding : ((Building) draftNode).getChildrenList()) {
-                        if (draftNodeBuilding instanceof Room) {
-                            jTabbedPaneView.getjTabbedPane().remove(jTabbedPaneImplementation.getRoomList().indexOf(draftNodeBuilding));
-                            ((Project) o).getChildrenList().remove(draftNodeBuilding);
-                            jTabbedPaneImplementation.getRoomList().remove(draftNodeBuilding);
-                            jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneImplementation.getIndexOfTab()-1);
+                    removeTabAndRoom((Room) draftNode);
+                    project.getChildrenList().remove(draftNode);
+                } else if (draftNode instanceof Building) {
+                    for (DraftNode buildingChild : ((Building) draftNode).getChildrenList()) {
+                        if (buildingChild instanceof Room) {
+                            removeTabAndRoom((Room) buildingChild);
                         }
                     }
+                    ((Building) draftNode).getChildrenList().clear();
                 }
             }
         }
+        // Removing tabs associated with a Building
+        else if (o instanceof Building) {
+            Building building = (Building) o;
+            List<DraftNode> buildingChildren = new ArrayList<>(building.getChildrenList()); // Copy to avoid ConcurrentModificationException
 
-        else if(o instanceof Building){
-            for (DraftNode draftNode : ((Building) o).getChildrenList()) {
-                System.out.println(((Building) o).getChildrenList());
+            for (DraftNode draftNode : buildingChildren) {
                 if (draftNode instanceof Room) {
-                    jTabbedPaneView.getjTabbedPane().remove(jTabbedPaneImplementation.getRoomList().indexOf(draftNode));
-                    ((Building) o).getChildrenList().remove(draftNode);
-                    jTabbedPaneImplementation.getRoomList().remove(draftNode);
-                    jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneImplementation.getIndexOfTab()-1);
+                    removeTabAndRoom((Room) draftNode);
                 }
             }
+            building.getChildrenList().clear();
+        }
+        // Removing a single Room tab
+        else if (o instanceof Room) {
+            removeTabAndRoom((Room) o);
         }
 
-        else if(o instanceof Room){
-            if(((Room) o).getParent() instanceof Project){
-                ((Project) ((Room) o).getParent()).getChildrenList().remove(o);
-            }
+        // Reset indexOfTab to align with the current number of tabs
+        jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneView.getjTabbedPane().getTabCount());
+    }
 
-            else if(((Room) o).getParent() instanceof Building){
-                ((Building) ((Room) o).getParent()).getChildrenList().remove(o);
-            }
-            jTabbedPaneView.getjTabbedPane().remove(jTabbedPaneImplementation.getRoomList().indexOf(o));
-            jTabbedPaneImplementation.getRoomList().remove(o);
-            jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneImplementation.getIndexOfTab()-1);
+    // Helper method to remove tab and room from both jTabbedPane and roomList
+    private void removeTabAndRoom(Room room) {
+        int tabIndex = jTabbedPaneImplementation.getRoomList().indexOf(room);
+        if (tabIndex != -1) {
+            jTabbedPaneView.getjTabbedPane().remove(tabIndex);
+            jTabbedPaneImplementation.getRoomList().remove(room);
         }
     }
+
 }
+
 
