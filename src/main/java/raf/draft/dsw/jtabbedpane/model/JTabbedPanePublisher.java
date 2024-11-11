@@ -26,11 +26,15 @@ public class JTabbedPanePublisher implements IPublisher {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int index = jTabbedPane.getSelectedIndex();
-                notifySubscriber(roomList.get(index));
 
+                // Check if the index is valid before accessing roomList
+                if (index >= 0 && index < roomList.size()) {
+                    notifySubscriber(roomList.get(index));
+                }
             }
         });
     }
+
     @Override
     public void addSubscriber(ISubscriber s) {
         if(!subscriberList.contains(s)){

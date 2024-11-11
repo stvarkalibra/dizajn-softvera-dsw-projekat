@@ -20,7 +20,7 @@ public class RemoveNodeAction extends AbstractRoomAction implements IPublisher {
     public RemoveNodeAction(){
         putValue(SMALL_ICON, loadIcon("/images/delete.png"));
         putValue(NAME, "RemoveNode");
-        putValue(SHORT_DESCRIPTION, "Node");
+        putValue(SHORT_DESCRIPTION, "Remove Node");
     }
     public void actionPerformed(ActionEvent arg0) {
         if(MainFrame.getInstance().isFlag()==true){

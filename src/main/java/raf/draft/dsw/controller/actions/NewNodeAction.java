@@ -21,7 +21,7 @@ public class NewNodeAction extends AbstractRoomAction implements IPublisher {
     public NewNodeAction(){
         putValue(SMALL_ICON, loadIcon("/images/addNode.png"));
         putValue(NAME, "AddNode");
-        putValue(SHORT_DESCRIPTION, "Node");
+        putValue(SHORT_DESCRIPTION, "Add New Node");
     }
     public void actionPerformed(ActionEvent arg0) {
         if(MainFrame.getInstance().isFlag()==true){

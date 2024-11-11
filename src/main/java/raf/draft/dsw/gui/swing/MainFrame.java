@@ -204,12 +204,19 @@ public class MainFrame extends JFrame implements ISubscriber{
         jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneView.getjTabbedPane().getTabCount());
     }
 
-    // Helper method to remove tab and room from both jTabbedPane and roomList
     private void removeTabAndRoom(Room room) {
         int tabIndex = jTabbedPaneImplementation.getRoomList().indexOf(room);
         if (tabIndex != -1) {
             jTabbedPaneView.getjTabbedPane().remove(tabIndex);
             jTabbedPaneImplementation.getRoomList().remove(room);
+
+            // After removal, set a valid selected index
+            if (jTabbedPaneView.getjTabbedPane().getTabCount() > 0) {
+                // Select the first tab, or set to -1 if no tabs are left
+                jTabbedPaneView.getjTabbedPane().setSelectedIndex(0);
+            } else {
+                jTabbedPaneView.getjTabbedPane().setSelectedIndex(-1);
+            }
         }
     }
 

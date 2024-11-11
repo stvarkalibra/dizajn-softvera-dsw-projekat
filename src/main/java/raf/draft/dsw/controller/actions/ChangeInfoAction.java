@@ -17,8 +17,8 @@ public class ChangeInfoAction extends AbstractRoomAction implements IPublisher{
     private List<ISubscriber> subscriberList=new ArrayList<>();
     public ChangeInfoAction() {
         putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "AddNode");
-        putValue(SHORT_DESCRIPTION, "Node");
+        putValue(NAME, "ChangeProjectInfo");
+        putValue(SHORT_DESCRIPTION, "Change project info");
     }
 
     @Override
