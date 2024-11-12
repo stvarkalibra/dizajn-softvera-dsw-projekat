@@ -48,6 +48,7 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
             Message message = new Message("YOU_NEED_TO_SELECT_NODE", MessageType.ERROR);
             messageGenerator.createMessage(message.getContent(), message.getType());
             update(message);
+            return;
         }
 
         if (parent.getDraftNode() instanceof Room){
@@ -89,6 +90,7 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
             Message message = new Message("YOU_NEED_TO_SELECT_NODE", MessageType.ERROR);
             messageGenerator.createMessage(message.getContent(), message.getType());
             update(message);
+            return;
         }
         else if((parent.getDraftNode() instanceof ProjectExplorer)){
             MessageGenerator messageGenerator = new MessageGenerator();
@@ -102,6 +104,7 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
             messageGenerator.createMessage(message.getContent(),message.getType());
             update(message);
             MainFrame.getInstance().setFlag(true);
+            return;
         }
         else{
             if (!(parent.getDraftNode() instanceof DraftNodeComposite) && !(parent.getDraftNode() instanceof ProjectExplorer)){
