@@ -1,22 +1,18 @@
 package raf.draft.dsw.gui.swing;
 
-import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
-import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ChangeInfoFrame extends JFrame implements ISubscriber{
+public class ChangeInfoFrame extends JFrame implements ISubscriber {
     private Button changeButton = new Button("Change Info");
-    public ChangeInfoFrame(Project project) {
+    public ChangeInfoFrame(DraftNode node) {
         initialize();
-        addElements(project);
+        addElements(node);
     }
 
     public void initialize() {
@@ -27,25 +23,24 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber{
         setSize(screenWidth / 2, screenHeight / 2);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("Change Project Information");
+        setTitle("Change Information");
     }
 
-    public void addElements(Project project) {
-        JTextField authorField = new JTextField(10);
-        JTextField nameField = new JTextField(10);
-        JTextField pathField = new JTextField(10);
+    private String newName;
+    private JTextField nameField;
 
+    public void addElements(DraftNode node) {
 
-        JLabel authorLabel = new JLabel("Author:");
+        nameField = new JTextField(10);
+
         JLabel nameLabel = new JLabel("Name:");
-        JLabel pathLabel = new JLabel("Path:");
 
         changeButton.addActionListener(e -> {
-            project.setProjectAutor(authorField.getText());
-            project.setProjectName(nameField.getText());
-            project.setPathToFolder(pathField.getText());
+            newName = nameField.getText();
+            node.setNodeName(newName);
             dispose();
         });
+
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -54,13 +49,6 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber{
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(authorLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        panel.add(authorField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -69,14 +57,6 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber{
         gbc.gridx = 1;
         gbc.gridy = 1;
         panel.add(nameField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(pathLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        panel.add(pathField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -94,6 +74,10 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber{
         this.changeButton = changeButton;
     }
 
+    public String getNewName() {
+        return newName;
+    }
+
     @Override
     public void update(Object o) {
         if(o instanceof Project){
@@ -101,4 +85,5 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber{
         }
 
     }
+
 }

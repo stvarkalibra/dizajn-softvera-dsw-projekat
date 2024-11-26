@@ -3,11 +3,15 @@ package raf.draft.dsw.controller.actions;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.gui.swing.ChangeInfoFrame;
+import raf.draft.dsw.gui.swing.ChangeInfoFrameProject;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,14 +29,54 @@ public class ChangeInfoAction extends AbstractRoomAction implements IPublisher{
     public void actionPerformed(ActionEvent e) {
         DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedNode();
         if (selected.getDraftNode() instanceof Project){
-            ChangeInfoFrame changeInfoFrame = new ChangeInfoFrame((Project) selected.getDraftNode());
+            ChangeInfoFrameProject changeInfoFrameProject = new ChangeInfoFrameProject((Project) selected.getDraftNode());
+            addSubscriber(changeInfoFrameProject);
+            changeInfoFrameProject.addElements((Project) selected.getDraftNode());
+            changeInfoFrameProject.setVisible(true);
+            changeInfoFrameProject.getChangeButton().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    notifySubscriber(selected.getDraftNode());
+                }
+            });
+        }
+        else if (selected.getDraftNode() instanceof Building || selected.getDraftNode() instanceof Room){
+            ChangeInfoFrame changeInfoFrame = new ChangeInfoFrame( selected.getDraftNode());
             addSubscriber(changeInfoFrame);
-            changeInfoFrame.addElements((Project) selected.getDraftNode());
+            changeInfoFrame.addElements( selected.getDraftNode());
             changeInfoFrame.setVisible(true);
             changeInfoFrame.getChangeButton().addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     notifySubscriber(selected.getDraftNode());
+
+                    if (selected.getDraftNode() instanceof Room){
+                        notifySubscriber(selected.getDraftNode());
+
+                        String newName = changeInfoFrame.getNewName();
+                        JTabbedPane jTabbedPane = MainFrame.getInstance().getjTabbedPane();
+                        int tabIndex = jTabbedPane.getSelectedIndex();
+
+                        if (jTabbedPane.getTabCount() > 0) {
+                            if (tabIndex == -1) {
+                                tabIndex = 0;
+                                jTabbedPane.setSelectedIndex(tabIndex);
+                            }
+
+                            int existingTabIndex = jTabbedPane.indexOfTab(newName);
+                            if (existingTabIndex == -1) {
+                                System.out.println("Updating tab title to: " + newName);
+                                jTabbedPane.setTitleAt(tabIndex, newName);
+                            } else {
+                                System.out.println("A tab with the name '" + newName + "' already exists.");
+                            }
+                        } else {
+                            System.out.println("No tabs available to select or update. Consider adding a tab first.");
+                            jTabbedPane.addTab("Default Tab", new JPanel());
+                            jTabbedPane.setSelectedIndex(0);
+                        }
+
+                    }
                 }
             });
         }

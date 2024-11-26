@@ -166,7 +166,7 @@ public class MainFrame extends JFrame implements ISubscriber{
     public void update(Object o) {
         if (o instanceof Project) {
             Project project = (Project) o;
-            List<DraftNode> projectChildren = new ArrayList<>(project.getChildrenList()); // Copy to avoid ConcurrentModificationException
+            List<DraftNode> projectChildren = new ArrayList<>(project.getChildrenList());
 
             for (DraftNode draftNode : projectChildren) {
                 if (draftNode instanceof Room) {
@@ -184,7 +184,7 @@ public class MainFrame extends JFrame implements ISubscriber{
         }
         else if (o instanceof Building) {
             Building building = (Building) o;
-            List<DraftNode> buildingChildren = new ArrayList<>(building.getChildrenList()); // Copy to avoid ConcurrentModificationException
+            List<DraftNode> buildingChildren = new ArrayList<>(building.getChildrenList());
 
             for (DraftNode draftNode : buildingChildren) {
                 if (draftNode instanceof Room) {

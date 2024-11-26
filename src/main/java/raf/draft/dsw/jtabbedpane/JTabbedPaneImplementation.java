@@ -49,6 +49,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                             jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
 
                             jTabbedPane.setIconAt(indexOfTab, roomIcon);
+                            jTabbedPane.setSelectedIndex(indexOfTab);
                             indexOfTab++;
                         } else if (draftNode instanceof Building) {
                             for (DraftNode draftNodeBuilding : ((Building) draftNode).getChildrenList()) {
@@ -58,6 +59,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                                     jTabbedPane.addTab(draftNodeBuilding.getNodeName(), labelRoom);
                                     jTabbedPane.setBackgroundAt(indexOfTab, ((Building) draftNode).getColor());
                                     jTabbedPane.setIconAt(indexOfTab, roomIcon);
+                                    jTabbedPane.setSelectedIndex(indexOfTab);
                                     indexOfTab++;
                                 }
                             }
@@ -119,4 +121,14 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
             indexOfTab++;
         }
     }
+
+    public void updateTabLabel(Room room) {
+        for (int i = 0; i < jTabbedPane.getTabCount(); i++) {
+            if (jTabbedPane.getTitleAt(i).equals(room.getNodeName())) {
+                jTabbedPane.setTitleAt(i, room.getNodeName());
+                break;
+            }
+        }
+    }
+
 }
