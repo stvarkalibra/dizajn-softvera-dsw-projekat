@@ -1,5 +1,7 @@
 package raf.draft.dsw.model.nodes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class DraftNode {
@@ -28,9 +30,26 @@ public abstract class DraftNode {
         return nodeName;
     }
 
+    //----------------------
+
+    private final List<Runnable> listeners = new ArrayList<>();
+
+    public void addListener(Runnable listener) {
+        listeners.add(listener);
+    }
+
+    private void notifyListeners() {
+        for (Runnable listener : listeners) {
+            listener.run();
+        }
+    }
+
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
+        notifyListeners();
     }
+
+    //----------------------
 
     public DraftNode getParent() {
         return parent;

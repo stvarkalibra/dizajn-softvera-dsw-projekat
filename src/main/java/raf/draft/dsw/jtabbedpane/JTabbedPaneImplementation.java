@@ -108,27 +108,34 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
 
     @Override
     public void update(Object o) {
-        if(o instanceof Room){
-            Label labelRoom = new Label();
-            roomList.add((Room) o);
-            jTabbedPane.addTab(((Room) o).getNodeName(), labelRoom);
-            if(((Room) o).getParent() instanceof Project){
-                jTabbedPane.setBackgroundAt(indexOfTab, ((Project) ((Room) o).getParent()).getColor());
-            }else if(((Room) o).getParent() instanceof Building){
-                jTabbedPane.setBackgroundAt(indexOfTab, ((Building) ((Room) o).getParent()).getColor());
+        if (o instanceof Room) {
+            Room room = (Room) o;
+
+            room.addListener(() -> SwingUtilities.invokeLater(() -> updateTabLabel(room)));
+
+            if (!roomList.contains(room)) {
+                Label labelRoom = new Label();
+                roomList.add(room);
+                jTabbedPane.addTab(room.getNodeName(), labelRoom);
+
+                if (room.getParent() instanceof Project) {
+                    jTabbedPane.setBackgroundAt(indexOfTab, ((Project) room.getParent()).getColor());
+                } else if (room.getParent() instanceof Building) {
+                    jTabbedPane.setBackgroundAt(indexOfTab, ((Building) room.getParent()).getColor());
+                }
+                jTabbedPane.setIconAt(indexOfTab, roomIcon);
+                indexOfTab++;
             }
-            jTabbedPane.setIconAt(indexOfTab, roomIcon);
-            indexOfTab++;
         }
     }
 
+
     public void updateTabLabel(Room room) {
         for (int i = 0; i < jTabbedPane.getTabCount(); i++) {
-            if (jTabbedPane.getTitleAt(i).equals(room.getNodeName())) {
+            if (roomList.get(i).equals(room)) {
                 jTabbedPane.setTitleAt(i, room.getNodeName());
                 break;
             }
         }
     }
-
 }

@@ -65,13 +65,9 @@ public class ChangeInfoAction extends AbstractRoomAction implements IPublisher{
 
                             int existingTabIndex = jTabbedPane.indexOfTab(newName);
                             if (existingTabIndex == -1) {
-                                System.out.println("Updating tab title to: " + newName);
                                 jTabbedPane.setTitleAt(tabIndex, newName);
-                            } else {
-                                System.out.println("A tab with the name '" + newName + "' already exists.");
                             }
                         } else {
-                            System.out.println("No tabs available to select or update. Consider adding a tab first.");
                             jTabbedPane.addTab("Default Tab", new JPanel());
                             jTabbedPane.setSelectedIndex(0);
                         }
