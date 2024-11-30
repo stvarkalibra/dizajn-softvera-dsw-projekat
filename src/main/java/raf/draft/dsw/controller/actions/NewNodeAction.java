@@ -30,7 +30,10 @@ public class NewNodeAction extends AbstractRoomAction implements IPublisher {
             if(selected.getDraftNode() instanceof DraftNodeComposite){
                 if(((DraftNodeComposite) selected.getDraftNode()).getChildrenList().getLast() instanceof Room){
                     addSubscriber(MainFrame.getInstance().getjTabbedPaneImplementation());
-                    notifySubscriber(((DraftNodeComposite) selected.getDraftNode()).getChildrenList().getLast());
+                    if(MainFrame.getInstance().getjTabbedPaneImplementation().isPrikazi()){
+                        notifySubscriber(((DraftNodeComposite) selected.getDraftNode()).getChildrenList().getLast());
+                    }
+
                 }
             }
         }else{

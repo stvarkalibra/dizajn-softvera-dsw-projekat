@@ -20,6 +20,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
     private List<Room> roomList;
     private final Icon roomIcon = new ImageIcon(new ImageIcon(getClass().getResource("/images/room.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
     private JTree jTree;
+    private boolean prikazi=false;
     private int indexOfTab=0;
     public JTabbedPaneImplementation(JTabbedPane jTabbedPane, JTree jTree,List<Room> roomList){
         this.jTabbedPane=jTabbedPane;
@@ -39,7 +40,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                 DraftTreeItem selectedNode = (DraftTreeItem) path.getLastPathComponent();
 
                 if (e.getClickCount() == 2 && selectedNode.getDraftNode() instanceof Project) {
-
+                    prikazi=true;
                     Project project = (Project) selectedNode.getDraftNode();
                     for (DraftNode draftNode : project.getChildrenList()) {
                         if (draftNode instanceof Room && !roomList.contains((Room) draftNode)) {
@@ -96,6 +97,14 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
 
     public void setjTree(JTree jTree) {
         this.jTree = jTree;
+    }
+
+    public boolean isPrikazi() {
+        return prikazi;
+    }
+
+    public void setPrikazi(boolean prikazi) {
+        this.prikazi = prikazi;
     }
 
     public int getIndexOfTab() {

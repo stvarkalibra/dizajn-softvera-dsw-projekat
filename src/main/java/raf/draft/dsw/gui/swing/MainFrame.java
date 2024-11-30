@@ -193,10 +193,10 @@ public class MainFrame extends JFrame implements ISubscriber{
             }
             building.getChildrenList().clear();
         }
+        // Removing a single Room tab
         else if (o instanceof Room) {
             removeTabAndRoom((Room) o);
         }
-
         jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneView.getjTabbedPane().getTabCount());
     }
 
@@ -205,12 +205,9 @@ public class MainFrame extends JFrame implements ISubscriber{
         if (tabIndex != -1) {
             jTabbedPaneView.getjTabbedPane().remove(tabIndex);
             jTabbedPaneImplementation.getRoomList().remove(room);
-
-            if (jTabbedPaneView.getjTabbedPane().getTabCount() > 0) {
-                jTabbedPaneView.getjTabbedPane().setSelectedIndex(0);
-            } else {
-                jTabbedPaneView.getjTabbedPane().setSelectedIndex(-1);
-            }
+        }
+        if(jTabbedPaneImplementation.getRoomList().size()==0){
+            jTabbedPaneImplementation.setPrikazi(false);
         }
     }
 

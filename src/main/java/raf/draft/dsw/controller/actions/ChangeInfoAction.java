@@ -41,38 +41,14 @@ public class ChangeInfoAction extends AbstractRoomAction implements IPublisher{
             });
         }
         else if (selected.getDraftNode() instanceof Building || selected.getDraftNode() instanceof Room){
-            ChangeInfoFrame changeInfoFrame = new ChangeInfoFrame( selected.getDraftNode());
+            ChangeInfoFrame changeInfoFrame = new ChangeInfoFrame(selected.getDraftNode());
             addSubscriber(changeInfoFrame);
-            changeInfoFrame.addElements( selected.getDraftNode());
+            changeInfoFrame.addElements(selected.getDraftNode());
             changeInfoFrame.setVisible(true);
             changeInfoFrame.getChangeButton().addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     notifySubscriber(selected.getDraftNode());
-
-                    if (selected.getDraftNode() instanceof Room){
-                        notifySubscriber(selected.getDraftNode());
-
-                        String newName = changeInfoFrame.getNewName();
-                        JTabbedPane jTabbedPane = MainFrame.getInstance().getjTabbedPane();
-                        int tabIndex = jTabbedPane.getSelectedIndex();
-
-                        if (jTabbedPane.getTabCount() > 0) {
-                            if (tabIndex == -1) {
-                                tabIndex = 0;
-                                jTabbedPane.setSelectedIndex(tabIndex);
-                            }
-
-                            int existingTabIndex = jTabbedPane.indexOfTab(newName);
-                            if (existingTabIndex == -1) {
-                                jTabbedPane.setTitleAt(tabIndex, newName);
-                            }
-                        } else {
-                            jTabbedPane.addTab("Default Tab", new JPanel());
-                            jTabbedPane.setSelectedIndex(0);
-                        }
-
-                    }
                 }
             });
         }

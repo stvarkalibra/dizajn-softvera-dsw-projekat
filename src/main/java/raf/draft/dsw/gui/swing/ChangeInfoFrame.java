@@ -1,9 +1,11 @@
 package raf.draft.dsw.gui.swing;
 
+import com.sun.tools.javac.Main;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,10 +82,24 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber {
 
     @Override
     public void update(Object o) {
-        if(o instanceof Project){
-            MainFrame.getInstance().getLabelAutor().setText(((Project) o).getProjectAutor());
-        }
+        if(o instanceof Room) {
+            JTabbedPane jTabbedPane = MainFrame.getInstance().getjTabbedPane();
+            int tabIndex = jTabbedPane.getSelectedIndex();
 
+            if (jTabbedPane.getTabCount() > 0) {
+                if (tabIndex == -1) {
+                    tabIndex = 0;
+                    jTabbedPane.setSelectedIndex(tabIndex);
+                }
+
+                int existingTabIndex = jTabbedPane.indexOfTab(newName);
+                if (existingTabIndex == -1) {
+                    jTabbedPane.setTitleAt(tabIndex, newName);
+                }
+            }
+        }else if(o instanceof Building){
+
+        }
     }
 
 }
