@@ -1,13 +1,18 @@
 package raf.draft.dsw.model.structures;
 
+import raf.draft.dsw.controller.observer.IPublisher;
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class Building extends DraftNodeComposite {
+public class Building extends DraftNodeComposite implements IPublisher {
     Random rand=new Random();
+    private List<ISubscriber> subscriberList=new ArrayList<>();
     private float r=rand.nextFloat();
     private float g=rand.nextFloat();
     private float b=rand.nextFloat();
@@ -35,12 +40,32 @@ public class Building extends DraftNodeComposite {
             }
         }
     }
-
     public Color getColor() {
         return color;
     }
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public void addSubscriber(ISubscriber s) {
+        if(!subscriberList.contains(s)){
+            subscriberList.add(s);
+        }
+    }
+
+    @Override
+    public void removeSubscriber(ISubscriber s) {
+        if(subscriberList.contains(s)){
+            subscriberList.remove(s);
+        }
+    }
+    @Override
+    public void notifySubscriber(Object o) {
+        System.out.println("Zuriosm");
+        for(ISubscriber s:subscriberList){
+            System.out.println(subscriberList.size());
+            s.update(o);
+        }
     }
 }

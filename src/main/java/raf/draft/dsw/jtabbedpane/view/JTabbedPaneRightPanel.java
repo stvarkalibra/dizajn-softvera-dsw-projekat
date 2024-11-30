@@ -3,6 +3,7 @@ package raf.draft.dsw.jtabbedpane.view;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.jtabbedpane.model.JTabbedPanePublisher;
+import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 
@@ -18,7 +19,7 @@ public class JTabbedPaneRightPanel implements ISubscriber {
     private JTabbedPanePublisher jTabbedPanePublisher;
 
 
-    public JTabbedPaneRightPanel(Label labelBuilding, Label labelProject, Label labelAutor,JTabbedPanePublisher jTabbedPanePublisher) {
+    public JTabbedPaneRightPanel(Label labelProject, Label labelBuilding, Label labelAutor,JTabbedPanePublisher jTabbedPanePublisher) {
         this.labelBuilding = labelBuilding;
         this.labelProject = labelProject;
         this.labelAutor = labelAutor;
@@ -51,24 +52,24 @@ public class JTabbedPaneRightPanel implements ISubscriber {
         return labelBuilding;
     }
 
-    public void setLabelBuilding(Label labelBuilding) {
-        this.labelBuilding = labelBuilding;
+    public void setLabelBuilding(String buildingName) {
+        labelBuilding.setText(buildingName);
     }
 
     public Label getLabelProject() {
         return labelProject;
     }
 
-    public void setLabelProject(Label labelProject) {
-        this.labelProject = labelProject;
+    public void setLabelProject(String projectName) {
+        labelProject.setText(projectName);
     }
 
     public Label getLabelAutor() {
         return labelAutor;
     }
 
-    public void setLabelAutor(Label labelAutor) {
-        this.labelAutor = labelAutor;
+    public void setLabelAutor(String autorName) {
+        labelAutor.setText(autorName);
     }
 
     @Override
@@ -85,6 +86,13 @@ public class JTabbedPaneRightPanel implements ISubscriber {
                 labelBuilding.setText(((Room) o).getParent().getNodeName());
                 labelProject.setText(((Room) o).getParent().getParent().getNodeName());
             }
+        }
+        if(o instanceof Project){
+            labelProject.setText(((Project) o).getProjectName());
+            labelAutor.setText(((Project) o).getProjectAutor());
+        }
+        if(o instanceof Building){
+            labelBuilding.setText(((Building) o).getNodeName());
         }
     }
 }

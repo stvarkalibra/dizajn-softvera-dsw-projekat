@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainFrame extends JFrame implements ISubscriber{
-
+    private JTabbedPaneRightPanel jTabbedPaneRightPanel;
     private ActionManager actionManager = new ActionManager();
     private static MainFrame mainFrameInstance;
     private DraftTree draftTree;
@@ -86,7 +86,7 @@ public class MainFrame extends JFrame implements ISubscriber{
         jTabbedPanePublisher=new JTabbedPanePublisher(jTabbedPaneView.getjTabbedPane(),jTabbedPaneImplementation.getRoomList());
 
         //RIGHTSIDE
-        JTabbedPaneRightPanel jTabbedPaneRightPanel = new JTabbedPaneRightPanel(labelProject, labelBuilding, labelAutor,jTabbedPanePublisher);
+        jTabbedPaneRightPanel = new JTabbedPaneRightPanel(labelProject, labelBuilding, labelAutor,jTabbedPanePublisher);
         jTabbedPanePublisher.addSubscriber(jTabbedPaneRightPanel);
         JPanel rightPanel = jTabbedPaneRightPanel.getRightPanel();
         add(rightPanel, BorderLayout.EAST);
@@ -141,8 +141,69 @@ public class MainFrame extends JFrame implements ISubscriber{
         return jTabbedPanePublisher;
     }
 
+
     public void setjTabbedPanePublisher(JTabbedPanePublisher jTabbedPanePublisher) {
         this.jTabbedPanePublisher = jTabbedPanePublisher;
+    }
+
+    public JTabbedPaneRightPanel getjTabbedPaneRightPanel() {
+        return jTabbedPaneRightPanel;
+    }
+
+    public void setjTabbedPaneRightPanel(JTabbedPaneRightPanel jTabbedPaneRightPanel) {
+        this.jTabbedPaneRightPanel = jTabbedPaneRightPanel;
+    }
+
+    public ActionManager getActionManager() {
+        return actionManager;
+    }
+
+    public void setActionManager(ActionManager actionManager) {
+        this.actionManager = actionManager;
+    }
+
+    public static MainFrame getMainFrameInstance() {
+        return mainFrameInstance;
+    }
+
+    public static void setMainFrameInstance(MainFrame mainFrameInstance) {
+        MainFrame.mainFrameInstance = mainFrameInstance;
+    }
+
+    public void setDraftTree(DraftTree draftTree) {
+        this.draftTree = draftTree;
+    }
+
+    public JTree getjTree() {
+        return jTree;
+    }
+
+    public void setjTree(JTree jTree) {
+        this.jTree = jTree;
+    }
+
+    public Label getLabelBuilding() {
+        return labelBuilding;
+    }
+
+    public void setLabelBuilding(Label labelBuilding) {
+        this.labelBuilding = labelBuilding;
+    }
+
+    public boolean isFlagIsSelected() {
+        return flagIsSelected;
+    }
+
+    public void setFlagIsSelected(boolean flagIsSelected) {
+        this.flagIsSelected = flagIsSelected;
+    }
+
+    public List<ISubscriber> getListSubscriber() {
+        return listSubscriber;
+    }
+
+    public void setListSubscriber(List<ISubscriber> listSubscriber) {
+        this.listSubscriber = listSubscriber;
     }
 
     public JTabbedPaneView getjTabbedPaneView() {

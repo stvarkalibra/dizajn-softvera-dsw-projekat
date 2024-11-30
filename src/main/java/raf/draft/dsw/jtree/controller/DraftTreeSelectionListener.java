@@ -1,7 +1,9 @@
 package raf.draft.dsw.jtree.controller;
 
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -16,4 +18,6 @@ public class DraftTreeSelectionListener implements TreeSelectionListener {
         System.out.println("Selektovan cvor:"+ draftTreeItem.getDraftNode().getNodeName());
         System.out.println("getPath: "+e.getPath());
     }
+
+
 }

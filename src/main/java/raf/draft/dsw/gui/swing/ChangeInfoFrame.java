@@ -10,7 +10,7 @@ import raf.draft.dsw.model.structures.Room;
 import javax.swing.*;
 import java.awt.*;
 
-public class ChangeInfoFrame extends JFrame implements ISubscriber {
+public class ChangeInfoFrame extends JFrame{
     private Button changeButton = new Button("Change Info");
     public ChangeInfoFrame(DraftNode node) {
         initialize();
@@ -38,8 +38,7 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber {
         JLabel nameLabel = new JLabel("Name:");
 
         changeButton.addActionListener(e -> {
-            newName = nameField.getText();
-            node.setNodeName(newName);
+            newName=nameField.getText();
             dispose();
         });
 
@@ -80,26 +79,15 @@ public class ChangeInfoFrame extends JFrame implements ISubscriber {
         return newName;
     }
 
-    @Override
-    public void update(Object o) {
-        if(o instanceof Room) {
-            JTabbedPane jTabbedPane = MainFrame.getInstance().getjTabbedPane();
-            int tabIndex = jTabbedPane.getSelectedIndex();
-
-            if (jTabbedPane.getTabCount() > 0) {
-                if (tabIndex == -1) {
-                    tabIndex = 0;
-                    jTabbedPane.setSelectedIndex(tabIndex);
-                }
-
-                int existingTabIndex = jTabbedPane.indexOfTab(newName);
-                if (existingTabIndex == -1) {
-                    jTabbedPane.setTitleAt(tabIndex, newName);
-                }
-            }
-        }else if(o instanceof Building){
-
-        }
+    public void setNewName(String newName) {
+        this.newName = newName;
     }
 
+    public JTextField getNameField() {
+        return nameField;
+    }
+
+    public void setNameField(JTextField nameField) {
+        this.nameField = nameField;
+    }
 }

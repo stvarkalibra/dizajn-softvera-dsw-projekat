@@ -134,6 +134,9 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                 }
                 jTabbedPane.setIconAt(indexOfTab, roomIcon);
                 indexOfTab++;
+            }else{
+                int index=roomList.indexOf(o);
+                jTabbedPane.setTitleAt(index,((Room) o).getNodeName());
             }
         }
     }
