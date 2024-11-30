@@ -1,6 +1,7 @@
 package raf.draft.dsw.jtabbedpane;
 
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.jtree.DraftTree;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.nodes.DraftNode;
@@ -46,7 +47,9 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                         if (draftNode instanceof Room && !roomList.contains((Room) draftNode)) {
                             Label labelRoom = new Label();
                             roomList.add((Room) draftNode);
-                            jTabbedPane.addTab(draftNode.getNodeName(), labelRoom);
+                            JPanel novi = new JPanel();
+                            RoomView roomView = new RoomView(novi);
+                            jTabbedPane.addTab(draftNode.getNodeName(), roomView.getjPanelRoom());
                             jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
 
                             jTabbedPane.setIconAt(indexOfTab, roomIcon);
@@ -122,10 +125,13 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
 
             room.addListener(() -> SwingUtilities.invokeLater(() -> updateTabLabel(room)));
 
+            JPanel novi = new JPanel();
+            RoomView roomView = new RoomView(novi);
+
             if (!roomList.contains(room)) {
                 Label labelRoom = new Label();
                 roomList.add(room);
-                jTabbedPane.addTab(room.getNodeName(), labelRoom);
+                jTabbedPane.addTab(room.getNodeName(), roomView.getjPanelRoom());
 
                 if (room.getParent() instanceof Project) {
                     jTabbedPane.setBackgroundAt(indexOfTab, ((Project) room.getParent()).getColor());

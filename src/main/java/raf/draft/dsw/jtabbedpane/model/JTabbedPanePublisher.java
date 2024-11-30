@@ -25,7 +25,6 @@ public class JTabbedPanePublisher implements IPublisher {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int index = jTabbedPane.getSelectedIndex();
-
                 if (index >= 0 && index < roomList.size()) {
                     notifySubscriber(roomList.get(index));
                 }
