@@ -5,31 +5,36 @@ import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MessageGenerator implements IPublisher {
-    private List<ISubscriber> listSubscriber=new ArrayList<>();
+    private List<ISubscriber> subscriberList =new ArrayList<>();
+
+    public MessageGenerator() {
+        ConsoleLogger consoleLogger=new ConsoleLogger();
+        FileLogger fileLogger=new FileLogger("files/log.txt");
+        addSubscriber(consoleLogger);
+        addSubscriber(fileLogger);
+    }
 
     @Override
     public void addSubscriber(ISubscriber s) {
-        if(!listSubscriber.contains(s)){
-            listSubscriber.add(s);
+        if(!subscriberList.contains(s)){
+            subscriberList.add(s);
         }
     }
 
     @Override
     public void removeSubscriber(ISubscriber s) {
-        if(listSubscriber.contains(s)){
-            listSubscriber.remove(s);
+        if(subscriberList.contains(s)){
+            subscriberList.remove(s);
         }
     }
 
     @Override
     public void notifySubscriber(Object o) {
-        for(ISubscriber subscriber: listSubscriber){
+        for(ISubscriber subscriber: subscriberList){
             subscriber.update(o);
         }
 

@@ -6,13 +6,15 @@ import raf.draft.dsw.model.structures.Project;
 import javax.swing.*;
 import java.awt.*;
 
-public class ChangeInfoFrameProject extends JFrame implements ISubscriber{
+public class ChangeInfoFrameProject extends JFrame{
     private Button changeButton = new Button("Change Info");
+    private String autorName;
+    private String projectName;
+    private String pathToFolder;
     public ChangeInfoFrameProject(Project project) {
         initialize();
         addElements(project);
     }
-
     public void initialize() {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
@@ -35,9 +37,9 @@ public class ChangeInfoFrameProject extends JFrame implements ISubscriber{
         JLabel pathLabel = new JLabel("Path:");
 
         changeButton.addActionListener(e -> {
-            project.setProjectAutor(authorField.getText());
-            project.setNodeName(nameField.getText());
-            project.setPathToFolder(pathField.getText());
+            autorName=authorField.getText();
+            projectName=nameField.getText();
+            pathToFolder=pathField.getText();
             dispose();
         });
 
@@ -80,19 +82,34 @@ public class ChangeInfoFrameProject extends JFrame implements ISubscriber{
         setContentPane(panel);
     }
 
+    public String getAutorName() {
+        return autorName;
+    }
+
+    public void setAutorName(String autorName) {
+        this.autorName = autorName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getPathToFolder() {
+        return pathToFolder;
+    }
+
+    public void setPathToFolder(String pathToFolder) {
+        this.pathToFolder = pathToFolder;
+    }
+
     public Button getChangeButton() {
         return changeButton;
     }
-
     public void setChangeButton(Button changeButton) {
         this.changeButton = changeButton;
-    }
-
-    @Override
-    public void update(Object o) {
-        if(o instanceof Project){
-            MainFrame.getInstance().getLabelAutor().setText(((Project) o).getProjectAutor());
-        }
-
     }
 }

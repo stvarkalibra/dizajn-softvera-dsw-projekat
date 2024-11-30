@@ -23,7 +23,7 @@ import javax.swing.tree.DefaultTreeModel;
 import java.io.IOException;
 import java.util.Random;
 
-public class DraftTreeImplementation implements DraftTree, ISubscriber {
+public class DraftTreeImplementation implements DraftTree,ISubscriber{
     private DraftTreeView treeView;
     private DefaultTreeModel treeModel;
 
@@ -149,6 +149,9 @@ public class DraftTreeImplementation implements DraftTree, ISubscriber {
             JOptionPane.showMessageDialog(null,o,((Message) o).getType().toString(),JOptionPane.INFORMATION_MESSAGE);
         }if(o instanceof Message && ((Message) o).getType().equals(MessageType.WARNING)){
             JOptionPane.showMessageDialog(null,o,((Message) o).getType().toString(),JOptionPane.WARNING_MESSAGE);
+        }
+        if(o instanceof DraftNodeComposite){
+            treeView.update(o);
         }
 
     }

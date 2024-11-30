@@ -1,12 +1,17 @@
 package raf.draft.dsw.model.structures;
 
+import raf.draft.dsw.controller.observer.IPublisher;
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class Project extends DraftNodeComposite {
+public class Project extends DraftNodeComposite implements IPublisher {
+    private List<ISubscriber> subscriberList=new ArrayList<>();
     private String projectName;
     private String projectAutor;
     private String pathToFolder;
@@ -60,6 +65,7 @@ public class Project extends DraftNodeComposite {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+        notifySubscriber(this);
     }
 
     public String getProjectAutor() {
@@ -68,6 +74,7 @@ public class Project extends DraftNodeComposite {
 
     public void setProjectAutor(String projectAutor) {
         this.projectAutor = projectAutor;
+        notifySubscriber(this);
     }
 
     public String getPathToFolder() {
@@ -76,6 +83,7 @@ public class Project extends DraftNodeComposite {
 
     public void setPathToFolder(String pathToFolder) {
         this.pathToFolder = pathToFolder;
+        notifySubscriber(this);
     }
 
     public Color getColor() {
@@ -86,4 +94,24 @@ public class Project extends DraftNodeComposite {
         this.color = color;
     }
 
+    @Override
+    public void addSubscriber(ISubscriber s) {
+        if(!subscriberList.contains(s)){
+            subscriberList.add(s);
+        }
+    }
+
+    @Override
+    public void removeSubscriber(ISubscriber s) {
+        if(subscriberList.contains(s)){
+            subscriberList.remove(s);
+        }
+    }
+
+    @Override
+    public void notifySubscriber(Object o) {
+        for(ISubscriber s:subscriberList){
+            s.update(o);
+        }
+    }
 }
