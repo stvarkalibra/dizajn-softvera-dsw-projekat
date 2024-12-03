@@ -2,7 +2,6 @@ package raf.draft.dsw.jtabbedpane;
 
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
-import raf.draft.dsw.jtree.DraftTree;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.structures.Building;
@@ -13,7 +12,6 @@ import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 public class JTabbedPaneImplementation extends JTabbedPane implements ISubscriber {
@@ -22,6 +20,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
     private final Icon roomIcon = new ImageIcon(new ImageIcon(getClass().getResource("/images/room.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
     private JTree jTree;
     private boolean prikazi=false;
+    private RoomView roomView;
     private int indexOfTab=0;
     public JTabbedPaneImplementation(JTabbedPane jTabbedPane, JTree jTree,List<Room> roomList){
         this.jTabbedPane=jTabbedPane;
@@ -45,11 +44,19 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                     Project project = (Project) selectedNode.getDraftNode();
                     for (DraftNode draftNode : project.getChildrenList()) {
                         if (draftNode instanceof Room && !roomList.contains((Room) draftNode)) {
-                            Label labelRoom = new Label();
-                            roomList.add((Room) draftNode);
-                            JPanel novi = new JPanel();
-                            RoomView roomView = new RoomView(novi);
-                            jTabbedPane.addTab(draftNode.getNodeName(), roomView.getjPanelRoom());
+                            Room room=(Room) draftNode;
+                            room.addSubscriber(roomView);
+                            roomList.add(room);
+
+                            JPanel jPanelFullSize=new JPanel();
+                            jPanelFullSize.setLayout(new BoxLayout(jPanelFullSize,BoxLayout.Y_AXIS));
+                            roomView = new RoomView(room);
+
+                            jPanelFullSize.add(Box.createVerticalGlue());
+                            jPanelFullSize.add(Box.createHorizontalGlue());
+                            jPanelFullSize.add(roomView.getjPanelRoom());
+                            jTabbedPane.addTab(room.getNodeName(), jPanelFullSize);
+                            jPanelFullSize.add(Box.createVerticalGlue());
                             jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
 
                             jTabbedPane.setIconAt(indexOfTab, roomIcon);
@@ -58,9 +65,21 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                         } else if (draftNode instanceof Building) {
                             for (DraftNode draftNodeBuilding : ((Building) draftNode).getChildrenList()) {
                                 if (draftNodeBuilding instanceof Room && !roomList.contains((Room) draftNodeBuilding)) {
-                                    Label labelRoom = new Label();
-                                    roomList.add((Room) draftNodeBuilding);
-                                    jTabbedPane.addTab(draftNodeBuilding.getNodeName(), labelRoom);
+                                    Room room=(Room) draftNodeBuilding;
+                                    room.addSubscriber(roomView);
+                                    roomList.add(room);
+
+                                    JPanel jPanelFullSize=new JPanel();
+                                    jPanelFullSize.setLayout(new BoxLayout(jPanelFullSize,BoxLayout.Y_AXIS));
+                                    roomView = new RoomView(room);
+
+                                    jPanelFullSize.add(Box.createVerticalGlue());
+                                    jPanelFullSize.add(Box.createHorizontalGlue());
+                                    jPanelFullSize.add(roomView.getjPanelRoom());
+                                    jTabbedPane.addTab(room.getNodeName(), jPanelFullSize);
+                                    jPanelFullSize.add(Box.createVerticalGlue());
+                                    jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
+
                                     jTabbedPane.setBackgroundAt(indexOfTab, ((Building) draftNode).getColor());
                                     jTabbedPane.setIconAt(indexOfTab, roomIcon);
                                     jTabbedPane.setSelectedIndex(indexOfTab);
@@ -118,20 +137,33 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
         this.indexOfTab = indexOfTab;
     }
 
+    public RoomView getRoomView() {
+        return roomView;
+    }
+
+    public void setRoomView(RoomView roomView) {
+        this.roomView = roomView;
+    }
+
     @Override
     public void update(Object o) {
         if (o instanceof Room) {
-            Room room = (Room) o;
-
+            Room room=new Room(((Room) o).getNodeName(),((Room) o).getParent());
+            room.addSubscriber(roomView);
             room.addListener(() -> SwingUtilities.invokeLater(() -> updateTabLabel(room)));
+            JPanel jPanelFullSize=new JPanel();
+            jPanelFullSize.setLayout(new BoxLayout(jPanelFullSize,1));
+            roomView = new RoomView(room);
 
-            JPanel novi = new JPanel();
-            RoomView roomView = new RoomView(novi);
+            jPanelFullSize.add(Box.createVerticalGlue());
+            jPanelFullSize.add(Box.createHorizontalGlue());
+            jPanelFullSize.add(roomView.getjPanelRoom());
+            jPanelFullSize.add(Box.createVerticalGlue());
+
 
             if (!roomList.contains(room)) {
-                Label labelRoom = new Label();
                 roomList.add(room);
-                jTabbedPane.addTab(room.getNodeName(), roomView.getjPanelRoom());
+                jTabbedPane.addTab(room.getNodeName(), jPanelFullSize);
 
                 if (room.getParent() instanceof Project) {
                     jTabbedPane.setBackgroundAt(indexOfTab, ((Project) room.getParent()).getColor());
@@ -141,8 +173,8 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                 jTabbedPane.setIconAt(indexOfTab, roomIcon);
                 indexOfTab++;
             }else{
-                int index=roomList.indexOf(o);
-                jTabbedPane.setTitleAt(index,((Room) o).getNodeName());
+                int index=roomList.indexOf(room);
+                jTabbedPane.setTitleAt(index,room.getNodeName());
             }
         }
     }
