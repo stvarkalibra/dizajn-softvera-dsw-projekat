@@ -2,6 +2,8 @@ package raf.draft.dsw.gui.swing;
 
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ActionManager;
+import raf.draft.dsw.gui.swing.state.State;
+import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.jtabbedpane.JTabbedPaneImplementation;
 import raf.draft.dsw.jtabbedpane.view.JTabbedPaneRightPanel;
 import raf.draft.dsw.jtabbedpane.view.JTabbedPaneView;
@@ -22,6 +24,7 @@ import java.util.List;
 public class MainFrame extends JFrame implements ISubscriber{
     private JTabbedPaneRightPanel jTabbedPaneRightPanel;
     private ActionManager actionManager = new ActionManager();
+    private StateManager stateManager=new StateManager();
     private static MainFrame mainFrameInstance;
     private DraftTree draftTree;
     private JTree jTree;
@@ -66,6 +69,12 @@ public class MainFrame extends JFrame implements ISubscriber{
         MyToolBar toolBar = new MyToolBar(actionManager);
         add(toolBar, BorderLayout.NORTH);
 
+        StateToolBar stateToolBar=new StateToolBar(stateManager);
+
+        JPanel stateJPanel=new JPanel(new BorderLayout());
+        add(stateJPanel,BorderLayout.CENTER);
+        stateJPanel.add(stateToolBar, BorderLayout.NORTH);
+
         //JTREE
         draftTree = new DraftTreeImplementation();
         ProjectExplorer projectExplorer = new ProjectExplorer("ProjectExplorer");
@@ -80,7 +89,7 @@ public class MainFrame extends JFrame implements ISubscriber{
 
         //JTABBEDPANE
         jTabbedPaneView=new JTabbedPaneView();
-        add(jTabbedPaneView.getjTabbedPane(),BorderLayout.CENTER);
+        stateJPanel.add(jTabbedPaneView.getjTabbedPane(), BorderLayout.CENTER);
         jTabbedPaneImplementation=new JTabbedPaneImplementation(jTabbedPaneView.getjTabbedPane(),jTree,roomList);
         jTabbedPaneImplementation.generate();
         jTabbedPanePublisher=new JTabbedPanePublisher(jTabbedPaneView.getjTabbedPane(),jTabbedPaneImplementation.getRoomList());
@@ -93,6 +102,15 @@ public class MainFrame extends JFrame implements ISubscriber{
     }
     /*--------------------------------------------------------------------------------*/
     //GETTERS && SETTERS
+
+    public StateManager getStateManager() {
+        return stateManager;
+    }
+
+    public void setStateManager(StateManager stateManager) {
+        this.stateManager = stateManager;
+    }
+
     public DraftTree getDraftTree() {
         return draftTree;
     }

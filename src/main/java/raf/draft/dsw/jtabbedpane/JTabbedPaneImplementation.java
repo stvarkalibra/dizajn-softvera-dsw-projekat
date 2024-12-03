@@ -49,7 +49,6 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                             roomList.add(room);
 
                             JPanel jPanelFullSize=new JPanel();
-                            jPanelFullSize.setLayout(new BoxLayout(jPanelFullSize,BoxLayout.Y_AXIS));
                             roomView = new RoomView(room);
 
                             jPanelFullSize.add(Box.createVerticalGlue());
@@ -57,6 +56,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                             jPanelFullSize.add(roomView.getjPanelRoom());
                             jTabbedPane.addTab(room.getNodeName(), jPanelFullSize);
                             jPanelFullSize.add(Box.createVerticalGlue());
+                            jPanelFullSize.add(Box.createHorizontalGlue());
                             jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
 
                             jTabbedPane.setIconAt(indexOfTab, roomIcon);
@@ -70,7 +70,6 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                                     roomList.add(room);
 
                                     JPanel jPanelFullSize=new JPanel();
-                                    jPanelFullSize.setLayout(new BoxLayout(jPanelFullSize,BoxLayout.Y_AXIS));
                                     roomView = new RoomView(room);
 
                                     jPanelFullSize.add(Box.createVerticalGlue());
@@ -152,7 +151,6 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
             room.addSubscriber(roomView);
             room.addListener(() -> SwingUtilities.invokeLater(() -> updateTabLabel(room)));
             JPanel jPanelFullSize=new JPanel();
-            jPanelFullSize.setLayout(new BoxLayout(jPanelFullSize,1));
             roomView = new RoomView(room);
 
             jPanelFullSize.add(Box.createVerticalGlue());
