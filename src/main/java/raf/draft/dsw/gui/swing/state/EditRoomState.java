@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 
 import static javax.swing.Action.SMALL_ICON;
 
-public class EditRoomState extends AbstractRoomAction implements State{
+public class EditRoomState implements State{
 
     private RoomView roomView;
 
@@ -20,7 +20,7 @@ public class EditRoomState extends AbstractRoomAction implements State{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(MainFrame.getInstance().getStateManager().getCurrentState() instanceof EditRoomState){
-
+                    System.out.println("EditroomState");
                 }
             }
         });

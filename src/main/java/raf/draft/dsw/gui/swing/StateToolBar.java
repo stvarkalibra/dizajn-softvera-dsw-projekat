@@ -11,7 +11,7 @@ public class StateToolBar extends JToolBar {
     public StateToolBar(StateManager stateManager){
         super(HORIZONTAL);
         setFloatable(false);
-        EditRoomState editRoomState=new EditRoomState();
-        add(stateManager.getEditRoomState());
+        EditStateAction editStateAction=new EditStateAction();
+        add(editStateAction);
     }
 }
