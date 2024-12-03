@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeInfoAction extends AbstractRoomAction{
-    private List<ISubscriber> subscriberList=new ArrayList<>();
     public ChangeInfoAction() {
         putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
         putValue(NAME, "ChangeProjectInfo");

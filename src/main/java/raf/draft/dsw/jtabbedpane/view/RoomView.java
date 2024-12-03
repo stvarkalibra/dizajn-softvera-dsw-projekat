@@ -39,12 +39,6 @@ public class RoomView extends JPanel implements ISubscriber {
         if(room.getParent() instanceof Project){
             jPanelRoom.setBackground(((Project) room.getParent()).getColor());
         }
-        jPanelRoom.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                setDimensions();
-            }
-        });
     }
     public void setDimensions(){
                 JTextField widthField = new JTextField(10);
