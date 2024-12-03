@@ -2,28 +2,37 @@ package raf.draft.dsw.model.structures;
 
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.model.elements.RoomElement;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Room extends DraftNodeComposite implements IPublisher {
-    int size;
+    int width;
+    int height;
     private List<ISubscriber> subscriberList=new ArrayList<>();
+    private List<RoomElement> roomElements=new ArrayList<>();
     public Room(String nodeName, DraftNode parent) {
         super(nodeName, parent);
-        //size=this.size;
-
     }
 
-    public int getSize() {
-        return size;
+    public void setWidth(int width) {
+        this.width = width;
+        notifySubscriber(this);
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setHeight(int height) {
+        this.height = height;
+        notifySubscriber(this);
     }
+
+    public void setSubscriberList(List<ISubscriber> subscriberList) {
+        this.subscriberList = subscriberList;
+    }
+
     @Override
     public void addSubscriber(ISubscriber s) {
         if(!subscriberList.contains(s)){
@@ -41,7 +50,16 @@ public class Room extends DraftNodeComposite implements IPublisher {
     @Override
     public void notifySubscriber(Object o) {
         for(ISubscriber s:subscriberList){
-            s.update(o);
+            if(s!=null) {
+                s.update(o);
+            }
         }
     }
+
+    public double convertCmIntoPixel(int n){
+        final double inch=2.54;
+        int dpi= Toolkit.getDefaultToolkit().getScreenResolution();
+        return n*dpi/inch;
+    }
+
 }
