@@ -32,13 +32,11 @@ public class MainFrame extends JFrame implements ISubscriber{
     private java.util.List<Room> roomList = new ArrayList<Room>();
     private Label labelBuilding = new Label("Building");
     private Label labelProject = new Label("Project");
-
     private Label labelAutor = new Label("Autor");
     private JTabbedPanePublisher jTabbedPanePublisher;
     private JTabbedPaneView jTabbedPaneView;
     private JTabbedPaneImplementation jTabbedPaneImplementation;
     private boolean flagIsSelected=false;
-    ;
     private List<ISubscriber> listSubscriber = new ArrayList<>();
 
     private MainFrame() {

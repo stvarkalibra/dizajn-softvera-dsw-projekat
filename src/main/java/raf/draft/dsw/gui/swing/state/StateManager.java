@@ -1,22 +1,17 @@
 package raf.draft.dsw.gui.swing.state;
 
 public class StateManager {
-    private EditRoomState editRoomState=new EditRoomState();
-    private State currentState;
+    private EditRoomState editRoomState;
+    private State currentState=null;
 
-    public EditRoomState getEditRoomState() {
-        return editRoomState;
+    public StateManager() {
+        this.editRoomState = new EditRoomState();
     }
-
     public void setEditRoomState(){
         this.currentState=editRoomState;
     }
 
     public State getCurrentState() {
         return currentState;
-    }
-
-    public void setCurrentState(State currentState) {
-        this.currentState = currentState;
     }
 }
