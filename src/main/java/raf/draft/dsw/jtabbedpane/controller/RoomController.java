@@ -15,7 +15,7 @@ public class RoomController {
         this.room = room;
     }
 
-    public void Dimensions(){
+    public void dimensions(){
         room.addSubscriber(roomView);
         room.setHeight(roomView.getHeight());
         room.setWidth(roomView.getWidth());
