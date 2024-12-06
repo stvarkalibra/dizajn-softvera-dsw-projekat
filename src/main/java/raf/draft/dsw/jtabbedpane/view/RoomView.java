@@ -5,6 +5,7 @@ import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.jtabbedpane.controller.RoomController;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
@@ -16,12 +17,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class RoomView extends JPanel implements ISubscriber {
     private JPanel jPanelRoom;
     private Room room;
     private RoomController roomController;
     private int width, height;
+    private StateManager stateManager=new StateManager();
     public RoomView(Room room){
         this.room=room;
         room.addSubscriber(this);
@@ -39,74 +42,59 @@ public class RoomView extends JPanel implements ISubscriber {
         if(room.getParent() instanceof Project){
             jPanelRoom.setBackground(((Project) room.getParent()).getColor());
         }
+        setDimensions();
     }
     public void setDimensions(){
-                JTextField widthField = new JTextField(10);
-                JTextField heightField = new JTextField(10);
-
-                JLabel labelWidth = new JLabel("Width:");
-                JLabel labelHeight = new JLabel("Height:");
-
-                JPanel panelDimensions = new JPanel();
-
-                panelDimensions.setLayout(new GridBagLayout());
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.insets = new Insets(5, 5, 5, 5);
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-
-                gbc.gridx = 0;
-                gbc.gridy = 1;
-                panelDimensions.add(labelWidth, gbc);
-
-                gbc.gridx = 1;
-                gbc.gridy = 1;
-                panelDimensions.add(widthField, gbc);
-
-                gbc.gridx = 0;
-                gbc.gridy = 2;
-                panelDimensions.add(labelHeight, gbc);
-
-                gbc.gridx = 1;
-                gbc.gridy = 2;
-                panelDimensions.add(heightField, gbc);
-
-                int option = JOptionPane.showConfirmDialog(null, panelDimensions, "Enter Room Dimensions", JOptionPane.OK_CANCEL_OPTION);
-
-                if (option == JOptionPane.OK_OPTION) {
-                    try {
-                        String widthText = widthField.getText();
-                        String heightText = heightField.getText();
-                        width = Integer.parseInt(widthText);
-                        height = Integer.parseInt(heightText);
-                        roomController.Dimensions(room);
-
-                    } catch (NumberFormatException ex) {
-                        MessageGenerator messageGenerator = new MessageGenerator();
-                        FileLogger fileLogger = new FileLogger("files/log.txt");
-                        ConsoleLogger consoleLogger = new ConsoleLogger();
-
-                        messageGenerator.addSubscriber(consoleLogger);
-                        messageGenerator.addSubscriber(fileLogger);
-
-                        Message message = new Message("Enter valid values", MessageType.ERROR);
-                        messageGenerator.createMessage(message.getContent(), message.getType());
-                        JOptionPane.showMessageDialog(null, message);
+                jPanelRoom.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        myMouseClicked();
+                        roomController.Dimensions();
                     }
-                }
+                });
+
     }
 
+    //STATE PATTERN
+    public void startEdit(){
+        stateManager.setEditRoomState();
+    }
+    public void myMouseClicked(){
+        stateManager.getCurrentState().myMouseClicked(this);
+    }
+    public void myMouseReleased(){
+        stateManager.getCurrentState().myMouseReleased();
+    }
+    public void myMouseScrolled(){
+        stateManager.getCurrentState().myMouseScroll();
+    }
+    public void myMouseDragged(){
+        stateManager.getCurrentState().myMouseDragged();
+    }
     @Override
     public void update(Object o) {
         Toolkit kit = Toolkit.getDefaultToolkit();
+
+        Dimension screensize=kit.getScreenSize();
+
         if(o instanceof Room){
-            if(height>=width){
-                width=kit.getScreenSize().height/height*width;
-                height=kit.getScreenSize().height;
-            }else{
-                height=kit.getScreenSize().width/width*height;
-                width=kit.getScreenSize().width;
+            double heightPixel=((Room) o).convertCmIntoPixel(height);
+            double widthPixel=((Room) o).convertCmIntoPixel(width);
+
+            double aspectRatio=widthPixel/heightPixel;
+            double screenHeight=screensize.getHeight();
+            double screenWidth=screensize.getWidth();
+
+            if(widthPixel>screenWidth || heightPixel>screenHeight){
+                if(aspectRatio>1){
+                    widthPixel=screenWidth*0.9;
+                    heightPixel=widthPixel/aspectRatio;
+                }else{
+                    heightPixel=screenHeight*0.9;
+                    widthPixel=heightPixel*aspectRatio;
+                }
             }
-            jPanelRoom.setPreferredSize(new Dimension(width,height));
+            jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
         }
