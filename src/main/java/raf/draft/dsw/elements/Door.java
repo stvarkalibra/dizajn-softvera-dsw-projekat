@@ -9,5 +9,7 @@ public class Door extends RoomElement{
 
     public Door(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {
         super(nodeName, parent, location, dimensionWidth, dimensionLenght, rotation);
+        number++;
+        setNodeName("Door" + number);
     }
 }

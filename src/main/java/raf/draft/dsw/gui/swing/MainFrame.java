@@ -2,6 +2,7 @@ package raf.draft.dsw.gui.swing;
 
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ActionManager;
+import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.state.State;
 import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.jtabbedpane.JTabbedPaneImplementation;
@@ -10,15 +11,21 @@ import raf.draft.dsw.jtabbedpane.view.JTabbedPaneView;
 import raf.draft.dsw.jtree.DraftTree;
 import raf.draft.dsw.jtree.DraftTreeImplementation;
 import raf.draft.dsw.jtabbedpane.model.JTabbedPanePublisher;
+import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 public class MainFrame extends JFrame implements ISubscriber{
@@ -28,6 +35,7 @@ public class MainFrame extends JFrame implements ISubscriber{
     private static MainFrame mainFrameInstance;
     private DraftTree draftTree;
     private JTree jTree;
+    private ProjectExplorer projectExplorer;
     private JTabbedPane jTabbedPane = new JTabbedPane();
     private java.util.List<Room> roomList = new ArrayList<Room>();
     private Label labelBuilding = new Label("Building");
@@ -75,10 +83,11 @@ public class MainFrame extends JFrame implements ISubscriber{
 
         //JTREE
         draftTree = new DraftTreeImplementation();
-        ProjectExplorer projectExplorer = new ProjectExplorer("ProjectExplorer");
+        projectExplorer = new ProjectExplorer("ProjectExplorer");
         jTree = draftTree.generateTree(projectExplorer);
         JPanel desktop = new JPanel();
         JScrollPane scroll = new JScrollPane(jTree);
+
         scroll.setPreferredSize(new Dimension(200, screenHeight));
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll, desktop);
         add(split, BorderLayout.WEST);
@@ -273,10 +282,15 @@ public class MainFrame extends JFrame implements ISubscriber{
         // Removing a single Room tab
         else if (o instanceof Room) {
             removeTabAndRoom((Room) o);
+        }else if(o instanceof RoomElement){
+            if(((RoomElement) o).getParent() instanceof Room){
+
+            }
+
         }
         jTabbedPaneImplementation.setIndexOfTab(jTabbedPaneView.getjTabbedPane().getTabCount());
-    }
 
+    }
     private void removeTabAndRoom(Room room) {
         int tabIndex = jTabbedPaneImplementation.getRoomList().indexOf(room);
         if (tabIndex != -1) {

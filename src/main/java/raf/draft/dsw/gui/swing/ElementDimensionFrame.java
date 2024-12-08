@@ -56,6 +56,7 @@ public class ElementDimensionFrame extends JFrame {
                 String lenghtText = lenghtField.getText();
                 width=Integer.parseInt(widthText);
                 lenght=Integer.parseInt(lenghtText);
+
                 dispose();
             } catch (NumberFormatException ex) {
                 MessageGenerator messageGenerator = new MessageGenerator();

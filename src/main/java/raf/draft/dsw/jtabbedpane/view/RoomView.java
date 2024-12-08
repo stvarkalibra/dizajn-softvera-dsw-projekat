@@ -5,6 +5,7 @@ import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.jtabbedpane.controller.RoomController;
 import raf.draft.dsw.model.message.Message;
@@ -81,11 +82,10 @@ public class RoomView extends JPanel implements ISubscriber {
         stateManager.setEditRoomState();
     }
     public void startAdd(){
-        System.out.println(stateManager);
         stateManager.setAddState();
     }
     public void myMouseClicked(){
-        stateManager.getCurrentState().myMouseClicked(this);
+        stateManager.getCurrentState().myMouseClicked(this,this.getMouseLocation());
     }
     public void myMouseReleased(){
         stateManager.getCurrentState().myMouseReleased();

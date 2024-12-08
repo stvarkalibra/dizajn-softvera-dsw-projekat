@@ -81,4 +81,11 @@ public class Room extends DraftNodeComposite implements IPublisher {
         this.roomView = roomView;
     }
 
+    public List<RoomElement> getRoomElements() {
+        return roomElements;
+    }
+
+    public void setRoomElements(List<RoomElement> roomElements) {
+        this.roomElements = roomElements;
+    }
 }

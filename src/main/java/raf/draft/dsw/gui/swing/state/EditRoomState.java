@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class EditRoomState implements State{
     @Override
-    public void myMouseClicked(RoomView roomView) {
+    public void myMouseClicked(RoomView roomView, Point location) {
         JTextField widthField = new JTextField(10);
         JTextField heightField = new JTextField(10);
 
