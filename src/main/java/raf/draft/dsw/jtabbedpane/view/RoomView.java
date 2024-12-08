@@ -1,23 +1,19 @@
 package raf.draft.dsw.jtabbedpane.view;
 
-import org.w3c.dom.ls.LSOutput;
-import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
-import raf.draft.dsw.controller.messagegenerator.FileLogger;
-import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.elements.*;
+import raf.draft.dsw.gui.swing.painters.*;
 import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.jtabbedpane.controller.RoomController;
-import raf.draft.dsw.model.message.Message;
-import raf.draft.dsw.model.message.MessageType;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 public class RoomView extends JPanel implements ISubscriber {
     private JPanel jPanelRoom;
@@ -26,6 +22,8 @@ public class RoomView extends JPanel implements ISubscriber {
     private int width, height;
     private Point mouseLocation;
     private StateManager stateManager=new StateManager();
+    private List<MyPainter> painters;
+
     public RoomView(Room room){
         this.room=room;
         room.addSubscriber(this);
@@ -43,6 +41,11 @@ public class RoomView extends JPanel implements ISubscriber {
         if(room.getParent() instanceof Project){
             jPanelRoom.setBackground(((Project) room.getParent()).getColor());
         }
+
+        FrameWork framework = new FrameWork();
+        jPanelRoom.setLayout(new BorderLayout());
+        jPanelRoom.add(framework, BorderLayout.CENTER);
+
         setDimensions();
     }
     public void setDimensions(){
@@ -134,6 +137,60 @@ public class RoomView extends JPanel implements ISubscriber {
     public void setMouseLocation(Point mouseLocation) {
         this.mouseLocation = mouseLocation;
     }
+
+    private class FrameWork extends JPanel{
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d=(Graphics2D)g;
+            //Vrata
+//            Door door = new Door("", null, new Point(300, 50), 5,5, 0);
+//            DoorPainter dp = new DoorPainter(door);
+//            dp.paint(g2d, new Point(300, 50), 30,100);
+
+            //Krevet
+//            Bed bed = new Bed("", null, new Point(300, 50), 5, 5, 0);
+//            BedPainter bp = new BedPainter(bed);
+//            bp.paint(g2d, new Point(300, 50), 200, 100);
+
+            //Sto
+//            Table table = new Table("", null, new Point(300, 50), 5, 5, 0);
+//            TablePainter tp = new TablePainter(table);
+//            tp.paint(g2d, new Point(300, 50), 100, 100);
+
+            //Kada
+//            BathTub bathTub = new BathTub("", null, new Point(300, 50), 5, 5, 0);
+//            BathtubPainter btp = new BathtubPainter(bathTub);
+//            btp.paint(g2d, new Point(300, 50), 100, 50);
+
+            //Ves Masina
+//            WashingMachine washingMachine = new WashingMachine("", null, new Point(300, 50), 100, 100, 0);
+//            WashingMaschinePainter wmp = new WashingMaschinePainter(washingMachine);
+//            wmp.paint(g2d, new Point(300, 50), 100, 100);
+
+            //Bojler
+//            Boiler boiler = new Boiler("", null, new Point(300, 50), 100, 100, 0);
+//            BoilerPainter bp = new BoilerPainter(boiler);
+//            bp.paint(g2d, new Point(300, 50), 100, 100);
+
+            //Toilet
+            ToiletSeat toiletSeat = new ToiletSeat("", null, new Point(300, 50), 100, 100, 0);
+            ToiletPainter tp = new ToiletPainter(toiletSeat);
+            tp.paint(g2d, new Point(300, 50), 100, 100);
+
+            //Sink
+//            Sink sink = new Sink("", null, new Point(300, 50), 100, 100, 0);
+//            SinkPainter sp = new SinkPainter(sink);
+//            sp.paint(g2d, new Point(300, 50), 100, 100);
+
+//            for (MyPainter painter : painters) {
+//                painter.paint((Graphics2D)g);
+//            }
+        }
+
+    }
+
+
 
     public JPanel getjPanelRoom() {
         return jPanelRoom;
