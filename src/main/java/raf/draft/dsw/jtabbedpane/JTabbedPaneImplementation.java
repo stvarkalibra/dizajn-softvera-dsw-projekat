@@ -4,6 +4,7 @@ import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
@@ -45,18 +46,15 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                     for (DraftNode draftNode : project.getChildrenList()) {
                         if (draftNode instanceof Room && !roomList.contains((Room) draftNode)) {
                             Room room=(Room) draftNode;
-                            room.addSubscriber(roomView);
                             roomList.add(room);
 
-                            JPanel jPanelFullSize=new JPanel();
+                            JPanel jPanel=new JPanel();
                             roomView = new RoomView(room);
+                            room.setRoomView(roomView);
 
-                            jPanelFullSize.add(Box.createVerticalGlue());
-                            jPanelFullSize.add(Box.createHorizontalGlue());
-                            jPanelFullSize.add(roomView.getjPanelRoom());
-                            jTabbedPane.addTab(room.getNodeName(), jPanelFullSize);
-                            jPanelFullSize.add(Box.createVerticalGlue());
-                            jPanelFullSize.add(Box.createHorizontalGlue());
+                            jPanel.add(roomView.getjPanelRoom());
+
+                            jTabbedPane.addTab(room.getNodeName(), jPanel);
                             jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
 
                             jTabbedPane.setIconAt(indexOfTab, roomIcon);
@@ -69,14 +67,13 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                                     room.addSubscriber(roomView);
                                     roomList.add(room);
 
-                                    JPanel jPanelFullSize=new JPanel();
+                                    JPanel jPanel=new JPanel();
                                     roomView = new RoomView(room);
+                                    room.setRoomView(roomView);
 
-                                    jPanelFullSize.add(Box.createVerticalGlue());
-                                    jPanelFullSize.add(Box.createHorizontalGlue());
-                                    jPanelFullSize.add(roomView.getjPanelRoom());
-                                    jTabbedPane.addTab(room.getNodeName(), jPanelFullSize);
-                                    jPanelFullSize.add(Box.createVerticalGlue());
+                                    jPanel.add(roomView.getjPanelRoom());
+
+                                    jTabbedPane.addTab(room.getNodeName(), jPanel);
                                     jTabbedPane.setBackgroundAt(indexOfTab, project.getColor());
 
                                     jTabbedPane.setBackgroundAt(indexOfTab, ((Building) draftNode).getColor());
@@ -150,18 +147,15 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
             Room room=new Room(((Room) o).getNodeName(),((Room) o).getParent());
             room.addSubscriber(roomView);
             room.addListener(() -> SwingUtilities.invokeLater(() -> updateTabLabel(room)));
-            JPanel jPanelFullSize=new JPanel();
             roomView = new RoomView(room);
+            room.setRoomView(roomView);
 
-            jPanelFullSize.add(Box.createVerticalGlue());
-            jPanelFullSize.add(Box.createHorizontalGlue());
-            jPanelFullSize.add(roomView.getjPanelRoom());
-            jPanelFullSize.add(Box.createVerticalGlue());
-
+            JPanel jPanel=new JPanel();
+            jPanel.add(roomView.getjPanelRoom());
 
             if (!roomList.contains(room)) {
                 roomList.add(room);
-                jTabbedPane.addTab(room.getNodeName(), jPanelFullSize);
+                jTabbedPane.addTab(room.getNodeName(), jPanel);
 
                 if (room.getParent() instanceof Project) {
                     jTabbedPane.setBackgroundAt(indexOfTab, ((Project) room.getParent()).getColor());
