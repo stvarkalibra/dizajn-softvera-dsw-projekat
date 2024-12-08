@@ -158,6 +158,8 @@ public class AddState implements State {
                 break;
         }
         room.setPendingElement(roomElement);
+        room.addSubscriber(room.getRoomView());
+        room.notifySubscriber(addStateManager);
     }
     @Override
     public void update(Object o) {

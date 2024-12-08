@@ -5,8 +5,11 @@ import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.state.StateManager;
+import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
+import raf.draft.dsw.gui.swing.state.addstate.BedState;
 import raf.draft.dsw.jtabbedpane.controller.RoomController;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
@@ -85,7 +88,7 @@ public class RoomView extends JPanel implements ISubscriber {
         stateManager.setAddState();
     }
     public void myMouseClicked(){
-        stateManager.getCurrentState().myMouseClicked(this,this.getMouseLocation());
+        stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
     public void myMouseReleased(){
         stateManager.getCurrentState().myMouseReleased();
@@ -124,6 +127,8 @@ public class RoomView extends JPanel implements ISubscriber {
             jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
+        }else if(o instanceof AddStateManager){
+            ((AddStateManager) o).getCurrentState().myMouseClicked(this,mouseLocation);
         }
     }
 
