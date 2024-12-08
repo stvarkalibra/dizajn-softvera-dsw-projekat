@@ -1,7 +1,6 @@
 package raf.draft.dsw.gui.swing.state;
 
-import raf.draft.dsw.controller.actions.stateactions.CopyAndPasteAction;
-import raf.draft.dsw.controller.actions.stateactions.ZoomAction;
+import raf.draft.dsw.gui.swing.state.addstate.*;
 
 public class StateManager {
     private EditRoomState editRoomState;
@@ -16,6 +15,7 @@ public class StateManager {
     private DeleteState deleteState;
     private State currentState=null;
 
+
     public StateManager() {
         this.editRoomState = new EditRoomState();
         this.addState = new AddState();
@@ -28,7 +28,6 @@ public class StateManager {
         this.zoomState = new ZoomState();
         this.deleteState = new DeleteState();
     }
-
     public void setEditRoomState(){
         this.currentState=editRoomState;
     }public void setAddState(){

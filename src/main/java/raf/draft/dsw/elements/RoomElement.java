@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public abstract class RoomElement extends DraftNode {
+public abstract class RoomElement extends DraftNode implements Prototype {
     private Point location;
     private int dimensionWidth;
     private int dimensionLenght;
@@ -20,11 +20,11 @@ public abstract class RoomElement extends DraftNode {
 
     @Override
     public String toString() {
-        return "RoomElement{" +
-                "location=" + location +
-                ", dimensionWidth=" + dimensionWidth +
-                ", dimensionLenght=" + dimensionLenght +
-                ", rotation=" + rotation +
+        return "Name: " + getNodeName() +
+                ", location= " + location +
+                ", dimensionWidth= " + dimensionWidth +
+                ", dimensionLenght= " + dimensionLenght +
+                ", rotation= " + rotation +
                 '}';
     }
 
@@ -58,5 +58,10 @@ public abstract class RoomElement extends DraftNode {
 
     public void setRotation(int rotation) {
         this.rotation = rotation;
+    }
+
+    @Override
+    public Prototype clone(){
+        return null;
     }
 }

@@ -8,21 +8,12 @@ import java.awt.*;
 public class ElementsController {
     private int lenght;
     private int widht;
-    private Point point;
     public void dimensions(RoomElement roomElement){
         roomElement.setDimensionWidth(widht);
         roomElement.setDimensionLenght(lenght);
     }
-    public void location(RoomElement roomElement){
-        roomElement.setLocation(point);
-    }
-
-    public Point getPoint() {
-        return point;
-    }
-
-    public void setPoint(Point point) {
-        this.point = point;
+    public void location(RoomElement roomElement,Point location){
+        roomElement.setLocation(location);
     }
 
     public int getLenght() {
