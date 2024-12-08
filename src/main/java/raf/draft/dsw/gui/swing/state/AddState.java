@@ -159,4 +159,8 @@ public class AddState implements State {
         }
         room.setPendingElement(roomElement);
     }
+    @Override
+    public void update(Object o) {
+
+    }
 }

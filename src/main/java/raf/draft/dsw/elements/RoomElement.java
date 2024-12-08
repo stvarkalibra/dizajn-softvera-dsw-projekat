@@ -1,14 +1,19 @@
 package raf.draft.dsw.elements;
 
+import raf.draft.dsw.controller.observer.IPublisher;
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class RoomElement extends DraftNode implements Prototype {
+public abstract class RoomElement extends DraftNode implements Prototype, IPublisher {
     private Point location;
     private int dimensionWidth;
     private int dimensionLenght;
     private int rotation;
+    private List<ISubscriber> subscriberList=new ArrayList<>();
 
     public RoomElement(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {
         super(nodeName, parent);
@@ -63,5 +68,25 @@ public abstract class RoomElement extends DraftNode implements Prototype {
     @Override
     public Prototype clone(){
         return null;
+    }
+    @Override
+    public void addSubscriber(ISubscriber s) {
+        if(!subscriberList.contains(s)){
+            subscriberList.add(s);
+        }
+    }
+
+    @Override
+    public void removeSubscriber(ISubscriber s) {
+        if(subscriberList.contains(s)){
+            subscriberList.remove(s);
+        }
+    }
+
+    @Override
+    public void notifySubscriber(Object o) {
+        for(ISubscriber subscriber: subscriberList){
+            subscriber.update(o);
+        }
     }
 }

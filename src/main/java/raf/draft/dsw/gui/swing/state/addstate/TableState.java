@@ -44,4 +44,10 @@ public class TableState implements State {
     public void myMouseDragged() {
 
     }
+    @Override
+    public void update(Object o) {
+        if(o instanceof Table){
+
+        }
+    }
 }

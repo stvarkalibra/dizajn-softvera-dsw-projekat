@@ -39,4 +39,8 @@ public class DoorState implements State {
     public void myMouseDragged() {
 
     }
+    @Override
+    public void update(Object o) {
+
+    }
 }

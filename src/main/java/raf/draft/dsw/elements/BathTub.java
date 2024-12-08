@@ -1,5 +1,7 @@
 package raf.draft.dsw.elements;
 
+import raf.draft.dsw.controller.observer.IPublisher;
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;

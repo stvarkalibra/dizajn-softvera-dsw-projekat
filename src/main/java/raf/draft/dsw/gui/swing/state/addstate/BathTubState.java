@@ -7,7 +7,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 import java.awt.*;
 import java.util.Stack;
 
-public class BathTubState implements State {
+public class BathTubState implements State{
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
         boolean sameLocation=false;
@@ -38,6 +38,11 @@ public class BathTubState implements State {
 
     @Override
     public void myMouseDragged() {
+
+    }
+
+    @Override
+    public void update(Object o) {
 
     }
 }
