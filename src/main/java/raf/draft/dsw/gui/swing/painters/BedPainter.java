@@ -1,14 +1,20 @@
 package raf.draft.dsw.gui.swing.painters;
 
+import raf.draft.dsw.elements.Bed;
 import raf.draft.dsw.elements.RoomElement;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 public class BedPainter extends MyPainter{
+    private Bed bed;
 
     public BedPainter(RoomElement element) {
         super(element);
+        if(element instanceof Bed){
+            bed=(Bed) element;
+        }
+
     }
 
     @Override

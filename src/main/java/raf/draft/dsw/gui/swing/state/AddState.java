@@ -161,6 +161,13 @@ public class AddState implements State {
     }
     @Override
     public void update(Object o) {
+    }
 
+    public AddStateManager getAddStateManager() {
+        return addStateManager;
+    }
+
+    public void setAddStateManager(AddStateManager addStateManager) {
+        this.addStateManager = addStateManager;
     }
 }
