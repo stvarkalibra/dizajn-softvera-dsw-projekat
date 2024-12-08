@@ -24,6 +24,7 @@ public class RoomView extends JPanel implements ISubscriber {
     private Room room;
     private RoomController roomController;
     private int width, height;
+    private Point mouseLocation;
     private StateManager stateManager=new StateManager();
     public RoomView(Room room){
         this.room=room;
@@ -45,19 +46,43 @@ public class RoomView extends JPanel implements ISubscriber {
         setDimensions();
     }
     public void setDimensions(){
-                jPanelRoom.addMouseListener(new MouseAdapter() {
+                jPanelRoom.addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                        mouseLocation=e.getPoint();
                         myMouseClicked();
-                        roomController.Dimensions();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        myMouseReleased();
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
                     }
                 });
 
     }
 
-    //STATE PATTERN
+    //STATE-PATTERN
     public void startEdit(){
         stateManager.setEditRoomState();
+    }
+    public void startAdd(){
+        System.out.println(stateManager);
+        stateManager.setAddState();
     }
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this);
@@ -71,6 +96,8 @@ public class RoomView extends JPanel implements ISubscriber {
     public void myMouseDragged(){
         stateManager.getCurrentState().myMouseDragged();
     }
+
+    //END OF STATE-PATTERN
     @Override
     public void update(Object o) {
         Toolkit kit = Toolkit.getDefaultToolkit();
@@ -98,6 +125,14 @@ public class RoomView extends JPanel implements ISubscriber {
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
         }
+    }
+
+    public Point getMouseLocation() {
+        return mouseLocation;
+    }
+
+    public void setMouseLocation(Point mouseLocation) {
+        this.mouseLocation = mouseLocation;
     }
 
     public JPanel getjPanelRoom() {

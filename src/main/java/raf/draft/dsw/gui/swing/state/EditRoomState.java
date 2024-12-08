@@ -50,7 +50,7 @@ public class EditRoomState implements State{
                 String heightText = heightField.getText();
                 roomView.setWidth(Integer.parseInt(widthText));
                 roomView.setHeight(Integer.parseInt(heightText));
-                roomView.getRoomController().Dimensions();
+                roomView.getRoomController().dimensions();
             } catch (NumberFormatException ex) {
                 MessageGenerator messageGenerator = new MessageGenerator();
                 FileLogger fileLogger = new FileLogger("files/log.txt");
