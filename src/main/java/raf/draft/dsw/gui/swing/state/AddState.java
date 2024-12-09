@@ -4,10 +4,8 @@ import raf.draft.dsw.elements.*;
 import raf.draft.dsw.elements.contoller.ElementsController;
 import raf.draft.dsw.gui.swing.ElementDimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
-import raf.draft.dsw.gui.swing.state.State;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
-import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
@@ -60,8 +58,8 @@ public class AddState implements State {
         ElementDimensionFrame elementDimensionFrame=new ElementDimensionFrame();
         ElementsController elementsController=new ElementsController();
 
-        elementsController.setLenght(elementDimensionFrame.getLenght());
-        elementsController.setWidht(elementDimensionFrame.getWidth());
+        elementsController.setLength(elementDimensionFrame.getLenght());
+        elementsController.setWidth(elementDimensionFrame.getWidth());
         elementsController.dimensions(roomView.getRoom().getPendingElement());
         elementsController.location(roomElement,roomView.getMouseLocation());
 
@@ -112,32 +110,32 @@ public class AddState implements State {
         switch (option) {
             case "Vrata":
                 startDoor();
-                roomElement=new Door("Door",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new Door("Door",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             case "Krevet":
                 startBed();
-                roomElement=new Bed("Bed",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new Bed("Bed",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             case "Sto":
                 startTable();
-                roomElement=new Table("Table",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new Table("Table",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             case "Ormar":
                 startCloset();
-                roomElement=new Closet("Closet",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new Closet("Closet",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             case "Kada/Tuš kabina":
                 startBathtub();
-                roomElement=new BathTub("BathTub",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new BathTub("BathTub",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             case "Veš mašina":
                 startWashingMachine();
-                roomElement=new WashingMachine("WashingMachine",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new WashingMachine("WashingMachine",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             case "Bojler":
@@ -146,12 +144,12 @@ public class AddState implements State {
                 break;
             case "Lavabo":
                 startSink();
-                roomElement=new Sink("Sink",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new Sink("Sink",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             case "WC šolja":
                 startToilet();
-                roomElement=new ToiletSeat("ToiledSeat",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
+                roomElement=new ToiletSeat("ToiledSeat",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLength(),0);
                 addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
                 break;
             default:

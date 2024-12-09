@@ -30,6 +30,7 @@ public class RoomView extends JPanel implements ISubscriber {
     private int width, height;
     private Point mouseLocation;
     private StateManager stateManager=new StateManager();
+    double k_length = 0, k_width = 0;
     public RoomView(Room room){
         this.room=room;
         room.addSubscriber(this);
@@ -124,6 +125,10 @@ public class RoomView extends JPanel implements ISubscriber {
                     widthPixel=heightPixel*aspectRatio;
                 }
             }
+            k_length =  screenHeight / heightPixel;
+            k_width =  screenWidth / widthPixel;
+            System.out.println("RoomView Length: " + k_length + " Width: " + k_width);
+
             jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
@@ -182,5 +187,11 @@ public class RoomView extends JPanel implements ISubscriber {
         this.height = height;
     }
 
+    public double getK_length() {
+        return k_length;
+    }
 
+    public double getK_width() {
+        return k_width;
+    }
 }

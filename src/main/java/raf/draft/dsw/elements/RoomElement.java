@@ -49,11 +49,11 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         this.dimensionWidth = dimensionWidth;
     }
 
-    public int getDimensionLenght() {
+    public int getDimensionLength() {
         return dimensionLenght;
     }
 
-    public void setDimensionLenght(int dimensionLenght) {
+    public void setDimensionLength(int dimensionLenght) {
         this.dimensionLenght = dimensionLenght;
     }
 

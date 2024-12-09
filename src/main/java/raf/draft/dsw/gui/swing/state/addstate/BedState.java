@@ -1,27 +1,47 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
-import raf.draft.dsw.elements.RoomElement;
+import raf.draft.dsw.elements.Bed;
+import raf.draft.dsw.gui.swing.painters.BedPainter;
 import raf.draft.dsw.gui.swing.state.State;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class BedState implements State {
+    private double length_k, width_k = 0;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        boolean sameLocation=false;
+        roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
+        roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
 
-        for(RoomElement roomElement:roomView.getRoom().getRoomElements()){
-            if(roomElement.getLocation().equals(roomView.getRoom().getPendingElement().getLocation())){
-                sameLocation=true;
-            }
+        length_k = roomView.getK_length();;
+        width_k = roomView.getK_width();;
+        System.out.println("BedState Length: " + length_k + " Width: " + width_k);
+
+        Bed bed = (Bed) roomView.getRoom().getPendingElement();
+        FrameWork framework = new FrameWork(bed, location);
+        roomView.getjPanelRoom().setLayout(new BorderLayout());
+        roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        roomView.getjPanelRoom().revalidate();
+        roomView.getjPanelRoom().repaint();
+    }
+
+    private class FrameWork extends JPanel {
+        private final Bed bed;
+        private final Point location;
+
+        public FrameWork(Bed bed, Point location) {
+            this.bed = bed;
+            this.location = location;
         }
-        if(!sameLocation){
-            roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
-            roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
-            System.out.println("ELEMENT DODAT: " + roomView.getRoom().getPendingElement().toString());
-            System.out.println("SVI ELEMENTI: " + roomView.getRoom().getRoomElements().size());
-            roomView.getRoom().notifySubscriber(roomView.getRoom().getPendingElement());
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            BedPainter bp = new BedPainter(bed);
+            bp.paint(g2d, location, (int) (bed.getDimensionLength() * length_k), (int) (bed.getDimensionWidth() *  width_k));
         }
     }
 
