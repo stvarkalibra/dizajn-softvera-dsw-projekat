@@ -48,39 +48,34 @@ public class RoomView extends JPanel implements ISubscriber {
         if(room.getParent() instanceof Project){
             jPanelRoom.setBackground(((Project) room.getParent()).getColor());
         }
-        setDimensions();
+        jPanelRoom.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mouseLocation=e.getPoint();
+                myMouseClicked();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                myMouseReleased();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
-    public void setDimensions(){
-                jPanelRoom.addMouseListener(new MouseListener() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        mouseLocation=e.getPoint();
-                        myMouseClicked();
-                    }
-
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-
-                    }
-
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-                        myMouseReleased();
-                    }
-
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-
-                    }
-                });
-
-    }
-
     //STATE-PATTERN
     public void startEdit(){
         stateManager.setEditRoomState();
@@ -105,7 +100,6 @@ public class RoomView extends JPanel implements ISubscriber {
     @Override
     public void update(Object o) {
         Toolkit kit = Toolkit.getDefaultToolkit();
-
         Dimension screensize=kit.getScreenSize();
 
         if(o instanceof Room){

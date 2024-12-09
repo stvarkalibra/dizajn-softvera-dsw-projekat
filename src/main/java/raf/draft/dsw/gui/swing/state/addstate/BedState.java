@@ -19,12 +19,9 @@ public class BedState implements State {
         width_k = roomView.getK_width();;
         System.out.println("BedState Length: " + length_k + " Width: " + width_k);
 
-        Bed bed = (Bed) roomView.getRoom().getPendingElement();
-        FrameWork framework = new FrameWork(bed, location);
+        FrameWork framework = new FrameWork((Bed) roomView.getRoom().getPendingElement(), location);
         roomView.getjPanelRoom().setLayout(new BorderLayout());
         roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
-        roomView.getjPanelRoom().revalidate();
-        roomView.getjPanelRoom().repaint();
     }
 
     private class FrameWork extends JPanel {
@@ -34,6 +31,7 @@ public class BedState implements State {
         public FrameWork(Bed bed, Point location) {
             this.bed = bed;
             this.location = location;
+            setOpaque(false);
         }
 
         @Override
