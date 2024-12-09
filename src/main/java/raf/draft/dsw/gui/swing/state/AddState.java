@@ -4,10 +4,8 @@ import raf.draft.dsw.elements.*;
 import raf.draft.dsw.elements.contoller.ElementsController;
 import raf.draft.dsw.gui.swing.ElementDimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
-import raf.draft.dsw.gui.swing.state.State;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
-import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
@@ -54,16 +52,6 @@ public class AddState implements State {
     }
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        roomElement=new Bed(null,null,null,0,0,0);
-        roomView.getRoom().setPendingElement(roomElement);
-
-        ElementDimensionFrame elementDimensionFrame=new ElementDimensionFrame();
-        ElementsController elementsController=new ElementsController();
-
-        elementsController.setLenght(elementDimensionFrame.getLenght());
-        elementsController.setWidht(elementDimensionFrame.getWidth());
-        elementsController.dimensions(roomView.getRoom().getPendingElement());
-        elementsController.location(roomElement,roomView.getMouseLocation());
 
         JPopupMenu popupMenu = new JPopupMenu();
 
@@ -84,7 +72,7 @@ public class AddState implements State {
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    handleOptionSelected(option);
+                    handleOptionSelected(option, roomView);
                 }
             });
             popupMenu.add(menuItem);
@@ -106,57 +94,74 @@ public class AddState implements State {
     public void myMouseDragged() {
 
     }
-    public void handleOptionSelected(String option) {
+    public void handleOptionSelected(String option, RoomView roomView) {
         int index = MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
         Room room = MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
         switch (option) {
             case "Vrata":
                 startDoor();
-                roomElement=new Door("Door",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new Door("Door",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "Krevet":
                 startBed();
-                roomElement=new Bed("Bed",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new Bed("Bed",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "Sto":
                 startTable();
-                roomElement=new Table("Table",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new Table("Table",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "Ormar":
                 startCloset();
-                roomElement=new Closet("Closet",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new Closet("Closet",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "Kada/Tuš kabina":
                 startBathtub();
-                roomElement=new BathTub("BathTub",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new BathTub("Bath Tub",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "Veš mašina":
                 startWashingMachine();
-                roomElement=new WashingMachine("WashingMachine",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new WashingMachine("Washing Machine",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "Bojler":
                 startBoiler();
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new Boiler("Boiler",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "Lavabo":
                 startSink();
-                roomElement=new Sink("Sink",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new Sink("Sink",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             case "WC šolja":
                 startToilet();
-                roomElement=new ToiletSeat("ToiledSeat",room,room.getPendingElement().getLocation(),room.getPendingElement().getDimensionWidth(),room.getPendingElement().getDimensionLenght(),0);
-                addStateManager.getCurrentState().myMouseClicked(room.getRoomView(),room.getRoomView().getMouseLocation());
+                roomElement=new ToiletSeat("Toilet",room,room.getRoomView().getMouseLocation(),0,0,0);
                 break;
             default:
                 break;
         }
+
+        ElementDimensionFrame elementDimensionFrame=new ElementDimensionFrame();
+        ElementsController elementsController=new ElementsController();
+
+        elementsController.setLength(elementDimensionFrame.getLenght());
+        elementsController.setWidth(elementDimensionFrame.getWidth());
+        elementsController.dimensions(roomElement);
+        elementsController.location(roomElement,roomView.getMouseLocation());
+
         room.setPendingElement(roomElement);
+
+        room.addSubscriber(room.getRoomView());
+        room.notifySubscriber(addStateManager);
+
+        room.setPendingElement(null);
+    }
+    @Override
+    public void update(Object o) {
+    }
+
+    public AddStateManager getAddStateManager() {
+        return addStateManager;
+    }
+
+    public void setAddStateManager(AddStateManager addStateManager) {
+        this.addStateManager = addStateManager;
     }
 }

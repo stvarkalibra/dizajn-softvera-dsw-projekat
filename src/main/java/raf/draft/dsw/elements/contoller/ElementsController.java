@@ -1,34 +1,33 @@
 package raf.draft.dsw.elements.contoller;
 
 import raf.draft.dsw.elements.RoomElement;
-import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
 
 public class ElementsController {
-    private int lenght;
-    private int widht;
+    private int length;
+    private int width;
     public void dimensions(RoomElement roomElement){
-        roomElement.setDimensionWidth(widht);
-        roomElement.setDimensionLenght(lenght);
+        roomElement.setDimensionWidth(width);
+        roomElement.setDimensionLength(length);
     }
     public void location(RoomElement roomElement,Point location){
         roomElement.setLocation(location);
     }
 
-    public int getLenght() {
-        return lenght;
+    public int getLength() {
+        return length;
     }
 
-    public void setLenght(int lenght) {
-        this.lenght = lenght;
+    public void setLength(int length) {
+        this.length = length;
     }
 
-    public int getWidht() {
-        return widht;
+    public int getWidth() {
+        return width;
     }
 
-    public void setWidht(int widht) {
-        this.widht = widht;
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

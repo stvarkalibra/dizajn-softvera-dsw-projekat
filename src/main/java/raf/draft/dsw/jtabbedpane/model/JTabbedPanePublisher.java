@@ -3,6 +3,7 @@ package raf.draft.dsw.jtabbedpane.model;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
@@ -26,9 +27,14 @@ public class JTabbedPanePublisher implements IPublisher {
             public void stateChanged(ChangeEvent e) {
                 int index = jTabbedPane.getSelectedIndex();
                 if (index >= 0 && index < roomList.size()) {
-                    notifySubscriber(roomList.get(index));
+                    Room selectedRoom = roomList.get(index);
+                    notifySubscriber(selectedRoom);
+
+                    RoomView roomView = selectedRoom.getRoomView();
+                    roomView.getjPanelRoom().revalidate();
                 }
             }
+
         });
     }
 

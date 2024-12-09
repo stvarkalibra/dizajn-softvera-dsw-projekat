@@ -5,8 +5,11 @@ import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.state.StateManager;
+import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
+import raf.draft.dsw.gui.swing.state.addstate.BedState;
 import raf.draft.dsw.jtabbedpane.controller.RoomController;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
@@ -27,6 +30,7 @@ public class RoomView extends JPanel implements ISubscriber {
     private int width, height;
     private Point mouseLocation;
     private StateManager stateManager=new StateManager();
+    double k=0;
     public RoomView(Room room){
         this.room=room;
         room.addSubscriber(this);
@@ -44,39 +48,34 @@ public class RoomView extends JPanel implements ISubscriber {
         if(room.getParent() instanceof Project){
             jPanelRoom.setBackground(((Project) room.getParent()).getColor());
         }
-        setDimensions();
+        jPanelRoom.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mouseLocation=e.getPoint();
+                myMouseClicked();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                myMouseReleased();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
-    public void setDimensions(){
-                jPanelRoom.addMouseListener(new MouseListener() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        mouseLocation=e.getPoint();
-                        myMouseClicked();
-                    }
-
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-
-                    }
-
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-                        myMouseReleased();
-                    }
-
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-
-                    }
-                });
-
-    }
-
     //STATE-PATTERN
     public void startEdit(){
         stateManager.setEditRoomState();
@@ -85,7 +84,7 @@ public class RoomView extends JPanel implements ISubscriber {
         stateManager.setAddState();
     }
     public void myMouseClicked(){
-        stateManager.getCurrentState().myMouseClicked(this,this.getMouseLocation());
+        stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
     public void myMouseReleased(){
         stateManager.getCurrentState().myMouseReleased();
@@ -101,29 +100,35 @@ public class RoomView extends JPanel implements ISubscriber {
     @Override
     public void update(Object o) {
         Toolkit kit = Toolkit.getDefaultToolkit();
-
-        Dimension screensize=kit.getScreenSize();
+        Dimension screenSize=kit.getScreenSize();
 
         if(o instanceof Room){
             double heightPixel=((Room) o).convertCmIntoPixel(height);
             double widthPixel=((Room) o).convertCmIntoPixel(width);
 
             double aspectRatio=widthPixel/heightPixel;
-            double screenHeight=screensize.getHeight();
-            double screenWidth=screensize.getWidth();
+            double jPanelRoomHeight=MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getHeight();
+            double jPanelRoomWidth=MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getWidth();
 
-            if(widthPixel>screenWidth || heightPixel>screenHeight){
-                if(aspectRatio>1){
-                    widthPixel=screenWidth*0.9;
-                    heightPixel=widthPixel/aspectRatio;
-                }else{
-                    heightPixel=screenHeight*0.9;
-                    widthPixel=heightPixel*aspectRatio;
-                }
+            if(aspectRatio>1){
+                widthPixel=jPanelRoomWidth;
+                heightPixel=widthPixel/aspectRatio;
+                k = widthPixel/width;
+            }else{
+                heightPixel=jPanelRoomHeight;
+                widthPixel=heightPixel*aspectRatio;
+                k = heightPixel/height;
             }
+
+
+
+            System.out.println("RoomView Length: " + k);
+
             jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
+        }else if(o instanceof AddStateManager){
+            ((AddStateManager) o).getCurrentState().myMouseClicked(this,mouseLocation);
         }
     }
 
@@ -177,5 +182,11 @@ public class RoomView extends JPanel implements ISubscriber {
         this.height = height;
     }
 
+    public double getK() {
+        return k;
+    }
 
+    public void setK(double k) {
+        this.k = k;
+    }
 }
