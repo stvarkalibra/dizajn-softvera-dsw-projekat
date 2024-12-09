@@ -36,7 +36,6 @@ public class MainFrame extends JFrame implements ISubscriber{
     private DraftTree draftTree;
     private JTree jTree;
     private ProjectExplorer projectExplorer;
-    private JTabbedPane jTabbedPane = new JTabbedPane();
     private java.util.List<Room> roomList = new ArrayList<Room>();
     private Label labelBuilding = new Label("Building");
     private Label labelProject = new Label("Project");
@@ -128,14 +127,6 @@ public class MainFrame extends JFrame implements ISubscriber{
 
     public void setFlag(boolean flag) {
         this.flagIsSelected = flag;
-    }
-
-    public JTabbedPane getjTabbedPane() {
-        return jTabbedPane;
-    }
-
-    public void setjTabbedPane(JTabbedPane jTabbedPane) {
-        this.jTabbedPane = jTabbedPane;
     }
 
     public List<Room> getRoomList() {

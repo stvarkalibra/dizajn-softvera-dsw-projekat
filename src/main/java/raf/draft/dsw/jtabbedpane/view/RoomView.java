@@ -30,7 +30,7 @@ public class RoomView extends JPanel implements ISubscriber {
     private int width, height;
     private Point mouseLocation;
     private StateManager stateManager=new StateManager();
-    double k_length = 0, k_width = 0;
+    double k=0;
     public RoomView(Room room){
         this.room=room;
         room.addSubscriber(this);
@@ -100,28 +100,29 @@ public class RoomView extends JPanel implements ISubscriber {
     @Override
     public void update(Object o) {
         Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension screensize=kit.getScreenSize();
+        Dimension screenSize=kit.getScreenSize();
 
         if(o instanceof Room){
             double heightPixel=((Room) o).convertCmIntoPixel(height);
             double widthPixel=((Room) o).convertCmIntoPixel(width);
 
             double aspectRatio=widthPixel/heightPixel;
-            double screenHeight=screensize.getHeight();
-            double screenWidth=screensize.getWidth();
+            double jPanelRoomHeight=MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getHeight();
+            double jPanelRoomWidth=MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getWidth();
 
-            if(widthPixel>screenWidth || heightPixel>screenHeight){
-                if(aspectRatio>1){
-                    widthPixel=screenWidth*0.9;
-                    heightPixel=widthPixel/aspectRatio;
-                }else{
-                    heightPixel=screenHeight*0.9;
-                    widthPixel=heightPixel*aspectRatio;
-                }
+            if(aspectRatio>1){
+                widthPixel=jPanelRoomWidth;
+                heightPixel=widthPixel/aspectRatio;
+                k = widthPixel/width;
+            }else{
+                heightPixel=jPanelRoomHeight;
+                widthPixel=heightPixel*aspectRatio;
+                k = heightPixel/height;
             }
-            k_length =  screenHeight / heightPixel;
-            k_width =  screenWidth / widthPixel;
-            System.out.println("RoomView Length: " + k_length + " Width: " + k_width);
+
+
+
+            System.out.println("RoomView Length: " + k);
 
             jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
             jPanelRoom.revalidate();
@@ -181,11 +182,11 @@ public class RoomView extends JPanel implements ISubscriber {
         this.height = height;
     }
 
-    public double getK_length() {
-        return k_length;
+    public double getK() {
+        return k;
     }
 
-    public double getK_width() {
-        return k_width;
+    public void setK(double k) {
+        this.k = k;
     }
 }

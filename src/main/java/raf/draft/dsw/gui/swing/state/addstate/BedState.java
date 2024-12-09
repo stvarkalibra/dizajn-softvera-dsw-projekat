@@ -9,17 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BedState implements State {
-    private double length_k, width_k = 0;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
         roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
         roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
 
-        length_k = roomView.getK_length();;
-        width_k = roomView.getK_width();;
-        System.out.println("BedState Length: " + length_k + " Width: " + width_k);
-
-        FrameWork framework = new FrameWork((Bed) roomView.getRoom().getPendingElement(), location);
+        FrameWork framework = new FrameWork((Bed) roomView.getRoom().getPendingElement(), location, roomView.getK());
         roomView.getjPanelRoom().setLayout(new BorderLayout());
         roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
     }
@@ -27,10 +22,12 @@ public class BedState implements State {
     private class FrameWork extends JPanel {
         private final Bed bed;
         private final Point location;
+        private double k;
 
-        public FrameWork(Bed bed, Point location) {
+        public FrameWork(Bed bed, Point location, double k) {
             this.bed = bed;
             this.location = location;
+            this.k=k;
             setOpaque(false);
         }
 
@@ -39,7 +36,7 @@ public class BedState implements State {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             BedPainter bp = new BedPainter(bed);
-            bp.paint(g2d, location, (int) (bed.getDimensionLength() * length_k), (int) (bed.getDimensionWidth() *  width_k));
+            bp.paint(g2d, location, (int) (bed.getDimensionLength() * k), (int) (bed.getDimensionWidth() *  k));
         }
     }
 
