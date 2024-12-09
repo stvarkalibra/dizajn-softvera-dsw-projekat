@@ -1,27 +1,44 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
-import raf.draft.dsw.elements.RoomElement;
+import raf.draft.dsw.elements.*;
+import raf.draft.dsw.gui.swing.painters.BathtubPainter;
+import raf.draft.dsw.gui.swing.painters.BedPainter;
+import raf.draft.dsw.gui.swing.painters.ClosetPainter;
 import raf.draft.dsw.gui.swing.state.State;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class ClosetState implements State{
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        boolean sameLocation=false;
+        roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
+        roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
 
-        for(RoomElement roomElement:roomView.getRoom().getRoomElements()){
-            if(roomElement.getLocation().equals(roomView.getRoom().getPendingElement().getLocation())){
-                sameLocation=true;
-            }
+        ClosetState.FrameWork framework = new ClosetState.FrameWork((Closet) roomView.getRoom().getPendingElement(), location, roomView.getK());
+        roomView.getjPanelRoom().setLayout(new BorderLayout());
+        roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+    }
+
+    private class FrameWork extends JPanel {
+        private final Closet closet;
+        private final Point location;
+        private double k;
+
+        public FrameWork(Closet closet, Point location, double k) {
+            this.closet = closet;
+            this.location = location;
+            this.k=k;
+            setOpaque(false);
         }
-        if(!sameLocation){
-            roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
-            roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
-            System.out.println("ELEMENT DODAT: " + roomView.getRoom().getPendingElement().toString());
-            System.out.println("SVI ELEMENTI: " + roomView.getRoom().getRoomElements().size());
-            roomView.getRoom().notifySubscriber(roomView.getRoom().getPendingElement());
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            ClosetPainter cp = new ClosetPainter(closet);
+            cp.paint(g2d, location, (int) (closet.getDimensionLength() * k), (int) (closet.getDimensionWidth() *  k));
         }
     }
 

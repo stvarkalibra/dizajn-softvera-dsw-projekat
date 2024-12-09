@@ -11,10 +11,11 @@ import java.awt.*;
 public class BedState implements State {
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
+        System.out.println("BedState");
         roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
         roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
 
-        FrameWork framework = new FrameWork((Bed) roomView.getRoom().getPendingElement(), location, roomView.getK());
+        BedState.FrameWork framework = new BedState.FrameWork((Bed) roomView.getRoom().getPendingElement(), location, roomView.getK());
         roomView.getjPanelRoom().setLayout(new BorderLayout());
         roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
     }
