@@ -9,6 +9,7 @@ import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.gui.swing.state.AddState;
+import raf.draft.dsw.gui.swing.state.SelectState;
 import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
 import raf.draft.dsw.gui.swing.state.addstate.BedState;
@@ -24,6 +25,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,8 @@ public class RoomView extends JPanel implements ISubscriber {
     private Point mouseLocation;
     private StateManager stateManager=new StateManager();
     private List<MyPainter> painterList=new ArrayList<>();
+    private List<RoomElement> selectedElements=new ArrayList<>();
+    private MouseEvent mouseEvent;
     double k=0;
     public RoomView(Room room){
         this.room=room;
@@ -61,7 +65,9 @@ public class RoomView extends JPanel implements ISubscriber {
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                if(stateManager.getCurrentState() instanceof SelectState){
+                    ((SelectState) stateManager.getCurrentState()).myMousePressed(e);
+                }
             }
 
             @Override
@@ -79,6 +85,18 @@ public class RoomView extends JPanel implements ISubscriber {
 
             }
         });
+        jPanelRoom.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                mouseEvent=e;
+                myMouseDragged();
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+            }
+        });
     }
     //STATE-PATTERN
     public void startEditRoom(){
@@ -87,6 +105,9 @@ public class RoomView extends JPanel implements ISubscriber {
     public void startAdd(){
         stateManager.setAddState();
     }
+    public void startSelect(){
+        stateManager.setSelectState();
+    }
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
@@ -94,10 +115,10 @@ public class RoomView extends JPanel implements ISubscriber {
         stateManager.getCurrentState().myMouseReleased();
     }
     public void myMouseScrolled(){
-        stateManager.getCurrentState().myMouseScroll();
+        stateManager.getCurrentState().myMouseScrolled();
     }
     public void myMouseDragged(){
-        stateManager.getCurrentState().myMouseDragged();
+        stateManager.getCurrentState().myMouseDragged(this,mouseEvent);
     }
 
     //END OF STATE-PATTERN
@@ -131,6 +152,14 @@ public class RoomView extends JPanel implements ISubscriber {
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
         }
+    }
+
+    public List<RoomElement> getSelectedElements() {
+        return selectedElements;
+    }
+
+    public void setSelectedElements(List<RoomElement> selectedElements) {
+        this.selectedElements = selectedElements;
     }
 
     public Point getMouseLocation() {
