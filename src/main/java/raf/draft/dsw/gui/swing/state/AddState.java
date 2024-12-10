@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 public class AddState implements State {
     AddStateManager addStateManager=new AddStateManager();
@@ -45,10 +46,10 @@ public class AddState implements State {
         addStateManager.getCurrentState().myMouseReleased();
     }
     public void myMouseScrolledElement(){
-        addStateManager.getCurrentState().myMouseScroll();
+        addStateManager.getCurrentState().myMouseScrolled();
     }
     public void myMouseDraggedElement(){
-        addStateManager.getCurrentState().myMouseDragged();
+        addStateManager.getCurrentState().myMouseDragged(null,null);
     }
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
@@ -82,7 +83,7 @@ public class AddState implements State {
     }
 
     @Override
-    public void myMouseScroll() {
+    public void myMouseScrolled() {
 
     }
 
@@ -92,7 +93,7 @@ public class AddState implements State {
     }
 
     @Override
-    public void myMouseDragged() {
+    public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
     public void handleOptionSelected(String option, RoomView roomView) {

@@ -12,27 +12,36 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class BoilerState implements State{
+    private BoilerPainter bop;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
-        roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
 
-        BoilerState.FrameWork framework = new BoilerState.FrameWork((Boiler) roomView.getRoom().getPendingElement(), location, roomView.getK());
-        roomView.getjPanelRoom().setLayout(new BorderLayout());
-        roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        bop=new BoilerPainter(roomView.getRoom().getPendingElement());
+        if(!bop.elementAt(roomView.getRoom().getPendingElement(),location)){
+            roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
+            roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
+            roomView.getPainterList().add(bop);
+            BoilerState.FrameWork framework = new BoilerState.FrameWork((Boiler) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
+            roomView.getjPanelRoom().setLayout(new BorderLayout());
+            roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        }
+
     }
 
     private class FrameWork extends JPanel {
         private final Boiler boiler;
         private final Point location;
         private double k;
+        private RoomView roomView;
 
-        public FrameWork(Boiler boiler, Point location, double k) {
+        public FrameWork(Boiler boiler, Point location, double k, RoomView roomView) {
             this.boiler = boiler;
             this.location = location;
             this.k=k;
+            this.roomView=roomView;
             setOpaque(false);
         }
 
@@ -40,13 +49,19 @@ public class BoilerState implements State{
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            BoilerPainter bp = new BoilerPainter(boiler);
-            bp.paint(g2d, location, (int) (boiler.getDimensionLength() * k), (int) (boiler.getDimensionWidth() *  k));
+            BoilerPainter bop = new BoilerPainter(boiler);
+            bop.paint(g2d, location, (int) (boiler.getDimensionLength() * k), (int) (boiler.getDimensionWidth() *  k));
+            for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
+                if(roomElement instanceof Boiler) {
+                    Point elementLocation = roomElement.getLocation();
+                    bop.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                }
+            }
         }
     }
 
     @Override
-    public void myMouseScroll() {
+    public void myMouseScrolled() {
 
     }
 
@@ -56,7 +71,7 @@ public class BoilerState implements State{
     }
 
     @Override
-    public void myMouseDragged() {
+    public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
     @Override

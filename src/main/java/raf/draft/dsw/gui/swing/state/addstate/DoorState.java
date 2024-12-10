@@ -10,27 +10,34 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class DoorState implements State {
+    private DoorPainter dp;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
-        roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
-
-        DoorState.FrameWork framework = new DoorState.FrameWork((Door) roomView.getRoom().getPendingElement(), location, roomView.getK());
-        roomView.getjPanelRoom().setLayout(new BorderLayout());
-        roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        dp=new DoorPainter(roomView.getRoom().getPendingElement());
+        if(!dp.elementAt(roomView.getRoom().getPendingElement(),location)) {
+            roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
+            roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
+            roomView.getPainterList().add(dp);
+            DoorState.FrameWork framework = new DoorState.FrameWork((Door) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
+            roomView.getjPanelRoom().setLayout(new BorderLayout());
+            roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        }
     }
 
     private class FrameWork extends JPanel {
         private final Door door;
         private final Point location;
         private double k;
+        private RoomView roomView;
 
-        public FrameWork(Door door, Point location, double k) {
+        public FrameWork(Door door, Point location, double k,RoomView roomView) {
             this.door = door;
             this.location = location;
             this.k=k;
+            this.roomView=roomView;
             setOpaque(false);
         }
 
@@ -38,13 +45,17 @@ public class DoorState implements State {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            DoorPainter dp = new DoorPainter(door);
-            dp.paint(g2d, location, (int) (door.getDimensionLength() * k), (int) (door.getDimensionWidth() *  k));
+            for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
+                if(roomElement instanceof Door) {
+                    Point elementLocation = roomElement.getLocation();
+                    dp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                }
+            }
         }
     }
 
     @Override
-    public void myMouseScroll() {
+    public void myMouseScrolled() {
 
     }
 
@@ -54,7 +65,7 @@ public class DoorState implements State {
     }
 
     @Override
-    public void myMouseDragged() {
+    public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
     @Override

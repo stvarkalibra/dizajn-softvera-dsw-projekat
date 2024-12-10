@@ -9,6 +9,7 @@ import raf.draft.dsw.model.message.MessageType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class EditRoomState implements State{
     @Override
@@ -68,7 +69,7 @@ public class EditRoomState implements State{
     }
 
     @Override
-    public void myMouseScroll() {
+    public void myMouseScrolled() {
 
     }
 
@@ -78,7 +79,7 @@ public class EditRoomState implements State{
     }
 
     @Override
-    public void myMouseDragged() {
+    public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
     @Override

@@ -8,6 +8,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class BedState implements State {
     private BedPainter bp;
@@ -44,15 +45,17 @@ public class BedState implements State {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
-                bp = new BedPainter(roomElement);
-                Point elementLocation = roomElement.getLocation();
-                bp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                if(roomElement instanceof Bed){
+                    Point elementLocation = roomElement.getLocation();
+                    bp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                }
+
             }
         }
     }
 
     @Override
-    public void myMouseScroll() {
+    public void myMouseScrolled() {
 
     }
 
@@ -62,7 +65,7 @@ public class BedState implements State {
     }
 
     @Override
-    public void myMouseDragged() {
+    public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
     @Override

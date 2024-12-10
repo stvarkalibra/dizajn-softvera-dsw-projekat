@@ -9,27 +9,34 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class ClosetState implements State{
+    private ClosetPainter cp;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
-        roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
-
-        ClosetState.FrameWork framework = new ClosetState.FrameWork((Closet) roomView.getRoom().getPendingElement(), location, roomView.getK());
-        roomView.getjPanelRoom().setLayout(new BorderLayout());
-        roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        cp=new ClosetPainter(roomView.getRoom().getPendingElement());
+        if(!cp.elementAt(roomView.getRoom().getPendingElement(),location)) {
+            roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
+            roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
+            roomView.getPainterList().add(cp);
+            ClosetState.FrameWork framework = new ClosetState.FrameWork((Closet) roomView.getRoom().getPendingElement(), location, roomView.getK(), roomView);
+            roomView.getjPanelRoom().setLayout(new BorderLayout());
+            roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        }
     }
 
     private class FrameWork extends JPanel {
         private final Closet closet;
         private final Point location;
         private double k;
+        private  RoomView roomView;
 
-        public FrameWork(Closet closet, Point location, double k) {
+        public FrameWork(Closet closet, Point location, double k, RoomView roomView) {
             this.closet = closet;
             this.location = location;
             this.k=k;
+            this.roomView=roomView;
             setOpaque(false);
         }
 
@@ -37,13 +44,17 @@ public class ClosetState implements State{
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            ClosetPainter cp = new ClosetPainter(closet);
-            cp.paint(g2d, location, (int) (closet.getDimensionLength() * k), (int) (closet.getDimensionWidth() *  k));
+            for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
+                if(roomElement instanceof  Closet){
+                    Point elementLocation = roomElement.getLocation();
+                    cp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                }
+            }
         }
     }
 
     @Override
-    public void myMouseScroll() {
+    public void myMouseScrolled() {
 
     }
 
@@ -53,7 +64,7 @@ public class ClosetState implements State{
     }
 
     @Override
-    public void myMouseDragged() {
+    public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
     @Override

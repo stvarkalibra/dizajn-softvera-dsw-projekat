@@ -10,27 +10,35 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class SinkState implements State {
+    private SinkPainter sp;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
-        roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
 
-        SinkState.FrameWork framework = new SinkState.FrameWork((Sink) roomView.getRoom().getPendingElement(), location, roomView.getK());
-        roomView.getjPanelRoom().setLayout(new BorderLayout());
-        roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        sp=new SinkPainter(roomView.getRoom().getPendingElement());
+        if(!sp.elementAt(roomView.getRoom().getPendingElement(),location)) {
+            roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
+            roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
+            roomView.getPainterList().add(sp);
+            SinkState.FrameWork framework = new SinkState.FrameWork((Sink) roomView.getRoom().getPendingElement(), location, roomView.getK(), roomView);
+            roomView.getjPanelRoom().setLayout(new BorderLayout());
+            roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        }
     }
 
     private class FrameWork extends JPanel {
         private final Sink sink;
         private final Point location;
         private double k;
+        private RoomView roomView;
 
-        public FrameWork(Sink sink, Point location, double k) {
+        public FrameWork(Sink sink, Point location, double k, RoomView roomView) {
             this.sink = sink;
             this.location = location;
             this.k=k;
+            this.roomView=roomView;
             setOpaque(false);
         }
 
@@ -38,13 +46,17 @@ public class SinkState implements State {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            SinkPainter sp = new SinkPainter(sink);
-            sp.paint(g2d, location, (int) (sink.getDimensionLength() * k), (int) (sink.getDimensionWidth() *  k));
+            for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
+                if(roomElement instanceof Sink){
+                Point elementLocation = roomElement.getLocation();
+                sp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                }
+            }
         }
     }
 
     @Override
-    public void myMouseScroll() {
+    public void myMouseScrolled() {
 
     }
 
@@ -54,7 +66,7 @@ public class SinkState implements State {
     }
 
     @Override
-    public void myMouseDragged() {
+    public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
     @Override
