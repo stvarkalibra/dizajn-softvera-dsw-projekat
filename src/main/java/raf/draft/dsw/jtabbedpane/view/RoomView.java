@@ -7,6 +7,7 @@ import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.gui.swing.state.AddState;
 import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
 import raf.draft.dsw.gui.swing.state.addstate.BedState;
@@ -33,8 +34,7 @@ public class RoomView extends JPanel implements ISubscriber {
     double k=0;
     public RoomView(Room room){
         this.room=room;
-        room.addSubscriber(this);
-        roomController=new RoomController(this,room);
+        roomController=new RoomController();
         initialize();
     }
 
@@ -77,7 +77,7 @@ public class RoomView extends JPanel implements ISubscriber {
         });
     }
     //STATE-PATTERN
-    public void startEdit(){
+    public void startEditRoom(){
         stateManager.setEditRoomState();
     }
     public void startAdd(){
@@ -99,12 +99,9 @@ public class RoomView extends JPanel implements ISubscriber {
     //END OF STATE-PATTERN
     @Override
     public void update(Object o) {
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension screenSize=kit.getScreenSize();
-
         if(o instanceof Room){
-            double heightPixel=((Room) o).convertCmIntoPixel(height);
-            double widthPixel=((Room) o).convertCmIntoPixel(width);
+            double heightPixel=((Room) o).convertCmIntoPixel(room.getHeight());
+            double widthPixel=((Room) o).convertCmIntoPixel(room.getWidth());
 
             double aspectRatio=widthPixel/heightPixel;
             double jPanelRoomHeight=MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getHeight();
@@ -120,15 +117,15 @@ public class RoomView extends JPanel implements ISubscriber {
                 k = heightPixel/height;
             }
 
-
-
-            System.out.println("RoomView Length: " + k);
-
             jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
-        }else if(o instanceof AddStateManager){
-            ((AddStateManager) o).getCurrentState().myMouseClicked(this,mouseLocation);
+        }
+
+        else if(o instanceof AddState){
+            ((AddState) o).myMouseClickedElement(this,mouseLocation);
+            jPanelRoom.revalidate();
+            jPanelRoom.repaint();
         }
     }
 

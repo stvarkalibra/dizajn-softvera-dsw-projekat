@@ -11,7 +11,7 @@ import java.awt.*;
 public class BedState implements State {
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        System.out.println("BedState");
+
         roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
         roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
 

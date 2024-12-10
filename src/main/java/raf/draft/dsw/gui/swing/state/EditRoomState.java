@@ -48,9 +48,10 @@ public class EditRoomState implements State{
             try {
                 String widthText = widthField.getText();
                 String heightText = heightField.getText();
-                roomView.setWidth(Integer.parseInt(widthText));
-                roomView.setHeight(Integer.parseInt(heightText));
-                roomView.getRoomController().dimensions();
+                roomView.getRoom().setHeight(Integer.parseInt(heightText));
+                roomView.getRoom().setWidth(Integer.parseInt(widthText));
+                roomView.getRoom().addSubscriber(roomView);
+                roomView.getRoom().notifySubscriber(roomView.getRoom());
             } catch (NumberFormatException ex) {
                 MessageGenerator messageGenerator = new MessageGenerator();
                 FileLogger fileLogger = new FileLogger("files/log.txt");
