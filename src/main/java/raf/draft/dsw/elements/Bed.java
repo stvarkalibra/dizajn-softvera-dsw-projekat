@@ -11,4 +11,13 @@ public class Bed extends RoomElement {
         number++;
         setNodeName("Bed" + number);
     }
+
+    public static int getNumber() {
+        return number;
+    }
+
+    public static void setNumber(int number) {
+        Bed.number = number;
+    }
+
 }

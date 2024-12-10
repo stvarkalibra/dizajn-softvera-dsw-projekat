@@ -7,6 +7,7 @@ import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.gui.swing.state.AddState;
 import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
@@ -23,6 +24,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoomView extends JPanel implements ISubscriber {
     private JPanel jPanelRoom;
@@ -31,6 +34,7 @@ public class RoomView extends JPanel implements ISubscriber {
     private int width, height;
     private Point mouseLocation;
     private StateManager stateManager=new StateManager();
+    private List<MyPainter> painterList=new ArrayList<>();
     double k=0;
     public RoomView(Room room){
         this.room=room;
@@ -110,11 +114,11 @@ public class RoomView extends JPanel implements ISubscriber {
             if(aspectRatio>1){
                 widthPixel=jPanelRoomWidth;
                 heightPixel=widthPixel/aspectRatio;
-                k = widthPixel/width;
+                k = widthPixel/room.getWidth();
             }else{
                 heightPixel=jPanelRoomHeight;
                 widthPixel=heightPixel*aspectRatio;
-                k = heightPixel/height;
+                k = heightPixel/room.getHeight();
             }
 
             jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
@@ -153,6 +157,14 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public void setjPanelRoom(JPanel jPanelRoom) {
         this.jPanelRoom = jPanelRoom;
+    }
+
+    public List<MyPainter> getPainterList() {
+        return painterList;
+    }
+
+    public void setPainterList(List<MyPainter> painterList) {
+        this.painterList = painterList;
     }
 
     public Room getRoom() {

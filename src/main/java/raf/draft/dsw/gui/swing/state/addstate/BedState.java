@@ -1,6 +1,7 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
 import raf.draft.dsw.elements.Bed;
+import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.painters.BedPainter;
 import raf.draft.dsw.gui.swing.state.State;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
@@ -9,26 +10,32 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BedState implements State {
+    private BedPainter bp;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
 
-        roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
-        roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
-
-        BedState.FrameWork framework = new BedState.FrameWork((Bed) roomView.getRoom().getPendingElement(), location, roomView.getK());
-        roomView.getjPanelRoom().setLayout(new BorderLayout());
-        roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        bp=new BedPainter(roomView.getRoom().getPendingElement());
+        if (!bp.elementAt(roomView.getRoom().getPendingElement(), location)) {
+            roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
+            roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
+            roomView.getPainterList().add(bp);
+            BedState.FrameWork framework = new BedState.FrameWork((Bed) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
+            roomView.getjPanelRoom().setLayout(new BorderLayout());
+            roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
+        }
     }
 
     private class FrameWork extends JPanel {
         private final Bed bed;
         private final Point location;
         private double k;
+        private RoomView roomView;
 
-        public FrameWork(Bed bed, Point location, double k) {
+        public FrameWork(Bed bed, Point location, double k,RoomView roomView) {
             this.bed = bed;
             this.location = location;
             this.k=k;
+            this.roomView=roomView;
             setOpaque(false);
         }
 
@@ -36,8 +43,11 @@ public class BedState implements State {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            BedPainter bp = new BedPainter(bed);
-            bp.paint(g2d, location, (int) (bed.getDimensionLength() * k), (int) (bed.getDimensionWidth() *  k));
+            for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
+                bp = new BedPainter(roomElement);
+                Point elementLocation = roomElement.getLocation();
+                bp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+            }
         }
     }
 
