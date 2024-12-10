@@ -40,7 +40,9 @@ public class Room extends DraftNodeComposite implements IPublisher {
     public void addSubscriber(ISubscriber s) {
         if(!subscriberList.contains(s)){
             subscriberList.add(s);
+            System.out.println(s);
         }
+
     }
 
     @Override
@@ -63,6 +65,14 @@ public class Room extends DraftNodeComposite implements IPublisher {
         final double inch=2.54;
         int dpi= Toolkit.getDefaultToolkit().getScreenResolution();
         return n/inch*dpi;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public RoomElement getPendingElement() {

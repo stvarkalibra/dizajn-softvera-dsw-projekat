@@ -53,6 +53,7 @@ public class AddState implements State {
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
 
+
         JPopupMenu popupMenu = new JPopupMenu();
 
         String[] options = {
@@ -95,6 +96,7 @@ public class AddState implements State {
 
     }
     public void handleOptionSelected(String option, RoomView roomView) {
+
         int index = MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
         Room room = MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
         switch (option) {
@@ -147,11 +149,7 @@ public class AddState implements State {
         elementsController.location(roomElement,roomView.getMouseLocation());
 
         room.setPendingElement(roomElement);
-
-        room.addSubscriber(room.getRoomView());
-        room.notifySubscriber(addStateManager);
-
-        room.setPendingElement(null);
+        room.notifySubscriber(this);
     }
     @Override
     public void update(Object o) {

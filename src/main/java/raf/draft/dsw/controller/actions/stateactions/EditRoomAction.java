@@ -19,7 +19,7 @@ public class EditRoomAction extends AbstractRoomAction {
         Object o=MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
 
         if(o instanceof Room){
-            ((Room) o).getRoomView().startEdit();
+            ((Room) o).getRoomView().startEditRoom();
         }
     }
 }

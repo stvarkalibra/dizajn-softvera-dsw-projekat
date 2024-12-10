@@ -29,9 +29,6 @@ public class JTabbedPanePublisher implements IPublisher {
                 if (index >= 0 && index < roomList.size()) {
                     Room selectedRoom = roomList.get(index);
                     notifySubscriber(selectedRoom);
-
-                    RoomView roomView = selectedRoom.getRoomView();
-                    roomView.getjPanelRoom().revalidate();
                 }
             }
 

@@ -64,7 +64,6 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                             for (DraftNode draftNodeBuilding : ((Building) draftNode).getChildrenList()) {
                                 if (draftNodeBuilding instanceof Room && !roomList.contains((Room) draftNodeBuilding)) {
                                     Room room=(Room) draftNodeBuilding;
-                                    room.addSubscriber(roomView);
                                     roomList.add(room);
 
                                     JPanel jPanel=new JPanel();
@@ -145,7 +144,6 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
     public void update(Object o) {
         if (o instanceof Room) {
             Room room=new Room(((Room) o).getNodeName(),((Room) o).getParent());
-            room.addSubscriber(roomView);
             room.addListener(() -> SwingUtilities.invokeLater(() -> updateTabLabel(room)));
             roomView = new RoomView(room);
             room.setRoomView(roomView);
