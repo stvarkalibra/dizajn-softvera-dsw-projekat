@@ -115,6 +115,7 @@ public class RoomView extends JPanel implements ISubscriber {
     public void startResize(){
         stateManager.setResizeState();
     }
+    public void startRotate(){stateManager.setRotateState();}
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
