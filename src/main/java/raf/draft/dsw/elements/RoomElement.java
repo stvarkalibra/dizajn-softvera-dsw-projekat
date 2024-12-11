@@ -14,8 +14,9 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     private int dimensionWidth;
     private int dimensionLenght;
     private int rotation;
+    private boolean rotatable = false;
     private List<ISubscriber> subscriberList=new ArrayList<>();
-    private Rectangle2D.Double bounds;
+    private Rectangle bounds;
 
     public RoomElement(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {
         super(nodeName, parent);
@@ -70,6 +71,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         else if (rotation > 3){
             rotation = 0;
         }
+        rotatable = true;
         this.rotation = rotation;
         this.notifySubscriber(this);
     }
@@ -115,11 +117,15 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         this.subscriberList = subscriberList;
     }
 
-    public Rectangle2D.Double getBounds() {
+    public Rectangle getBounds() {
         return bounds;
     }
 
-    public void setBounds(Rectangle2D.Double bounds) {
+    public void setBounds(Rectangle bounds) {
         this.bounds = bounds;
+    }
+
+    public boolean isRotatable() {
+        return rotatable;
     }
 }

@@ -48,11 +48,11 @@ public class ResizeState implements State {
                 double newWidth = initialBounds.getWidth() * (1 + scaleX);
                 double newHeight = initialBounds.getHeight() * (1 + scaleY);
 
-                element.setBounds(new Rectangle2D.Double(
-                        initialBounds.getX(),
-                        initialBounds.getY(),
-                        newWidth,
-                        newHeight
+                element.setBounds(new Rectangle(
+                        (int) initialBounds.getX(),
+                        (int) initialBounds.getY(),
+                        (int) newWidth,
+                        (int) newHeight
                 ));
 
                 element.setDimensionLenght((int) (newHeight / roomView.getK()));
@@ -68,11 +68,11 @@ public class ResizeState implements State {
             double newWidth = initialBounds.getWidth() * (1 + scaleX);
             double newHeight = initialBounds.getHeight() * (1 + scaleY);
 
-            elementBeingResized.setBounds(new Rectangle2D.Double(
-                    initialBounds.getX(),
-                    initialBounds.getY(),
-                    newWidth,
-                    newHeight
+            elementBeingResized.setBounds(new Rectangle(
+                    (int) initialBounds.getX(),
+                    (int) initialBounds.getY(),
+                    (int) newWidth,
+                    (int) newHeight
             ));
 
             dragStartPoint = dragEndPoint; // Update start point for next drag.

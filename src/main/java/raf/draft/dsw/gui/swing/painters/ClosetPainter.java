@@ -4,10 +4,7 @@ import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
 
 public class ClosetPainter extends MyPainter{
     public ClosetPainter(RoomElement element) {
@@ -16,6 +13,14 @@ public class ClosetPainter extends MyPainter{
 
     @Override
     public void paint(Graphics2D g, Point startPoint, int height, int width) {
+        System.out.println(getRoomElement());
+        AffineTransform originalTransform = g.getTransform();
+        int centerX = startPoint.x + width / 2;
+        int centerY = startPoint.y + height / 2;
+        g.translate(centerX, centerY);
+        g.translate(-centerX, -centerY);
+        g.rotate(Math.toRadians(getRoomElement().getRotation() * 90), centerX, centerY);
+
         BasicStroke stroke = new BasicStroke(5f);
         g.setStroke(stroke);
         Rectangle2D.Float rectangle2D = new Rectangle2D.Float(startPoint.x, startPoint.y, width, height);
@@ -28,6 +33,8 @@ public class ClosetPainter extends MyPainter{
         g.draw(line);
         g.draw(ellipse1);
         g.draw(ellipse2);
+
+        g.setTransform(originalTransform);
     }
     public Rectangle2D getMyBounds(RoomElement element){
         int x=element.getLocation().x;
@@ -38,7 +45,7 @@ public class ClosetPainter extends MyPainter{
         }
         double height=element.getDimensionLength()*k;
         double width=element.getDimensionWidth()*k;
-        element.setBounds(new Rectangle2D.Double(x,y,width,height));
+        element.setBounds(new Rectangle(x,y,(int) width,(int) height));
         return new Rectangle2D.Double(x,y,width,height);
     }
     @Override

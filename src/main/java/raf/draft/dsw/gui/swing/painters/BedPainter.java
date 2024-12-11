@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 public class BedPainter extends MyPainter {
 
@@ -17,26 +18,16 @@ public class BedPainter extends MyPainter {
 
     @Override
     public void paint(Graphics2D g, Point startPoint, int height, int width) {
-        // Zapamti originalnu transformaciju
+        System.out.println(getRoomElement());
         AffineTransform originalTransform = g.getTransform();
-
-        // Centriraj oko početne tačke
-        int centerX = startPoint.x + width / 2;
-        int centerY = startPoint.y + height / 2;
-
-        // Postavi transformaciju tako da se rotira oko centra elementa
-        AffineTransform transform = new AffineTransform();
-        transform.translate(centerX, centerY); // Translate to center
-        transform.rotate(Math.toRadians(getRoomElement().getRotation() * 90)); // Rotate by 90 degrees per rotation
-        transform.translate(-centerX, -centerY); // Translate back
-
-        g.transform(transform);
-
-        // Postavi debljinu linije
+            int centerX = startPoint.x + width / 2;
+            int centerY = startPoint.y + height / 2;
+            g.translate(centerX, centerY);
+            g.translate(-centerX, -centerY);
+            g.rotate(Math.toRadians(getRoomElement().getRotation() * 90), centerX, centerY);
         BasicStroke stroke = new BasicStroke(5f);
         g.setStroke(stroke);
 
-        // Nacrti osnovni pravougaonik kreveta
         GeneralPath path = new GeneralPath();
         path.moveTo(startPoint.getX(), startPoint.getY());
         path.lineTo(startPoint.getX(), startPoint.getY() + height);
@@ -44,7 +35,6 @@ public class BedPainter extends MyPainter {
         path.lineTo(startPoint.getX() + width, startPoint.getY());
         path.closePath();
 
-        // Nacrti jastuk
         GeneralPath pillowPath = new GeneralPath();
         pillowPath.moveTo(startPoint.getX() + width / 8, startPoint.getY() + height / 10);
         pillowPath.lineTo(startPoint.getX() + 7 * width / 8, startPoint.getY() + height / 10);
@@ -52,12 +42,24 @@ public class BedPainter extends MyPainter {
         pillowPath.lineTo(startPoint.getX() + width / 8, startPoint.getY() + 2 * height / 8);
         pillowPath.closePath();
 
-        // Nacrtaj oblike na ekranu
         g.draw(path);
         g.draw(pillowPath);
 
-        // Vratimo originalnu transformaciju
         g.setTransform(originalTransform);
+    }
+
+    // Ova funkcija crta sve selektovane krevete
+    public void paintSelectedBeds(Graphics2D g, List<RoomElement> selectedBeds) {
+        for (RoomElement element : selectedBeds) {
+            if (element instanceof Bed) {
+                Bed bed = (Bed) element;
+                Point startPoint = bed.getLocation();
+                int height = (int) bed.getDimensionLength();
+                int width = (int) bed.getDimensionWidth();
+                // Pozovi paint metodu za svaki selektovani krevet
+                paint(g, startPoint, height, width);
+            }
+        }
     }
 
     public Rectangle2D getMyBounds(RoomElement element) {
@@ -69,7 +71,7 @@ public class BedPainter extends MyPainter {
         }
         double height = element.getDimensionLength() * k;
         double width = element.getDimensionWidth() * k;
-        element.setBounds(new Rectangle2D.Double(x, y, width, height));
+        element.setBounds(new Rectangle(x,y,(int) width,(int) height));
         return new Rectangle2D.Double(x, y, width, height);
     }
 

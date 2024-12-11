@@ -166,8 +166,9 @@ public class RoomView extends JPanel implements ISubscriber {
             RoomElement roomElement=(RoomElement) o;
             for(MyPainter painter:painterList){
                 System.out.println("before");
-                if (roomElement == painter.getRoomElement()){
-                    System.out.println("if");
+                if (roomElement.equals(painter.getRoomElement())){
+                    System.out.println("Prvi "+roomElement);
+                    System.out.println("Drugi "+painter.getRoomElement());
                     jPanelRoom.revalidate();
                     jPanelRoom.repaint();
                 }
