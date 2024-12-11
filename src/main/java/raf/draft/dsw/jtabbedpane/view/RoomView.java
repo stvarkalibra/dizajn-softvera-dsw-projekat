@@ -31,7 +31,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class RoomView extends JPanel implements ISubscriber {
+    private static int brojac = 1;
     private JPanel jPanelRoom;
     private Room room;
     private RoomController roomController;
@@ -162,19 +164,20 @@ public class RoomView extends JPanel implements ISubscriber {
             jPanelRoom.repaint();
         }
 
-        else if(o instanceof RoomElement){
-            RoomElement roomElement=(RoomElement) o;
-            for(MyPainter painter:painterList){
-                System.out.println("before");
-                if (roomElement.equals(painter.getRoomElement())){
-                    System.out.println("Prvi "+roomElement);
-                    System.out.println("Drugi "+painter.getRoomElement());
+        else if (o instanceof RoomElement) {
+            RoomElement roomElement = (RoomElement) o;
+            for (MyPainter painter : painterList) {
+                if (roomElement.equals(painter.getRoomElement())) {
                     jPanelRoom.revalidate();
                     jPanelRoom.repaint();
                 }
             }
         }
+
     }
+
+
+
 
     public List<RoomElement> getSelectedElements() {
         return selectedElements;
