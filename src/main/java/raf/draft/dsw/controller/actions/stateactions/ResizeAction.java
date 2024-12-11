@@ -17,7 +17,6 @@ public class ResizeAction extends AbstractRoomAction {
     public void actionPerformed(ActionEvent e) {
         int index= MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
         Object o=MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
-        System.out.println("ZURIOSM");
         if(o instanceof Room){
             ((Room) o).getRoomView().startResize();
         }

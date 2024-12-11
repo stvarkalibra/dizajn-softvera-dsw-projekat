@@ -36,13 +36,9 @@ public class ResizeState implements State {
     public void myMouseDragged(RoomView roomView, MouseEvent e) {
         if (elementBeingResized != null) {
             Point dragEndPoint = e.getPoint();
-
-            // Update bounds only if the mouse is near the corner
             if (isNearBottomRightCorner(elementBeingResized.getBounds(), dragEndPoint)) {
                 double newWidth = dragEndPoint.getX() - elementBeingResized.getBounds().getX();
                 double newHeight = dragEndPoint.getY() - elementBeingResized.getBounds().getY();
-
-                // Update the bounds with new width and height
                 elementBeingResized.setBounds(new Rectangle2D.Double(
                         elementBeingResized.getBounds().getX(),
                         elementBeingResized.getBounds().getY(),
@@ -55,12 +51,10 @@ public class ResizeState implements State {
                 elementBeingResized.setDimensionWidth((int)(newWidth/roomView.getK()));
 
                 System.out.println(elementBeingResized.getDimensionWidth() + " " + elementBeingResized.getDimensionLength());
-
-                // Optionally log to debug
                 System.out.println("Resizing Element to Width: " + newWidth + ", Height: " + newHeight);
 
-                // Request repaint to show live resizing
-                roomView.repaint();
+                roomView.getjPanelRoom().revalidate();
+                roomView.getjPanelRoom().repaint();
             }
         }
     }
