@@ -8,25 +8,20 @@ import java.awt.event.MouseEvent;
 public class RotateState implements State{
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-
     }
 
     @Override
     public void myMouseScrolled() {
-
     }
 
     @Override
     public void myMouseReleased() {
-
     }
 
     @Override
     public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
-
     }
     @Override
     public void update(Object o) {
-
     }
 }

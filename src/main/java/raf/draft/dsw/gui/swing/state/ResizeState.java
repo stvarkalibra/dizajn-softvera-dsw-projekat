@@ -13,7 +13,7 @@ public class ResizeState implements State {
     private Point dragStartPoint;
     private List<RoomElement> elementsBeingResized = new ArrayList<>();
     private List<Rectangle2D> initialBoundsList = new ArrayList<>();
-    private RoomElement elementBeingMoved;
+    private RoomElement elementBeingResized;
 
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
@@ -31,14 +31,13 @@ public class ResizeState implements State {
         dragStartPoint = null;
         elementsBeingResized.clear();
         initialBoundsList.clear();
-        elementBeingMoved = null;
+        elementBeingResized = null;
     }
 
     @Override
     public void myMouseDragged(RoomView roomView, MouseEvent e) {
         Point dragEndPoint = e.getPoint();
         if (!elementsBeingResized.isEmpty()) {
-            // Resizing multiple elements.
             double scaleX = (dragEndPoint.getX() - dragStartPoint.getX()) / dragStartPoint.getX();
             double scaleY = (dragEndPoint.getY() - dragStartPoint.getY()) / dragStartPoint.getY();
 
@@ -59,17 +58,21 @@ public class ResizeState implements State {
                 element.setDimensionLenght((int) (newHeight / roomView.getK()));
                 element.setDimensionWidth((int) (newWidth / roomView.getK()));
             }
-        } else if (elementBeingMoved != null) {
+        } else if (elementBeingResized != null) {
             // Moving a single element.
-            double deltaX = dragEndPoint.getX() - dragStartPoint.getX();
-            double deltaY = dragEndPoint.getY() - dragStartPoint.getY();
+            double scaleX = (dragEndPoint.getX() - dragStartPoint.getX()) / dragStartPoint.getX();
+            double scaleY = (dragEndPoint.getY() - dragStartPoint.getY()) / dragStartPoint.getY();
 
-            Rectangle2D bounds = elementBeingMoved.getBounds();
-            elementBeingMoved.setBounds(new Rectangle2D.Double(
-                    bounds.getX() + deltaX,
-                    bounds.getY() + deltaY,
-                    bounds.getWidth(),
-                    bounds.getHeight()
+            Rectangle2D initialBounds = initialBoundsList.get(0);
+
+            double newWidth = initialBounds.getWidth() * (1 + scaleX);
+            double newHeight = initialBounds.getHeight() * (1 + scaleY);
+
+            elementBeingResized.setBounds(new Rectangle2D.Double(
+                    initialBounds.getX(),
+                    initialBounds.getY(),
+                    newWidth,
+                    newHeight
             ));
 
             dragStartPoint = dragEndPoint; // Update start point for next drag.
@@ -84,18 +87,14 @@ public class ResizeState implements State {
         dragStartPoint = e.getPoint();
 
         if (roomView.getSelectedElements().size() == 1) {
-            // Handle single element.
             RoomElement selectedElement = roomView.getSelectedElements().get(0);
             if (isNearBottomRightCorner(selectedElement.getBounds(), dragStartPoint)) {
-                // Start resizing.
                 elementsBeingResized.add(selectedElement);
                 initialBoundsList.add((Rectangle2D) selectedElement.getBounds().clone());
             } else if (selectedElement.getBounds().contains(dragStartPoint)) {
-                // Start moving.
-                elementBeingMoved = selectedElement;
+                elementBeingResized = selectedElement;
             }
         } else if (!roomView.getSelectedElements().isEmpty()) {
-            // Handle multiple elements.
             for (RoomElement element : roomView.getSelectedElements()) {
                 if (isNearBottomRightCorner(element.getBounds(), dragStartPoint)) {
                     elementsBeingResized.addAll(roomView.getSelectedElements());
