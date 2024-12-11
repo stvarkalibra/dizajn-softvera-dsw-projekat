@@ -9,6 +9,6 @@ import java.awt.event.MouseEvent;
 public interface State extends ISubscriber {
     void myMouseClicked(RoomView roomView, Point location);
     void myMouseScrolled();
-    void myMouseReleased();
+    void myMouseReleased(RoomView roomView);
     void myMouseDragged(RoomView roomView, MouseEvent event);
 }

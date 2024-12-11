@@ -74,7 +74,7 @@ public class EditRoomState implements State{
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
 
     }
 

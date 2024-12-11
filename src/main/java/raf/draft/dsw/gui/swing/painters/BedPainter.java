@@ -53,7 +53,6 @@ public class BedPainter extends MyPainter{
     @Override
     public boolean elementAt(RoomElement element, Point pos) {
         Rectangle2D newBounds=getMyBounds(element);
-        System.out.println(newBounds);
         if(element.getParent() instanceof Room){
             for(RoomElement roomElement:((Room) element.getParent()).getRoomElements()){
                 System.out.println(roomElement.getBounds());

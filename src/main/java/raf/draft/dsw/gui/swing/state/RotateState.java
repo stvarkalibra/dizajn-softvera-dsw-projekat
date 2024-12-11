@@ -15,7 +15,7 @@ public class RotateState implements State{
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
     }
 
     @Override

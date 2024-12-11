@@ -58,7 +58,7 @@ public class WashingMachineState implements State {
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
 
     }
 

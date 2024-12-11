@@ -17,7 +17,7 @@ public class DeleteState implements State{
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
 
     }
 

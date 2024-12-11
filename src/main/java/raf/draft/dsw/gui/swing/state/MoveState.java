@@ -17,7 +17,7 @@ public class MoveState implements State{
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
 
     }
 

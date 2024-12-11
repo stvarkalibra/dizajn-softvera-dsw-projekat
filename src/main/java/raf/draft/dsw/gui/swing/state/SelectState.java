@@ -27,7 +27,7 @@ public class SelectState implements State {
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
         dragStartPoint = null;
         selectionRectangle = null;
     }
