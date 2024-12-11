@@ -7,6 +7,7 @@ import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.gui.swing.painters.BedPainter;
 import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.gui.swing.state.AddState;
 import raf.draft.dsw.gui.swing.state.ResizeState;
@@ -159,6 +160,18 @@ public class RoomView extends JPanel implements ISubscriber {
             ((AddState) o).myMouseClickedElement(this,mouseLocation);
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
+        }
+
+        else if(o instanceof RoomElement){
+            RoomElement roomElement=(RoomElement) o;
+            for(MyPainter painter:painterList){
+                System.out.println("before");
+                if (roomElement == painter.getRoomElement()){
+                    System.out.println("if");
+                    jPanelRoom.revalidate();
+                    jPanelRoom.repaint();
+                }
+            }
         }
     }
 

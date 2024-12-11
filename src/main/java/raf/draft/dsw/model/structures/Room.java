@@ -38,6 +38,7 @@ public class Room extends DraftNodeComposite implements IPublisher {
 
     @Override
     public void addSubscriber(ISubscriber s) {
+        System.out.println(s + "added");
         if(!subscriberList.contains(s)){
             subscriberList.add(s);
             System.out.println(s);

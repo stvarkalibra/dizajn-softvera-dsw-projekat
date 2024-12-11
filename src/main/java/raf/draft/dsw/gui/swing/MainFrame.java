@@ -2,6 +2,7 @@ package raf.draft.dsw.gui.swing;
 
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ActionManager;
+import raf.draft.dsw.core.ActionStateManager;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.state.State;
 import raf.draft.dsw.gui.swing.state.StateManager;
@@ -31,7 +32,7 @@ import java.util.List;
 public class MainFrame extends JFrame implements ISubscriber{
     private JTabbedPaneRightPanel jTabbedPaneRightPanel;
     private ActionManager actionManager = new ActionManager();
-    private StateManager stateManager=new StateManager();
+    private ActionStateManager actionStateManager = new ActionStateManager();
     private static MainFrame mainFrameInstance;
     private DraftTree draftTree;
     private JTree jTree;
@@ -74,7 +75,7 @@ public class MainFrame extends JFrame implements ISubscriber{
         MyToolBar toolBar = new MyToolBar(actionManager);
         add(toolBar, BorderLayout.NORTH);
 
-        StateToolBar stateToolBar=new StateToolBar(stateManager);
+        StateToolBar stateToolBar=new StateToolBar(actionStateManager);
 
         JPanel stateJPanel=new JPanel(new BorderLayout());
         add(stateJPanel,BorderLayout.CENTER);
@@ -108,14 +109,6 @@ public class MainFrame extends JFrame implements ISubscriber{
     }
     /*--------------------------------------------------------------------------------*/
     //GETTERS && SETTERS
-
-    public StateManager getStateManager() {
-        return stateManager;
-    }
-
-    public void setStateManager(StateManager stateManager) {
-        this.stateManager = stateManager;
-    }
 
     public DraftTree getDraftTree() {
         return draftTree;

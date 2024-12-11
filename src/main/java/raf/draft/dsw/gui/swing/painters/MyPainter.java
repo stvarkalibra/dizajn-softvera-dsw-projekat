@@ -21,4 +21,5 @@ public abstract class MyPainter {
     public void setRoomElement(RoomElement roomElement) {
         this.roomElement = roomElement;
     }
+
 }

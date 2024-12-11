@@ -9,6 +9,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 
 public class BedState implements State {
     private BedPainter bp;
@@ -45,11 +46,10 @@ public class BedState implements State {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
-                if(roomElement instanceof Bed){
+                if (roomElement instanceof Bed) {
                     Point elementLocation = roomElement.getLocation();
                     bp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }
-
             }
         }
     }
@@ -70,6 +70,6 @@ public class BedState implements State {
     }
     @Override
     public void update(Object o) {
-
+        
     }
 }

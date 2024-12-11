@@ -5,23 +5,24 @@ import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 public class BedPainter extends MyPainter{
-    private Bed bed;
+
+    Point startPoint;
+
+    private AffineTransform originalTransform = null;
 
     public BedPainter(RoomElement element) {
         super(element);
-        if(element instanceof Bed){
-            bed=(Bed) element;
-        }
-
     }
 
     @Override
     public void paint(Graphics2D g, Point startPoint, int height, int width) {
         BasicStroke stroke = new BasicStroke(5f);
+        this.startPoint = new Point(startPoint.x, startPoint.y);
         g.setStroke(stroke);
         GeneralPath path = new GeneralPath();
         path.moveTo(startPoint.getX(), startPoint.getY());
@@ -37,7 +38,23 @@ public class BedPainter extends MyPainter{
         pillowPath.closePath();
         g.draw(path);
         g.draw(pillowPath);
+        if (originalTransform == null) {
+            originalTransform = g.getTransform();
+        }
+        g.setTransform(originalTransform);
     }
+
+    public void myRotate(Graphics2D g){
+        originalTransform = g.getTransform();
+
+        AffineTransform transform = new AffineTransform();
+        transform.translate(startPoint.getX(), startPoint.getY());
+        transform.rotate(Math.toRadians(getRoomElement().getRotation() * 90));
+        g.transform(transform);
+    }
+
+
+
     public Rectangle2D getMyBounds(RoomElement element){
         int x=element.getLocation().x;
         int y=element.getLocation().y;
