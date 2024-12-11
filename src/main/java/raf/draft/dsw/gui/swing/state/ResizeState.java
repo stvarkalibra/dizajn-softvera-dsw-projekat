@@ -6,11 +6,14 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResizeState implements State {
     private Point dragStartPoint;
-    private RoomElement elementBeingResized;
-    private Rectangle2D initialBounds;
+    private List<RoomElement> elementsBeingResized = new ArrayList<>();
+    private List<Rectangle2D> initialBoundsList = new ArrayList<>();
+    private RoomElement elementBeingMoved;
 
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
@@ -24,62 +27,91 @@ public class ResizeState implements State {
 
     @Override
     public void myMouseReleased() {
-        if (elementBeingResized != null) {
-            // Finalize resizing and clear the reference.
-            elementBeingResized = null;
-            dragStartPoint = null;
-            initialBounds = null;
-        }
+        // Clear references when the drag ends.
+        dragStartPoint = null;
+        elementsBeingResized.clear();
+        initialBoundsList.clear();
+        elementBeingMoved = null;
     }
 
     @Override
     public void myMouseDragged(RoomView roomView, MouseEvent e) {
-        if (elementBeingResized != null) {
-            Point dragEndPoint = e.getPoint();
-            if (isNearBottomRightCorner(elementBeingResized.getBounds(), dragEndPoint)) {
-                double newWidth = dragEndPoint.getX() - elementBeingResized.getBounds().getX();
-                double newHeight = dragEndPoint.getY() - elementBeingResized.getBounds().getY();
-                elementBeingResized.setBounds(new Rectangle2D.Double(
-                        elementBeingResized.getBounds().getX(),
-                        elementBeingResized.getBounds().getY(),
+        Point dragEndPoint = e.getPoint();
+        if (!elementsBeingResized.isEmpty()) {
+            // Resizing multiple elements.
+            double scaleX = (dragEndPoint.getX() - dragStartPoint.getX()) / dragStartPoint.getX();
+            double scaleY = (dragEndPoint.getY() - dragStartPoint.getY()) / dragStartPoint.getY();
+
+            for (int i = 0; i < elementsBeingResized.size(); i++) {
+                RoomElement element = elementsBeingResized.get(i);
+                Rectangle2D initialBounds = initialBoundsList.get(i);
+
+                double newWidth = initialBounds.getWidth() * (1 + scaleX);
+                double newHeight = initialBounds.getHeight() * (1 + scaleY);
+
+                element.setBounds(new Rectangle2D.Double(
+                        initialBounds.getX(),
+                        initialBounds.getY(),
                         newWidth,
                         newHeight
                 ));
-                System.out.println(elementBeingResized.getDimensionWidth() + " " + elementBeingResized.getDimensionLength());
 
-                elementBeingResized.setDimensionLenght((int)(newHeight/roomView.getK()));
-                elementBeingResized.setDimensionWidth((int)(newWidth/roomView.getK()));
-
-                System.out.println(elementBeingResized.getDimensionWidth() + " " + elementBeingResized.getDimensionLength());
-                System.out.println("Resizing Element to Width: " + newWidth + ", Height: " + newHeight);
-
-                roomView.getjPanelRoom().revalidate();
-                roomView.getjPanelRoom().repaint();
+                element.setDimensionLenght((int) (newHeight / roomView.getK()));
+                element.setDimensionWidth((int) (newWidth / roomView.getK()));
             }
+        } else if (elementBeingMoved != null) {
+            // Moving a single element.
+            double deltaX = dragEndPoint.getX() - dragStartPoint.getX();
+            double deltaY = dragEndPoint.getY() - dragStartPoint.getY();
+
+            Rectangle2D bounds = elementBeingMoved.getBounds();
+            elementBeingMoved.setBounds(new Rectangle2D.Double(
+                    bounds.getX() + deltaX,
+                    bounds.getY() + deltaY,
+                    bounds.getWidth(),
+                    bounds.getHeight()
+            ));
+
+            dragStartPoint = dragEndPoint; // Update start point for next drag.
         }
+
+        // Repaint for live updates.
+        roomView.getjPanelRoom().revalidate();
+        roomView.getjPanelRoom().repaint();
     }
-
-
 
     public void myMousePressed(RoomView roomView, MouseEvent e) {
-        for (RoomElement element : roomView.getSelectedElements()) {
-            if (element.getBounds() != null && isNearBottomRightCorner(element.getBounds(), e.getPoint())) {
-                System.out.println("BLIZU");
-                elementBeingResized = element;
-                initialBounds = element.getBounds();
-                dragStartPoint = e.getPoint();
-                break;
+        dragStartPoint = e.getPoint();
+
+        if (roomView.getSelectedElements().size() == 1) {
+            // Handle single element.
+            RoomElement selectedElement = roomView.getSelectedElements().get(0);
+            if (isNearBottomRightCorner(selectedElement.getBounds(), dragStartPoint)) {
+                // Start resizing.
+                elementsBeingResized.add(selectedElement);
+                initialBoundsList.add((Rectangle2D) selectedElement.getBounds().clone());
+            } else if (selectedElement.getBounds().contains(dragStartPoint)) {
+                // Start moving.
+                elementBeingMoved = selectedElement;
+            }
+        } else if (!roomView.getSelectedElements().isEmpty()) {
+            // Handle multiple elements.
+            for (RoomElement element : roomView.getSelectedElements()) {
+                if (isNearBottomRightCorner(element.getBounds(), dragStartPoint)) {
+                    elementsBeingResized.addAll(roomView.getSelectedElements());
+                    for (RoomElement el : elementsBeingResized) {
+                        initialBoundsList.add((Rectangle2D) el.getBounds().clone());
+                    }
+                    break;
+                }
             }
         }
     }
+
     private boolean isNearBottomRightCorner(Rectangle2D bounds, Point mousePoint) {
         final int cornerSize = 10;
-
         double xDistance = mousePoint.getX() - bounds.getMaxX();
         double yDistance = mousePoint.getY() - bounds.getMaxY();
-        System.out.println(Math.abs(xDistance) <= cornerSize && Math.abs(yDistance) <= cornerSize);
-        System.out.println("Mouse Position: " + mousePoint);
-        System.out.println("Element Bounds: " + bounds);
         return Math.abs(xDistance) <= cornerSize && Math.abs(yDistance) <= cornerSize;
     }
 
