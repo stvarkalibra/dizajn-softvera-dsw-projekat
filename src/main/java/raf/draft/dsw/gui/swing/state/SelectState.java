@@ -19,6 +19,7 @@ public class SelectState implements State {
                 break;
             }
         }
+        System.out.println(roomView.getSelectedElements());
     }
 
     @Override
@@ -48,6 +49,7 @@ public class SelectState implements State {
                 }
             }
         }
+        System.out.println(roomView.getSelectedElements());
     }
 
     public void myMousePressed(MouseEvent e) {

@@ -9,6 +9,7 @@ import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.gui.swing.state.AddState;
+import raf.draft.dsw.gui.swing.state.ResizeState;
 import raf.draft.dsw.gui.swing.state.SelectState;
 import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
@@ -47,6 +48,7 @@ public class RoomView extends JPanel implements ISubscriber {
     }
 
     public void initialize() {
+        RoomView roomView=this;
         Toolkit kit = Toolkit.getDefaultToolkit();
         jPanelRoom=new JPanel();
         jPanelRoom.setPreferredSize(new Dimension((int)kit.getScreenSize().getWidth(),(int)kit.getScreenSize().getHeight()));
@@ -67,6 +69,8 @@ public class RoomView extends JPanel implements ISubscriber {
             public void mousePressed(MouseEvent e) {
                 if(stateManager.getCurrentState() instanceof SelectState){
                     ((SelectState) stateManager.getCurrentState()).myMousePressed(e);
+                }if(stateManager.getCurrentState() instanceof ResizeState){
+                    ((ResizeState) stateManager.getCurrentState()).myMousePressed(roomView,e);
                 }
             }
 
@@ -107,6 +111,9 @@ public class RoomView extends JPanel implements ISubscriber {
     }
     public void startSelect(){
         stateManager.setSelectState();
+    }
+    public void startResize(){
+        stateManager.setResizeState();
     }
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
