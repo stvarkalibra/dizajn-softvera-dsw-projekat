@@ -79,7 +79,7 @@ public class RoomView extends JPanel implements ISubscriber {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                myMouseReleased(roomView);
+                myMouseReleased();
             }
 
             @Override
@@ -118,138 +118,134 @@ public class RoomView extends JPanel implements ISubscriber {
     public void startResize(){
         stateManager.setResizeState();
     }
-    public void startRotate(){stateManager.setRotateState();}
-    public void startMove(){stateManager.setMoveState();}
+    public void startRotate(){
+        stateManager.setRotateState();}
+    public void startMove(){
+        stateManager.setMoveState();
+    }
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
-    public void myMouseReleased(){
+    public void myMouseReleased() {
         stateManager.getCurrentState().myMouseReleased(this);
-    public void myMouseScrolled(){
+    }
+    public void myMouseScrolled () {
         stateManager.getCurrentState().myMouseScrolled();
     }
-    public void myMouseDragged(){
-        stateManager.getCurrentState().myMouseDragged(this,mouseEvent);
+    public void myMouseDragged () {
+        stateManager.getCurrentState().myMouseDragged(this, mouseEvent);
     }
 
-    //END OF STATE-PATTERN
-    @Override
-    public void update(Object o) {
-        if(o instanceof Room){
-            double heightPixel=((Room) o).convertCmIntoPixel(room.getHeight());
-            double widthPixel=((Room) o).convertCmIntoPixel(room.getWidth());
+        //END OF STATE-PATTERN
+        @Override
+        public void update(Object o) {
+            if (o instanceof Room) {
+                double heightPixel = ((Room) o).convertCmIntoPixel(room.getHeight());
+                double widthPixel = ((Room) o).convertCmIntoPixel(room.getWidth());
 
-            double aspectRatio=widthPixel/heightPixel;
-            double jPanelRoomHeight=MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getHeight();
-            double jPanelRoomWidth=MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getWidth();
+                double aspectRatio = widthPixel / heightPixel;
+                double jPanelRoomHeight = MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getHeight();
+                double jPanelRoomWidth = MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getWidth();
 
-            if(aspectRatio>1){
-                widthPixel=jPanelRoomWidth;
-                heightPixel=widthPixel/aspectRatio;
-                k = widthPixel/room.getWidth();
-            }else{
-                heightPixel=jPanelRoomHeight;
-                widthPixel=heightPixel*aspectRatio;
-                k = heightPixel/room.getHeight();
-            }
+                if (aspectRatio > 1) {
+                    widthPixel = jPanelRoomWidth;
+                    heightPixel = widthPixel / aspectRatio;
+                    k = widthPixel / room.getWidth();
+                } else {
+                    heightPixel = jPanelRoomHeight;
+                    widthPixel = heightPixel * aspectRatio;
+                    k = heightPixel / room.getHeight();
+                }
 
-            jPanelRoom.setPreferredSize(new Dimension((int)widthPixel,(int)heightPixel));
-            jPanelRoom.revalidate();
-            jPanelRoom.repaint();
-        }
-
-        else if(o instanceof AddState){
-            ((AddState) o).myMouseClickedElement(this,mouseLocation);
-            jPanelRoom.revalidate();
-            jPanelRoom.repaint();
-        }
-
-        else if (o instanceof RoomElement) {
-            RoomElement roomElement = (RoomElement) o;
-            for (MyPainter painter : painterList) {
-                if (roomElement.equals(painter.getRoomElement())) {
-                    jPanelRoom.revalidate();
-                    jPanelRoom.repaint();
+                jPanelRoom.setPreferredSize(new Dimension((int) widthPixel, (int) heightPixel));
+                jPanelRoom.revalidate();
+                jPanelRoom.repaint();
+            } else if (o instanceof AddState) {
+                ((AddState) o).myMouseClickedElement(this, mouseLocation);
+                jPanelRoom.revalidate();
+                jPanelRoom.repaint();
+            } else if (o instanceof RoomElement) {
+                RoomElement roomElement = (RoomElement) o;
+                for (MyPainter painter : painterList) {
+                    if (roomElement.equals(painter.getRoomElement())) {
+                        jPanelRoom.revalidate();
+                        jPanelRoom.repaint();
+                    }
                 }
             }
         }
 
+        public List<RoomElement> getSelectedElements () {
+            return selectedElements;
+        }
+
+        public void setSelectedElements (List < RoomElement > selectedElements) {
+            this.selectedElements = selectedElements;
+        }
+
+        public Point getMouseLocation () {
+            return mouseLocation;
+        }
+
+        public void setMouseLocation (Point mouseLocation){
+            this.mouseLocation = mouseLocation;
+        }
+
+        public JPanel getjPanelRoom () {
+            return jPanelRoom;
+        }
+
+        @Override
+        public int getWidth () {
+            return width;
+        }
+
+        @Override
+        public int getHeight () {
+            return height;
+        }
+
+        public void setjPanelRoom (JPanel jPanelRoom){
+            this.jPanelRoom = jPanelRoom;
+        }
+
+        public List<MyPainter> getPainterList () {
+            return painterList;
+        }
+
+        public void setPainterList (List < MyPainter > painterList) {
+            this.painterList = painterList;
+        }
+
+        public Room getRoom () {
+            return room;
+        }
+
+        public void setRoom (Room room){
+            this.room = room;
+        }
+
+        public RoomController getRoomController () {
+            return roomController;
+        }
+
+        public void setRoomController (RoomController roomController){
+            this.roomController = roomController;
+        }
+
+        public void setWidth ( int width){
+            this.width = width;
+        }
+
+        public void setHeight ( int height){
+            this.height = height;
+        }
+
+        public double getK () {
+            return k;
+        }
+
+        public void setK ( double k){
+            this.k = k;
+        }
     }
-
-
-
-
-    public List<RoomElement> getSelectedElements() {
-        return selectedElements;
-    }
-
-    public void setSelectedElements(List<RoomElement> selectedElements) {
-        this.selectedElements = selectedElements;
-    }
-
-    public Point getMouseLocation() {
-        return mouseLocation;
-    }
-
-    public void setMouseLocation(Point mouseLocation) {
-        this.mouseLocation = mouseLocation;
-    }
-
-    public JPanel getjPanelRoom() {
-        return jPanelRoom;
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
-
-    public void setjPanelRoom(JPanel jPanelRoom) {
-        this.jPanelRoom = jPanelRoom;
-    }
-
-    public List<MyPainter> getPainterList() {
-        return painterList;
-    }
-
-    public void setPainterList(List<MyPainter> painterList) {
-        this.painterList = painterList;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public RoomController getRoomController() {
-        return roomController;
-    }
-
-    public void setRoomController(RoomController roomController) {
-        this.roomController = roomController;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public double getK() {
-        return k;
-    }
-
-    public void setK(double k) {
-        this.k = k;
-    }
-}

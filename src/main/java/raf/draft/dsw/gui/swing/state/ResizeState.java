@@ -55,11 +55,11 @@ public class ResizeState implements State {
                 RoomElement element = elementsBeingResized.get(i);
                 Rectangle2D initialBounds = initialBoundsList.get(i);
 
-                element.setBounds(new Rectangle2D.Double(
-                        initialBounds.getX(),
-                        initialBounds.getY(),
-                        initialBounds.getWidth(),
-                        initialBounds.getHeight()
+                element.setBounds(new Rectangle(
+                        (int)initialBounds.getX(),
+                        (int)initialBounds.getY(),
+                        (int)initialBounds.getWidth(),
+                        (int)initialBounds.getHeight()
                 ));
                 element.setDimensionWidth((int) (initialBounds.getWidth() / roomView.getK()));
                 element.setDimensionLenght((int) (initialBounds.getHeight() / roomView.getK()));
