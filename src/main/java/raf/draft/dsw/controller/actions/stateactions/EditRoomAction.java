@@ -10,8 +10,8 @@ import java.awt.event.ActionEvent;
 public class EditRoomAction extends AbstractRoomAction {
     public EditRoomAction() {
         putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(NAME, "EditRoomDimension");
+        putValue(SHORT_DESCRIPTION, "Edit room dimension");
     }
     @Override
     public void actionPerformed(ActionEvent e) {

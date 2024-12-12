@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 
 public class SelectAction extends AbstractRoomAction {
     public SelectAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/select.png"));
+        putValue(NAME, "SelectElements");
+        putValue(SHORT_DESCRIPTION, "Select elements");
     }
 
     @Override

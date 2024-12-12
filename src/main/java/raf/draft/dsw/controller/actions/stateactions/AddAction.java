@@ -13,9 +13,9 @@ import java.awt.event.ActionListener;
 public class AddAction extends AbstractRoomAction {
 
     public AddAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/addNode.png"));
+        putValue(NAME, "AddElement");
+        putValue(SHORT_DESCRIPTION, "Add a new element");
     }
 
     @Override

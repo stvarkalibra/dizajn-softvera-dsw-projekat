@@ -11,9 +11,9 @@ import java.awt.event.ActionEvent;
 
 public class RotateLeftAction extends AbstractRoomAction {
     public RotateLeftAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/rotateLeft.png"));
+        putValue(NAME, "RotateToLeft");
+        putValue(SHORT_DESCRIPTION, "Rotate to left");
     }
 
     @Override

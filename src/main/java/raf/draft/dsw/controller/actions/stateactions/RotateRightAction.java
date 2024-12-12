@@ -12,9 +12,9 @@ import static javax.swing.Action.SMALL_ICON;
 
 public class RotateRightAction extends AbstractRoomAction {
     public RotateRightAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/rotateRight.png"));
+        putValue(NAME, "RotateToRight");
+        putValue(SHORT_DESCRIPTION, "Rotate to right");
     }
 
     @Override
