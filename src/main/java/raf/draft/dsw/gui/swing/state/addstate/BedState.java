@@ -15,7 +15,6 @@ public class BedState implements State {
     private BedPainter bp;
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-
         bp=new BedPainter(roomView.getRoom().getPendingElement());
         if (!bp.elementAt(roomView.getRoom().getPendingElement(), location)) {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
@@ -47,6 +46,7 @@ public class BedState implements State {
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if (roomElement instanceof Bed) {
+                    bp=new BedPainter(roomElement);
                     Point elementLocation = roomElement.getLocation();
                     bp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }
