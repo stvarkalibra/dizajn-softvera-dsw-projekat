@@ -26,7 +26,7 @@ public class ResizeState implements State {
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
         // Clear references when the drag ends.
         dragStartPoint = null;
         elementsBeingResized.clear();

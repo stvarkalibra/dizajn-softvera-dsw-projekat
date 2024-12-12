@@ -2,7 +2,9 @@ package raf.draft.dsw.elements;
 
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -42,6 +44,16 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
 
     public void setLocation(Point location) {
         this.location = location;
+        double k=0;
+        if(this.getParent() instanceof Room){
+            k=((Room) this.getParent()).getRoomView().getK();
+        }
+        setBounds(new Rectangle(this.location.x,this.location.y,dimensionWidth,dimensionLenght));
+        updateBounds(k); // Ensure bounds are updated whenever the location changes
+    }
+
+    private void updateBounds(double k) {
+        this.bounds = new Rectangle(location.x, location.y, (int)(dimensionWidth*k), (int)(dimensionLenght*k));
     }
 
     public int getDimensionWidth() {
@@ -99,10 +111,6 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         for(ISubscriber subscriber: subscriberList){
             subscriber.update(o);
         }
-    }
-
-    public int getDimensionLenght() {
-        return dimensionLenght;
     }
 
     public void setDimensionLenght(int dimensionLenght) {

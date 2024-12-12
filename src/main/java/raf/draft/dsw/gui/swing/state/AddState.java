@@ -42,8 +42,8 @@ public class AddState implements State {
     public void myMouseClickedElement(RoomView roomView,Point location){
         addStateManager.getCurrentState().myMouseClicked(roomView, location);
     }
-    public void myMouseReleasedElement(){
-        addStateManager.getCurrentState().myMouseReleased();
+    public void myMouseReleasedElement(RoomView roomView){
+        addStateManager.getCurrentState().myMouseReleased(roomView);
     }
     public void myMouseScrolledElement(){
         addStateManager.getCurrentState().myMouseScrolled();
@@ -88,7 +88,7 @@ public class AddState implements State {
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
 
     }
 

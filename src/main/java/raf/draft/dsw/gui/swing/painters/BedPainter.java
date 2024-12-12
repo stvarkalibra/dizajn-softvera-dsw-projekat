@@ -47,7 +47,6 @@ public class BedPainter extends MyPainter {
         g.draw(pillowPath);
 
         g.setTransform(originalTransform);
-
     }
 
 

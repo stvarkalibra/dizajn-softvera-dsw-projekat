@@ -13,13 +13,18 @@ public class SelectState implements State {
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
         roomView.getSelectedElements().clear();
+
+
         for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
             if (roomElement.getBounds().contains(location)) {
                 roomView.getSelectedElements().add(roomElement);
+                System.out.println(location);
+                System.out.println(roomView.getSelectedElements().get(0).getBounds());
+                System.out.println(roomView.getSelectedElements());
                 break;
             }
         }
-        System.out.println(roomView.getSelectedElements());
+
     }
 
     @Override
@@ -27,7 +32,7 @@ public class SelectState implements State {
     }
 
     @Override
-    public void myMouseReleased() {
+    public void myMouseReleased(RoomView roomView) {
         dragStartPoint = null;
         selectionRectangle = null;
     }
