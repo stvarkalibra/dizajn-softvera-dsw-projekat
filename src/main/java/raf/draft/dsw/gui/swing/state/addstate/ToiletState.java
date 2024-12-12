@@ -48,8 +48,9 @@ public class ToiletState implements State {
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof ToiletSeat){
-                Point elementLocation = roomElement.getLocation();
-                top.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                    top=new ToiletPainter(roomElement);
+                    Point elementLocation = roomElement.getLocation();
+                    top.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }
             }
         }

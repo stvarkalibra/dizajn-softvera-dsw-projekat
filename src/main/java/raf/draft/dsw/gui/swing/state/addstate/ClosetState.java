@@ -46,6 +46,7 @@ public class ClosetState implements State{
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof  Closet){
+                    cp=new ClosetPainter(roomElement);
                     Point elementLocation = roomElement.getLocation();
                     cp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }

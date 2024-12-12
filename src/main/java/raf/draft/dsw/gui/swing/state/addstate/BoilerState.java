@@ -50,9 +50,9 @@ public class BoilerState implements State{
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             BoilerPainter bop = new BoilerPainter(boiler);
-            bop.paint(g2d, location, (int) (boiler.getDimensionLength() * k), (int) (boiler.getDimensionWidth() *  k));
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof Boiler) {
+                    bop=new BoilerPainter(roomElement);
                     Point elementLocation = roomElement.getLocation();
                     bop.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }

@@ -1,14 +1,38 @@
 package raf.draft.dsw.gui.swing.state;
 
+import raf.draft.dsw.elements.RoomElement;
+import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DeleteState implements State{
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
+        Iterator<RoomElement> roomElementIterator = roomView.getRoom().getRoomElements().iterator();
+        while (roomElementIterator.hasNext()) {
+            RoomElement roomElement = roomElementIterator.next();
+            if (roomElement.getBounds().contains(location)) {
+                roomElementIterator.remove();  // Safely remove the element from the list
+                roomView.getRoom().getChildrenList().remove(roomElement);  // Remove from ChildrenList
 
+                // Remove corresponding painter from the painter list
+                Iterator<MyPainter> painterIterator = roomView.getPainterList().iterator();
+                while (painterIterator.hasNext()) {
+                    MyPainter painter = painterIterator.next();
+                    if (painter.getRoomElement().equals(roomElement)) {
+                        painterIterator.remove();
+                        break;
+                    }
+                }
+            }
+        }
+        roomView.getjPanelRoom().revalidate();
+        roomView.getjPanelRoom().repaint();
     }
 
     @Override

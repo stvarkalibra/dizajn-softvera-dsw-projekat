@@ -4,6 +4,7 @@ import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
@@ -15,6 +16,14 @@ public class ToiletPainter extends MyPainter{
 
     @Override
     public void paint(Graphics2D g, Point startPoint, int height, int width) {
+        AffineTransform originalTransform = g.getTransform();
+        AffineTransform affineTransform = g.getTransform();
+
+        int centerX = startPoint.x + width / 2;
+        int centerY = startPoint.y + height / 2;
+        g.rotate(Math.toRadians(getRoomElement().getRotation() * 90), centerX, centerY);
+        g.transform(affineTransform);
+
         BasicStroke stroke = new BasicStroke(5f);
         g.setStroke(stroke);
         Rectangle2D.Float rectangle = new Rectangle2D.Float(startPoint.x, startPoint.y, width, height / 4);
@@ -39,6 +48,8 @@ public class ToiletPainter extends MyPainter{
         g.draw(arc);
         g.draw(innerPath);
         g.draw(arcInner);
+
+        g.setTransform(originalTransform);
     }
     public Rectangle2D getMyBounds(RoomElement element){
         int x=element.getLocation().x;
