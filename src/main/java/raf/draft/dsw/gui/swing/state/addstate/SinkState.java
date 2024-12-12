@@ -48,8 +48,9 @@ public class SinkState implements State {
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof Sink){
-                Point elementLocation = roomElement.getLocation();
-                sp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
+                    sp=new SinkPainter(roomElement);
+                    Point elementLocation = roomElement.getLocation();
+                    sp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }
             }
         }

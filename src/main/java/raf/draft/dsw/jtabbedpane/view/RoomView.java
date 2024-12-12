@@ -123,6 +123,7 @@ public class RoomView extends JPanel implements ISubscriber {
     public void startMove(){
         stateManager.setMoveState();
     }
+    public void startDelete(){stateManager.setDeleteState();}
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }

@@ -45,6 +45,7 @@ public class WashingMachineState implements State {
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof WashingMachine) {
+                    wp=new WashingMachinePainter(roomElement);
                     Point elementLocation = roomElement.getLocation();
                     wp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }

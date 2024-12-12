@@ -48,6 +48,7 @@ public class BathTubState implements State{
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof BathTub) {
+                    btp=new BathtubPainter(roomElement);
                     Point elementLocation = roomElement.getLocation();
                     btp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }

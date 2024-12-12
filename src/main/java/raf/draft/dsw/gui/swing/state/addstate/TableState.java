@@ -49,6 +49,7 @@ public class TableState implements State {
             Graphics2D g2d = (Graphics2D) g;
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof Table) {
+                    tp=new TablePainter(roomElement);
                     Point elementLocation = roomElement.getLocation();
                     tp.paint(g2d, elementLocation, (int) (roomElement.getDimensionLength() * k), (int) (roomElement.getDimensionWidth() * k));
                 }
