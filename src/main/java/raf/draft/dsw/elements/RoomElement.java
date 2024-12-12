@@ -2,7 +2,9 @@ package raf.draft.dsw.elements;
 
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -14,8 +16,9 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     private int dimensionWidth;
     private int dimensionLenght;
     private int rotation;
+    private boolean rotatable = false;
     private List<ISubscriber> subscriberList=new ArrayList<>();
-    private Rectangle2D.Double bounds;
+    private Rectangle bounds;
 
     public RoomElement(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {
         super(nodeName, parent);
@@ -41,6 +44,16 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
 
     public void setLocation(Point location) {
         this.location = location;
+        double k=0;
+        if(this.getParent() instanceof Room){
+            k=((Room) this.getParent()).getRoomView().getK();
+        }
+        setBounds(new Rectangle(this.location.x,this.location.y,dimensionWidth,dimensionLenght));
+        updateBounds(k); // Ensure bounds are updated whenever the location changes
+    }
+
+    private void updateBounds(double k) {
+        this.bounds = new Rectangle(location.x, location.y, (int)(dimensionWidth*k), (int)(dimensionLenght*k));
     }
 
     public int getDimensionWidth() {
@@ -64,7 +77,15 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     public void setRotation(int rotation) {
+        if (rotation < 0){
+            rotation = 3;
+        }
+        else if (rotation > 3){
+            rotation = 0;
+        }
+        rotatable = true;
         this.rotation = rotation;
+        this.notifySubscriber(this);
     }
 
     @Override
@@ -92,10 +113,6 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         }
     }
 
-    public int getDimensionLenght() {
-        return dimensionLenght;
-    }
-
     public void setDimensionLenght(int dimensionLenght) {
         this.dimensionLenght = dimensionLenght;
     }
@@ -108,11 +125,15 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         this.subscriberList = subscriberList;
     }
 
-    public Rectangle2D.Double getBounds() {
+    public Rectangle getBounds() {
         return bounds;
     }
 
-    public void setBounds(Rectangle2D.Double bounds) {
+    public void setBounds(Rectangle bounds) {
         this.bounds = bounds;
+    }
+
+    public boolean isRotatable() {
+        return rotatable;
     }
 }

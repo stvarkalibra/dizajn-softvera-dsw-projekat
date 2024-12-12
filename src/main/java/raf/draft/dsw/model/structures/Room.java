@@ -40,7 +40,6 @@ public class Room extends DraftNodeComposite implements IPublisher {
     public void addSubscriber(ISubscriber s) {
         if(!subscriberList.contains(s)){
             subscriberList.add(s);
-            System.out.println(s);
         }
 
     }

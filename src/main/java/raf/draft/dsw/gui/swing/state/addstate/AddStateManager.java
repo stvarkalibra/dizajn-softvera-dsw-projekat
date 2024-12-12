@@ -1,5 +1,7 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
+import raf.draft.dsw.controller.actions.stateactions.RotateLeftAction;
+import raf.draft.dsw.controller.actions.stateactions.RotateRightAction;
 import raf.draft.dsw.elements.BathTub;
 import raf.draft.dsw.elements.Boiler;
 import raf.draft.dsw.elements.ToiletSeat;
@@ -39,4 +41,6 @@ public class AddStateManager{
     }public State getCurrentState() {
         return currentState;
     }
+
+
 }

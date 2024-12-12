@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 
 public class ResizeAction extends AbstractRoomAction {
     public ResizeAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/resize.png"));
+        putValue(NAME, "ResizeElements");
+        putValue(SHORT_DESCRIPTION, "Resize elements");
     }
 
     @Override

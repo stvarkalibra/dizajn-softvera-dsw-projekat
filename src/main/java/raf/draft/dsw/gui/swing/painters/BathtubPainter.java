@@ -31,7 +31,7 @@ public class BathtubPainter extends MyPainter{
         }
         double height=element.getDimensionLength()*k;
         double width=element.getDimensionWidth()*k;
-        element.setBounds(new Rectangle2D.Double(x,y,width,height));
+        element.setBounds(new Rectangle(x,y,(int) width,(int) height));
         return new Rectangle2D.Double(x,y,width,height);
     }
     @Override

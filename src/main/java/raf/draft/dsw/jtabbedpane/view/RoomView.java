@@ -7,6 +7,7 @@ import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.gui.swing.painters.BedPainter;
 import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.gui.swing.state.AddState;
 import raf.draft.dsw.gui.swing.state.ResizeState;
@@ -30,7 +31,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class RoomView extends JPanel implements ISubscriber {
+    private static int brojac = 1;
     private JPanel jPanelRoom;
     private Room room;
     private RoomController roomController;
@@ -116,12 +119,12 @@ public class RoomView extends JPanel implements ISubscriber {
         stateManager.setResizeState();
     }
     public void startRotate(){stateManager.setRotateState();}
+    public void startMove(){stateManager.setMoveState();}
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
-    public void myMouseReleased(RoomView roomView){
-        stateManager.getCurrentState().myMouseReleased(roomView);
-    }
+    public void myMouseReleased(){
+        stateManager.getCurrentState().myMouseReleased(this);
     public void myMouseScrolled(){
         stateManager.getCurrentState().myMouseScrolled();
     }
@@ -160,7 +163,21 @@ public class RoomView extends JPanel implements ISubscriber {
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
         }
+
+        else if (o instanceof RoomElement) {
+            RoomElement roomElement = (RoomElement) o;
+            for (MyPainter painter : painterList) {
+                if (roomElement.equals(painter.getRoomElement())) {
+                    jPanelRoom.revalidate();
+                    jPanelRoom.repaint();
+                }
+            }
+        }
+
     }
+
+
+
 
     public List<RoomElement> getSelectedElements() {
         return selectedElements;
