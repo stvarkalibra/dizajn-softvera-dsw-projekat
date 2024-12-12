@@ -79,7 +79,7 @@ public class RoomView extends JPanel implements ISubscriber {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                myMouseReleased();
+                myMouseReleased(roomView);
             }
 
             @Override
@@ -125,7 +125,6 @@ public class RoomView extends JPanel implements ISubscriber {
     }
     public void myMouseReleased(){
         stateManager.getCurrentState().myMouseReleased(this);
-    }
     public void myMouseScrolled(){
         stateManager.getCurrentState().myMouseScrolled();
     }

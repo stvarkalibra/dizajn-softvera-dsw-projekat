@@ -25,9 +25,9 @@ public class MoveState implements State {
 
     @Override
     public void myMouseReleased(RoomView roomView) {
+
         List<RoomElement> selectedElements = roomView.getSelectedElements();
         if (selectedElements.isEmpty()) return;
-
         boolean hasIntersection = false;
         for (RoomElement element : selectedElements) {
             for (RoomElement other : roomView.getRoom().getRoomElements()) {
