@@ -3,6 +3,7 @@ package raf.draft.dsw.gui.swing.state;
 import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
@@ -66,6 +67,7 @@ public class EditRoomState implements State{
                 JOptionPane.showMessageDialog(null, message);
             }
         }
+        MainFrame.getInstance().getActionStateManager().getAddAction().setEnabled(true);
     }
 
     @Override

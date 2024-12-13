@@ -16,6 +16,7 @@ public class ActionStateManager {
     private DeleteAction deleteAction = new DeleteAction();
 
     public AddAction getAddAction() {
+        addAction.setEnabled(false);
         return addAction;
     }
 

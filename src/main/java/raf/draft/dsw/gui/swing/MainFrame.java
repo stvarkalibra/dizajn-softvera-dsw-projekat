@@ -230,6 +230,14 @@ public class MainFrame extends JFrame implements ISubscriber{
     public void setjTabbedPaneImplementation(JTabbedPaneImplementation jTabbedPaneImplementation) {
         this.jTabbedPaneImplementation = jTabbedPaneImplementation;
     }
+
+    public ActionStateManager getActionStateManager() {
+        return actionStateManager;
+    }
+
+    public void setActionStateManager(ActionStateManager actionStateManager) {
+        this.actionStateManager = actionStateManager;
+    }
     /*--------------------------------------------------------------------------------*/
 
     @Override

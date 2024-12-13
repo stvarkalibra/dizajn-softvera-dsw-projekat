@@ -7,9 +7,7 @@ import java.net.URL;
 
 public abstract class AbstractRoomAction extends AbstractAction {
 
-    public AbstractRoomAction() {
-
-    }
+    public AbstractRoomAction() {}
     public Icon loadIcon(String path){
         Icon icon = null;
         URL ImageURL = getClass().getResource(path);

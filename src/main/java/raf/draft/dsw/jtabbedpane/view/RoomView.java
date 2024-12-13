@@ -37,6 +37,7 @@ import java.util.List;
 
 public class RoomView extends JPanel implements ISubscriber {
     private JPanel jPanelRoom;
+    private boolean editStateEntered=false;
     private Room room;
     private RoomController roomController;
     private int width, height;
@@ -295,4 +296,11 @@ public class RoomView extends JPanel implements ISubscriber {
         public void setK ( double k){
             this.k = k;
         }
+
+    public boolean isEditStateEntered() {
+        return editStateEntered;
     }
+    public void setEditStateEntered(boolean editStateEntered) {
+        this.editStateEntered = editStateEntered;
+    }
+}
