@@ -146,13 +146,18 @@ public class AddState implements State {
             return;
         }
         ElementsController elementsController = new ElementsController(roomView.getK());
-        elementsController.setLength(elementDimensionFrame.getLenght());
-        elementsController.setWidth(elementDimensionFrame.getWidth());
-        elementsController.dimensions(roomElement);
-        elementsController.location(roomElement, location);
+        if (elementDimensionFrame.getLenght() != 0 && elementDimensionFrame.getWidth() != 0) {
+            elementsController.setLength(elementDimensionFrame.getLenght());
+            elementsController.setWidth(elementDimensionFrame.getWidth());
 
-        room.setPendingElement(roomElement);
-        room.notifySubscriber(this);
+            elementsController.dimensions(roomElement);
+            elementsController.location(roomElement, location);
+
+            room.setPendingElement(roomElement);
+            room.notifySubscriber(this);
+        } else{
+            JOptionPane.showMessageDialog(null,"YOU_MUST_FILL_ALL_FIELDS","EMPTY FIElDS",JOptionPane.ERROR_MESSAGE);
+        }
     }
     @Override
     public void update(Object o) {
