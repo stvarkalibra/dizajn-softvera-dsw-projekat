@@ -17,12 +17,10 @@ public class SinkPainter extends MyPainter{
     @Override
     public void paint(Graphics2D g, Point startPoint, int height, int width) {
         AffineTransform originalTransform = g.getTransform();
-        AffineTransform affineTransform = g.getTransform();
 
         int centerX = startPoint.x + width / 2;
         int centerY = startPoint.y + height / 2;
         g.rotate(Math.toRadians(getRoomElement().getRotation() * 90), centerX, centerY);
-        g.transform(affineTransform);
 
         BasicStroke stroke = new BasicStroke(5f);
         g.setStroke(stroke);
