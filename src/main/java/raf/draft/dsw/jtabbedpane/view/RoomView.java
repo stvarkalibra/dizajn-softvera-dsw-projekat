@@ -33,7 +33,6 @@ import java.util.List;
 
 
 public class RoomView extends JPanel implements ISubscriber {
-    private static int brojac = 1;
     private JPanel jPanelRoom;
     private Room room;
     private RoomController roomController;
@@ -44,6 +43,8 @@ public class RoomView extends JPanel implements ISubscriber {
     private List<RoomElement> selectedElements=new ArrayList<>();
     private MouseEvent mouseEvent;
     double k=0;
+    private Point initialMousePosition;
+    private Point initialRoomPosition;
     public RoomView(Room room){
         this.room=room;
         roomController=new RoomController();
@@ -53,27 +54,36 @@ public class RoomView extends JPanel implements ISubscriber {
     public void initialize() {
         RoomView roomView=this;
         Toolkit kit = Toolkit.getDefaultToolkit();
-        jPanelRoom=new JPanel();
-        jPanelRoom.setPreferredSize(new Dimension((int)kit.getScreenSize().getWidth(),(int)kit.getScreenSize().getHeight()));
-        if(room.getParent() instanceof Building){
+        jPanelRoom = new JPanel();
+        jPanelRoom.setPreferredSize(new Dimension((int) kit.getScreenSize().getWidth(), (int) kit.getScreenSize().getHeight()));
+        jPanelRoom.setLayout(null);
+        JScrollPane scrollPane = new JScrollPane(jPanelRoom);
+        scrollPane.setPreferredSize(new Dimension(1000, 1000));
+        add(scrollPane);
+        if (room.getParent() instanceof Building) {
             jPanelRoom.setBackground(((Building) room.getParent()).getColor());
         }
-        if(room.getParent() instanceof Project){
+        if (room.getParent() instanceof Project) {
             jPanelRoom.setBackground(((Project) room.getParent()).getColor());
         }
         jPanelRoom.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mouseLocation=e.getPoint();
+                mouseLocation = e.getPoint();
                 myMouseClicked();
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if(stateManager.getCurrentState() instanceof SelectState){
-                    ((SelectState) stateManager.getCurrentState()).myMousePressed(e);
-                }if(stateManager.getCurrentState() instanceof ResizeState){
-                    ((ResizeState) stateManager.getCurrentState()).myMousePressed(roomView,e);
+                if (selectedElements.isEmpty()) {
+                    initialMousePosition = e.getPoint();
+                    initialRoomPosition = jPanelRoom.getLocation();
+                } else {
+                    if (stateManager.getCurrentState() instanceof SelectState) {
+                        ((SelectState) stateManager.getCurrentState()).myMousePressed(e);
+                    } else if (stateManager.getCurrentState() instanceof ResizeState) {
+                        ((ResizeState) stateManager.getCurrentState()).myMousePressed(roomView, e);
+                    }
                 }
             }
 
@@ -84,19 +94,27 @@ public class RoomView extends JPanel implements ISubscriber {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
             }
         });
+
+        // Mouse motion listener to move the room
         jPanelRoom.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                mouseEvent=e;
-                myMouseDragged();
+                if (initialMousePosition != null) {
+                    int deltaX = e.getX() - initialMousePosition.x;
+                    int deltaY = e.getY() - initialMousePosition.y;
+                    Point newRoomPosition = new Point(initialRoomPosition.x + deltaX, initialRoomPosition.y + deltaY);
+                    jPanelRoom.setLocation(newRoomPosition);
+                    roomView.revalidate();
+                    roomView.repaint();
+                } else {
+                    myMouseDragged();
+                }
             }
 
             @Override

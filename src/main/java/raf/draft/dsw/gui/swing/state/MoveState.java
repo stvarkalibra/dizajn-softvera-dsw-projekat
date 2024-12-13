@@ -57,32 +57,52 @@ public class MoveState implements State {
         if (selectedElements.isEmpty()) return;
 
         Point currentMousePosition = mouseEvent.getPoint();
-
-        // Inicijalizacija za prvo povlačenje
         if (initialMousePosition == null) {
             initialMousePosition = currentMousePosition;
             initialElementPositions = new ArrayList<>();
             for (RoomElement element : selectedElements) {
-                initialElementPositions.add(new Point(element.getLocation())); // Gornji levi ugao
+                initialElementPositions.add(new Point(element.getLocation()));
             }
         }
-
-        // Računanje pomeraja
         int deltaX = currentMousePosition.x - initialMousePosition.x;
         int deltaY = currentMousePosition.y - initialMousePosition.y;
-
-        // Pomeranje elemenata
         for (RoomElement element : selectedElements) {
             Point originalLocation = initialElementPositions.get(selectedElements.indexOf(element));
             Point newLocation = new Point(
                     originalLocation.x + deltaX,
                     originalLocation.y + deltaY
             );
-            element.setLocation(newLocation); // This will update bounds as well
+            newLocation = snapToEdge(newLocation, roomView, element);
+            element.setLocation(newLocation);
         }
-
         roomView.getjPanelRoom().repaint();
     }
+
+    private Point snapToEdge(Point location, RoomView roomView, RoomElement element) {
+        int roomWidth = roomView.getjPanelRoom().getWidth();
+        int roomHeight = roomView.getjPanelRoom().getHeight();
+
+        int elementWidth = element.getDimensionWidth()*(int)roomView.getK();
+        int elementHeight = element.getDimensionLength()*(int)roomView.getK();
+
+        int leftEdge = location.x;
+        int rightEdge = location.x + elementWidth;
+        int topEdge = location.y;
+        int bottomEdge = location.y + elementHeight;
+
+        if (leftEdge < 10) {
+            location.x = 0;
+        } else if (rightEdge > roomWidth - 10) {
+            location.x = roomWidth - elementWidth;
+        }if (topEdge < 10) {
+            location.y = 0;
+        } else if (bottomEdge > roomHeight - 10) {
+            location.y = roomHeight - elementHeight;
+        }
+
+        return location;
+    }
+
 
 
     @Override
