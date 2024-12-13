@@ -24,6 +24,7 @@ public class BoilerState implements State{
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(bop);
+            roomView.addElementToTree(roomView.getRoom().getPendingElement());
             BoilerState.FrameWork framework = new BoilerState.FrameWork((Boiler) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());
             roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);

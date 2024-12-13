@@ -22,6 +22,7 @@ public class SinkState implements State {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(sp);
+            roomView.addElementToTree(roomView.getRoom().getPendingElement());
             SinkState.FrameWork framework = new SinkState.FrameWork((Sink) roomView.getRoom().getPendingElement(), location, roomView.getK(), roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());
             roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);

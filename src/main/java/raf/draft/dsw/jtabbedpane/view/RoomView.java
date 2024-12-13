@@ -16,6 +16,7 @@ import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
 import raf.draft.dsw.gui.swing.state.addstate.BedState;
 import raf.draft.dsw.jtabbedpane.controller.RoomController;
+import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.message.Message;
 import raf.draft.dsw.model.message.MessageType;
 import raf.draft.dsw.model.structures.Building;
@@ -23,6 +24,8 @@ import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -75,16 +78,12 @@ public class RoomView extends JPanel implements ISubscriber {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (selectedElements.isEmpty()) {
-                    initialMousePosition = e.getPoint();
-                    initialRoomPosition = jPanelRoom.getLocation();
-                } else {
-                    if (stateManager.getCurrentState() instanceof SelectState) {
-                        ((SelectState) stateManager.getCurrentState()).myMousePressed(e);
-                    } else if (stateManager.getCurrentState() instanceof ResizeState) {
-                        ((ResizeState) stateManager.getCurrentState()).myMousePressed(roomView, e);
-                    }
+                if (stateManager.getCurrentState() instanceof SelectState) {
+                    ((SelectState) stateManager.getCurrentState()).myMousePressed(e);
+                } if(stateManager.getCurrentState() instanceof ResizeState){
+                    ((ResizeState) stateManager.getCurrentState()).myMousePressed(roomView,e);
                 }
+
             }
 
             @Override
@@ -105,16 +104,8 @@ public class RoomView extends JPanel implements ISubscriber {
         jPanelRoom.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (initialMousePosition != null) {
-                    int deltaX = e.getX() - initialMousePosition.x;
-                    int deltaY = e.getY() - initialMousePosition.y;
-                    Point newRoomPosition = new Point(initialRoomPosition.x + deltaX, initialRoomPosition.y + deltaY);
-                    jPanelRoom.setLocation(newRoomPosition);
-                    roomView.revalidate();
-                    roomView.repaint();
-                } else {
-                    myMouseDragged();
-                }
+                mouseEvent=e;
+                myMouseDragged();
             }
 
             @Override
@@ -153,6 +144,48 @@ public class RoomView extends JPanel implements ISubscriber {
     }
     public void myMouseDragged () {
         stateManager.getCurrentState().myMouseDragged(this, mouseEvent);
+    }
+    public void addElementToTree(RoomElement element) {
+        DraftTreeItem roomNode = findTreeNodeForRoom(this.room);
+        if (roomNode != null) {
+            roomNode.addChild(element);
+
+            DraftTreeItem newElementNode = new DraftTreeItem(element);
+            roomNode.add(newElementNode);
+            DefaultTreeModel model = (DefaultTreeModel) MainFrame.getInstance().getjTree().getModel();
+            model.nodeStructureChanged(roomNode);
+        }
+    }
+    public void deleteElementFromTree(RoomElement element){
+        DraftTreeItem roomNode=findTreeNodeForRoom(this.room);
+        if(roomNode!=null){
+            roomNode.removeChild(element);
+            DraftTreeItem newElementNode=new DraftTreeItem(element);
+            roomNode.remove(newElementNode);
+            DefaultTreeModel model=(DefaultTreeModel) MainFrame.getInstance().getjTree().getModel();
+            model.nodeStructureChanged(roomNode);
+        }
+    }
+    private DraftTreeItem findTreeNodeForRoom(Room room) {
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) MainFrame.getInstance().getjTree().getModel().getRoot();
+        return searchTreeNode(root, room);
+    }
+
+    private DraftTreeItem searchTreeNode(DefaultMutableTreeNode node, Room room) {
+        if (node instanceof DraftTreeItem) {
+            DraftTreeItem treeItem = (DraftTreeItem) node;
+            if (treeItem.getDraftNode() == room) {
+                return treeItem;
+            }
+        }
+        for (int i = 0; i < node.getChildCount(); i++) {
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+            DraftTreeItem result = searchTreeNode(child, room);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
     }
 
         //END OF STATE-PATTERN

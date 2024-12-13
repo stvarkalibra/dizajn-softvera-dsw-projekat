@@ -24,6 +24,7 @@ public class TableState implements State {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(tp);
+            roomView.addElementToTree(roomView.getRoom().getPendingElement());
             TableState.FrameWork framework = new TableState.FrameWork((Table) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());
             roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);

@@ -21,6 +21,7 @@ public class DoorState implements State {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(dp);
+            roomView.addElementToTree(roomView.getRoom().getPendingElement());
             DoorState.FrameWork framework = new DoorState.FrameWork((Door) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());
             roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);

@@ -42,6 +42,15 @@ public class DraftTreeItem extends DefaultMutableTreeNode implements ISubscriber
             this.draftNode.setNodeName(name);
         }
     }
+    public void addChild(DraftNode child) {
+        if (this.draftNode instanceof DraftNodeComposite) {
+            ((DraftNodeComposite) this.draftNode).addChild(child); // Dodavanje u logičku strukturu
+        }
+    }public void removeChild(DraftNode child){
+        if(this.draftNode instanceof DraftNodeComposite){
+            ((DraftNodeComposite) this.draftNode).removeChild(child);
+        }
+    }
 
     public DraftNode getDraftNode() {
         return draftNode;

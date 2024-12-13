@@ -19,6 +19,7 @@ public class WashingMachineState implements State {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(wp);
+            roomView.addElementToTree(roomView.getRoom().getPendingElement());
             WashingMachineState.FrameWork framework = new WashingMachineState.FrameWork((WashingMachine) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());
             roomView.getjPanelRoom().add(framework, BorderLayout.CENTER);
