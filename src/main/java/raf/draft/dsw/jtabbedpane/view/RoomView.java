@@ -127,12 +127,13 @@ public class RoomView extends JPanel implements ISubscriber {
     public void startResize(){
         stateManager.setResizeState();
     }
-    public void startRotate(){
-        stateManager.setRotateState();}
     public void startMove(){
         stateManager.setMoveState();
     }
     public void startDelete(){stateManager.setDeleteState();}
+    public void startEdit(){
+        stateManager.setEditState();
+    }
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
@@ -149,7 +150,6 @@ public class RoomView extends JPanel implements ISubscriber {
         DraftTreeItem roomNode = findTreeNodeForRoom(this.room);
         if (roomNode != null) {
             roomNode.addChild(element);
-
             DraftTreeItem newElementNode = new DraftTreeItem(element);
             roomNode.add(newElementNode);
             DefaultTreeModel model = (DefaultTreeModel) MainFrame.getInstance().getjTree().getModel();
@@ -217,13 +217,8 @@ public class RoomView extends JPanel implements ISubscriber {
                 jPanelRoom.revalidate();
                 jPanelRoom.repaint();
             } else if (o instanceof RoomElement) {
-                RoomElement roomElement = (RoomElement) o;
-                for (MyPainter painter : painterList) {
-                    if (roomElement.equals(painter.getRoomElement())) {
-                        jPanelRoom.revalidate();
-                        jPanelRoom.repaint();
-                    }
-                }
+                jPanelRoom.revalidate();
+                jPanelRoom.repaint();
             }
         }
 

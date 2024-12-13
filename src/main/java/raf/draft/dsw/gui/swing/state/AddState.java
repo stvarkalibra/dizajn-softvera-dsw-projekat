@@ -142,7 +142,7 @@ public class AddState implements State {
         }
 
         ElementDimensionFrame elementDimensionFrame=new ElementDimensionFrame();
-        ElementsController elementsController=new ElementsController();
+        ElementsController elementsController=new ElementsController(roomView.getK());
 
         elementsController.setLength(elementDimensionFrame.getLenght());
         elementsController.setWidth(elementDimensionFrame.getWidth());

@@ -7,9 +7,15 @@ import java.awt.*;
 public class ElementsController {
     private int length;
     private int width;
+    private double k;
+
+    public ElementsController(double k) {
+        this.k = k;
+    }
+
     public void dimensions(RoomElement roomElement){
-        roomElement.setDimensionWidth(width);
-        roomElement.setDimensionLength(length);
+        roomElement.setDimensionWidth(width,k);
+        roomElement.setDimensionLength(length,k);
     }
     public void location(RoomElement roomElement,Point location){
         roomElement.setLocation(location);

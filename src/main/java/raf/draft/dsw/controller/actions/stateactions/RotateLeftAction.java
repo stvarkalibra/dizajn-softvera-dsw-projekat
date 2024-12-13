@@ -23,7 +23,6 @@ public class RotateLeftAction extends AbstractRoomAction {
         if(o instanceof Room) {
             Room room = (Room)o;
             for(RoomElement roomElement : room.getRoomView().getSelectedElements()){
-                System.out.println(roomElement);
                 roomElement.addSubscriber(room.getRoomView());
                 roomElement.setRotation(roomElement.getRotation()-1);
             }

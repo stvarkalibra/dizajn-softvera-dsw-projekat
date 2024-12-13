@@ -61,8 +61,8 @@ public class ResizeState implements State {
                         (int)initialBounds.getWidth(),
                         (int)initialBounds.getHeight()
                 ));
-                element.setDimensionWidth((int) (initialBounds.getWidth() / roomView.getK()));
-                element.setDimensionLenght((int) (initialBounds.getHeight() / roomView.getK()));
+                element.setDimensionWidth((int) (initialBounds.getWidth() / roomView.getK()), roomView.getK());
+                element.setDimensionLength((int) (initialBounds.getHeight() / roomView.getK()), roomView.getK());
             }
         }
         dragStartPoint = null;
@@ -95,8 +95,8 @@ public class ResizeState implements State {
                         (int) newHeight
                 ));
 
-                element.setDimensionLenght((int) (newHeight / roomView.getK()));
-                element.setDimensionWidth((int) (newWidth / roomView.getK()));
+                element.setDimensionLength((int) (newHeight / roomView.getK()),roomView.getK());
+                element.setDimensionWidth((int) (newWidth / roomView.getK()), roomView.getK());
             }
         } else if (elementBeingResized != null) {
             double scaleX = (dragEndPoint.getX() - dragStartPoint.getX()) / dragStartPoint.getX();

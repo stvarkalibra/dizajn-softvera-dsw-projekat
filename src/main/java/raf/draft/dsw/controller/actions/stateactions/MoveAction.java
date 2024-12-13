@@ -15,7 +15,6 @@ public class MoveAction extends AbstractRoomAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Move");
         int index= MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
         Object o=MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
 

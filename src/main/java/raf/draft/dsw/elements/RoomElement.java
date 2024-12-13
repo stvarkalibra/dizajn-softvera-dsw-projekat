@@ -60,16 +60,18 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         return dimensionWidth;
     }
 
-    public void setDimensionWidth(int dimensionWidth) {
+    public void setDimensionWidth(int dimensionWidth, double k) {
         this.dimensionWidth = dimensionWidth;
+        updateBounds(k);
     }
 
     public int getDimensionLength() {
         return dimensionLenght;
     }
 
-    public void setDimensionLength(int dimensionLenght) {
+    public void setDimensionLength(int dimensionLenght,double k) {
         this.dimensionLenght = dimensionLenght;
+        updateBounds(k);
     }
 
     public int getRotation() {
@@ -80,8 +82,10 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         if (rotation < 0){
             rotation = 3;
         }
-        else if (rotation > 3){
+        else if (rotation == 4){
             rotation = 0;
+        }else if(rotation>4){
+            rotation=rotation%4;
         }
         rotatable = true;
         this.rotation = rotation;
@@ -111,10 +115,6 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         for(ISubscriber subscriber: subscriberList){
             subscriber.update(o);
         }
-    }
-
-    public void setDimensionLenght(int dimensionLenght) {
-        this.dimensionLenght = dimensionLenght;
     }
 
     public List<ISubscriber> getSubscriberList() {
