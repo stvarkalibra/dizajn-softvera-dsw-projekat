@@ -28,6 +28,7 @@ public class JTabbedPanePublisher implements IPublisher {
                 int index = jTabbedPane.getSelectedIndex();
                 if (index >= 0 && index < roomList.size()) {
                     Room selectedRoom = roomList.get(index);
+                    MainFrame.getInstance().getActionStateManager().getAddAction().setEnabled(selectedRoom.getRoomView().isEditStateEntered());
                     notifySubscriber(selectedRoom);
                 }
             }

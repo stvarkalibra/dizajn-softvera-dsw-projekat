@@ -54,6 +54,8 @@ public class EditRoomState implements State{
                 roomView.getRoom().setWidth(Integer.parseInt(widthText));
                 roomView.getRoom().addSubscriber(roomView);
                 roomView.getRoom().notifySubscriber(roomView.getRoom());
+                roomView.setEditStateEntered(true);
+                MainFrame.getInstance().getActionStateManager().getAddAction().setEnabled(true);
             } catch (NumberFormatException ex) {
                 MessageGenerator messageGenerator = new MessageGenerator();
                 FileLogger fileLogger = new FileLogger("files/log.txt");
@@ -67,7 +69,7 @@ public class EditRoomState implements State{
                 JOptionPane.showMessageDialog(null, message);
             }
         }
-        MainFrame.getInstance().getActionStateManager().getAddAction().setEnabled(true);
+
     }
 
     @Override

@@ -74,7 +74,7 @@ public class AddState implements State {
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    handleOptionSelected(option, roomView);
+                    handleOptionSelected(option, roomView,location);
                 }
             });
             popupMenu.add(menuItem);
@@ -96,7 +96,7 @@ public class AddState implements State {
     public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
 
     }
-    public void handleOptionSelected(String option, RoomView roomView) {
+    public void handleOptionSelected(String option, RoomView roomView,Point location) {
 
         int index = MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
         Room room = MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
@@ -140,14 +140,16 @@ public class AddState implements State {
             default:
                 break;
         }
-
-        ElementDimensionFrame elementDimensionFrame=new ElementDimensionFrame();
-        ElementsController elementsController=new ElementsController(roomView.getK());
-
+        ElementDimensionFrame elementDimensionFrame = new ElementDimensionFrame();
+        if(elementDimensionFrame.getWidth()>room.getWidth() || elementDimensionFrame.getLenght()>room.getHeight()){
+            JOptionPane.showMessageDialog(null,"ELEMENT_CANT_FIT_IN_THE_ROOM","ELEMENT_2_BIG",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ElementsController elementsController = new ElementsController(roomView.getK());
         elementsController.setLength(elementDimensionFrame.getLenght());
         elementsController.setWidth(elementDimensionFrame.getWidth());
         elementsController.dimensions(roomElement);
-        elementsController.location(roomElement,roomView.getMouseLocation());
+        elementsController.location(roomElement, location);
 
         room.setPendingElement(roomElement);
         room.notifySubscriber(this);

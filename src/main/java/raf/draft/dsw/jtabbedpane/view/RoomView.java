@@ -300,6 +300,7 @@ public class RoomView extends JPanel implements ISubscriber {
     public boolean isEditStateEntered() {
         return editStateEntered;
     }
+
     public void setEditStateEntered(boolean editStateEntered) {
         this.editStateEntered = editStateEntered;
     }
