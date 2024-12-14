@@ -82,6 +82,14 @@ public class RoomView extends JPanel implements ISubscriber {
                 if (stateManager.getCurrentState() instanceof ResizeState) {
                     ((ResizeState) stateManager.getCurrentState()).myMousePressed(roomView, e);
                 }
+                if (stateManager.getCurrentState() == null) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "You need to select state",
+                            "Information",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                }
             }
             @Override
             public void mouseReleased(MouseEvent e) {

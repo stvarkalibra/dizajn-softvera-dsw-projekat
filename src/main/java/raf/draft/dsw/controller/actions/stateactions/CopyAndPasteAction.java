@@ -6,12 +6,13 @@ import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.painters.*;
 import raf.draft.dsw.model.structures.Room;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class CopyAndPasteAction extends AbstractRoomAction {
     public CopyAndPasteAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
+        putValue(SMALL_ICON, loadIcon("/images/copy.png"));
         putValue(NAME, "Copy&Paste");
         putValue(SHORT_DESCRIPTION, "Copy and paste element");
     }
@@ -22,6 +23,7 @@ public class CopyAndPasteAction extends AbstractRoomAction {
         Object o=MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
         if(o instanceof Room) {
             Room room = (Room)o;
+            Boolean hasCollision = false;
 
             //COPY
             room.getCpyModel().clear();
@@ -79,24 +81,40 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                 }
 
 
-                newElement.setNodeName("Cloned_"+element.getNodeName());
-                room.addChild(newElement);
-                room.getRoomView().addElementToTree(newElement);
-                room.getRoomElements().add(newElement);
-                room.getChildrenList().add(newElement);
-                System.out.println(newElement);
-
-                room.getRoomView().getPainterList().add(newPainter);
-                for (MyPainter painter : room.getRoomView().getPainterList()){
-                    System.out.println(painter);
+                for (RoomElement otherElement : room.getRoomElements()) {
+                    if (newElement == otherElement) continue;
+                    if (newElement.getBounds().intersects(otherElement.getBounds())) {
+                        hasCollision = true;
+                        break;
+                    }
                 }
 
+                if (hasCollision) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "2_ELEMENTS_ARE_INTERSECTING",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    break;
+                } else{
+                    newElement.setNodeName("Cloned_"+element.getNodeName());
+                    room.addChild(newElement);
+                    room.getRoomView().addElementToTree(newElement);
+                    room.getRoomElements().add(newElement);
+                    room.getChildrenList().add(newElement);
+                    System.out.println(newElement);
 
-                room.getRoomView().getjPanelRoom().revalidate();
-                room.getRoomView().getjPanelRoom().repaint();
+                    room.getRoomView().getPainterList().add(newPainter);
+                    for (MyPainter painter : room.getRoomView().getPainterList()){
+                        System.out.println(painter);
+                    }
 
+
+                    room.getRoomView().getjPanelRoom().revalidate();
+                    room.getRoomView().getjPanelRoom().repaint();
+                }
             }
-
         }
     }
 }

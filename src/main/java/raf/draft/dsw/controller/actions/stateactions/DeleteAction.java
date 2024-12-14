@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 
 public class DeleteAction extends AbstractRoomAction {
     public DeleteAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/delete.png"));
+        putValue(NAME, "DeleteElement");
+        putValue(SHORT_DESCRIPTION, "Delete element");
     }
 
     @Override

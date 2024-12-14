@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 
 public class MoveAction extends AbstractRoomAction {
     public MoveAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/move.png"));
+        putValue(NAME, "MoveElements");
+        putValue(SHORT_DESCRIPTION, "Move Element");
     }
 
     @Override
