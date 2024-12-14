@@ -18,9 +18,6 @@ public class DraftTreeItem extends DefaultMutableTreeNode implements ISubscriber
     public DraftTreeItem(DraftNode node){
         this.draftNode=node;
     }
-    public List<DraftNode> A(DraftNodeComposite node){
-        return node.getChildrenList();
-    }
 
     @Override
     public String toString() {
@@ -44,7 +41,7 @@ public class DraftTreeItem extends DefaultMutableTreeNode implements ISubscriber
     }
     public void addChild(DraftNode child) {
         if (this.draftNode instanceof DraftNodeComposite) {
-            ((DraftNodeComposite) this.draftNode).addChild(child); // Dodavanje u logičku strukturu
+            ((DraftNodeComposite) this.draftNode).addChild(child);
         }
     }public void removeChild(DraftNode child){
         if(this.draftNode instanceof DraftNodeComposite){
