@@ -30,7 +30,10 @@ public class MoveState implements State {
 
         List<RoomElement> selectedElements = roomView.getSelectedElements();
 
-        if (selectedElements.isEmpty()) return;
+        if (selectedElements.isEmpty()) {
+            return;
+        }
+
         boolean hasIntersection = false;
         for (RoomElement element : selectedElements) {
             for (RoomElement other : roomView.getRoom().getRoomElements()) {
@@ -48,8 +51,11 @@ public class MoveState implements State {
                 System.out.println(selectedElements.get(i));
             }
         }
-        initialMousePosition = null;
-        initialElementPositions = null;
+
+        if (selectedElements.isEmpty()) {
+            initialMousePosition = null;
+            initialElementPositions = null;
+        }
 
         roomView.getjPanelRoom().repaint();
     }
@@ -59,27 +65,24 @@ public class MoveState implements State {
         List<RoomElement> selectedElements = roomView.getSelectedElements();
 
         if (selectedElements.isEmpty()) {
-            selectedElements=roomView.getRoom().getRoomElements();
-
             Point currentMousePosition = mouseEvent.getPoint();
 
             if (initialMousePosition == null) {
                 initialMousePosition = currentMousePosition;
                 initialElementPositions = new ArrayList<>();
-                for (RoomElement element : selectedElements) {
+                for (RoomElement element : roomView.getRoom().getRoomElements()) {
                     initialElementPositions.add(new Point(element.getLocation()));
                 }
             }
             int deltaX = currentMousePosition.x - initialMousePosition.x;
             int deltaY = currentMousePosition.y - initialMousePosition.y;
 
-            for (RoomElement element : selectedElements) {
-                Point originalLocation = initialElementPositions.get(selectedElements.indexOf(element));
+            for (RoomElement element : roomView.getRoom().getRoomElements()) {
+                Point originalLocation = initialElementPositions.get(roomView.getRoom().getChildrenList().indexOf(element));
                 Point newLocation = new Point(
                         originalLocation.x + deltaX,
                         originalLocation.y + deltaY
                 );
-                newLocation = snapToEdge(newLocation, roomView, element);
                 element.setLocation(newLocation);
             }
             roomView.getjPanelRoom().revalidate();
@@ -105,7 +108,6 @@ public class MoveState implements State {
                 newLocation = snapToEdge(newLocation, roomView, element);
                 element.setLocation(newLocation);
             }
-
             roomView.getjPanelRoom().repaint();
         }
     }
