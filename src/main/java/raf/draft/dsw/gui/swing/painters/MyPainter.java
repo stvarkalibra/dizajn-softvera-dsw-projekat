@@ -5,6 +5,7 @@ import raf.draft.dsw.elements.RoomElement;
 import java.awt.*;
 
 public abstract class MyPainter {
+    private double zoomScale=1.0;
     private RoomElement roomElement;
     public MyPainter(RoomElement element) {
         this.roomElement=element;
@@ -22,4 +23,12 @@ public abstract class MyPainter {
         this.roomElement = roomElement;
     }
 
+    public double getZoomScale() {
+        return zoomScale;
+    }
+
+    public void setZoomScale(double zoomScale) {
+        this.zoomScale = zoomScale;
+        System.out.println("SETOVANO" + zoomScale);
+    }
 }

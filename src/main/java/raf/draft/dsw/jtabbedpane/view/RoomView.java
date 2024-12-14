@@ -35,6 +35,7 @@ import java.util.List;
 
 public class RoomView extends JPanel implements ISubscriber {
     private JPanel jPanelRoom;
+    private double zoomScale=1.0;
     private boolean editStateEntered=false;
     private Room room;
     private RoomController roomController;
@@ -314,5 +315,13 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public boolean isEditStateEntered() {
         return editStateEntered;
+    }
+
+    public double getZoomScale() {
+        return zoomScale;
+    }
+
+    public void setZoomScale(double zoomScale) {
+        this.zoomScale = zoomScale;
     }
 }

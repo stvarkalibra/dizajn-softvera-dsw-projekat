@@ -20,10 +20,12 @@ public class BathtubPainter extends MyPainter{
 
         int centerX = startPoint.x + width / 2;
         int centerY = startPoint.y + height / 2;
-        g.scale(getRoomElement().getScale(), getRoomElement().getScale());
+        g.translate(centerX,centerY);
+        g.scale(((Room) getRoomElement().getParent()).getRoomView().getZoomScale(),((Room) getRoomElement().getParent()).getRoomView().getZoomScale());
+        g.translate(-centerX,-centerY);
         g.rotate(Math.toRadians(getRoomElement().getRotation() * 90), centerX, centerY);
 
-        BasicStroke stroke = new BasicStroke(5f);
+        BasicStroke stroke = new BasicStroke(3f);
         g.setStroke(stroke);
         Rectangle2D.Float rectangle = new Rectangle2D.Float(startPoint.x, startPoint.y, width, height);
         Ellipse2D.Float ellipse = new Ellipse2D.Float(startPoint.x + width / 4, startPoint.y + height / 8, width / 2, 3 * height / 4);

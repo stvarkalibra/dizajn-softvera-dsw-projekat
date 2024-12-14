@@ -22,7 +22,9 @@ public class BedPainter extends MyPainter {
 
         int centerX = startPoint.x + width / 2;
         int centerY = startPoint.y + height / 2;
-        g.scale(getRoomElement().getScale(), getRoomElement().getScale());
+        g.translate(centerX,centerY);
+        g.scale(((Room) getRoomElement().getParent()).getRoomView().getZoomScale(),((Room) getRoomElement().getParent()).getRoomView().getZoomScale());
+        g.translate(-centerX,-centerY);
         g.rotate(Math.toRadians(getRoomElement().getRotation() * 90), centerX, centerY);
 
         BasicStroke stroke = new BasicStroke(5f);
@@ -74,5 +76,25 @@ public class BedPainter extends MyPainter {
             }
         }
         return false;
+    }
+
+    @Override
+    public RoomElement getRoomElement() {
+        return super.getRoomElement();
+    }
+
+    @Override
+    public void setRoomElement(RoomElement roomElement) {
+        super.setRoomElement(roomElement);
+    }
+
+    @Override
+    public double getZoomScale() {
+        return super.getZoomScale();
+    }
+
+    @Override
+    public void setZoomScale(double zoomScale) {
+        super.setZoomScale(zoomScale);
     }
 }
