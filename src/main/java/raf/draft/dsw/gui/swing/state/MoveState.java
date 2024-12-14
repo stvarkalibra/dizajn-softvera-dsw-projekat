@@ -58,33 +58,11 @@ public class MoveState implements State {
     public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
         List<RoomElement> selectedElements = roomView.getSelectedElements();
 
-        // Ako nema selektovanih elemenata, pomeramo samo jPanelRoom
         if (selectedElements.isEmpty()) {
+            selectedElements=roomView.getRoom().getRoomElements();
+
             Point currentMousePosition = mouseEvent.getPoint();
 
-            // Ako je ovo prvi put da pomeramo jPanelRoom, čuvamo početnu poziciju jPanelRoom
-            if (initialRoomPosition == null) {
-                initialMousePosition = currentMousePosition;  // Postavljamo početnu poziciju miša
-                initialRoomPosition = roomView.getjPanelRoom().getLocation();  // Čuvamo početnu poziciju jPanelRoom
-            }
-
-            // Računamo pomeranje sobe
-            int deltaX = currentMousePosition.x - initialMousePosition.x;
-            int deltaY = currentMousePosition.y - initialMousePosition.y;
-
-            // Nova pozicija jPanelRoom
-            Point newRoomPosition = new Point(
-                    initialRoomPosition.x + deltaX,
-                    initialRoomPosition.y + deltaY
-            );
-
-            // Pomeramo samo jPanelRoom unutar JScrollPane
-            roomView.getjPanelRoom().setLocation(newRoomPosition);
-        } else {
-            // Postojeći kod za pomeranje selektovanih elemenata
-            Point currentMousePosition = mouseEvent.getPoint();
-
-            // Inicijalizuj samo prvi put kad se pomera
             if (initialMousePosition == null) {
                 initialMousePosition = currentMousePosition;
                 initialElementPositions = new ArrayList<>();
@@ -92,12 +70,32 @@ public class MoveState implements State {
                     initialElementPositions.add(new Point(element.getLocation()));
                 }
             }
-
-            // Računanje pomeranja elemenata
             int deltaX = currentMousePosition.x - initialMousePosition.x;
             int deltaY = currentMousePosition.y - initialMousePosition.y;
 
-            // Pomeri svaki selektovani element
+            for (RoomElement element : selectedElements) {
+                Point originalLocation = initialElementPositions.get(selectedElements.indexOf(element));
+                Point newLocation = new Point(
+                        originalLocation.x + deltaX,
+                        originalLocation.y + deltaY
+                );
+                newLocation = snapToEdge(newLocation, roomView, element);
+                element.setLocation(newLocation);
+            }
+            roomView.getjPanelRoom().revalidate();
+            roomView.getjPanelRoom().repaint();
+        } else {
+            Point currentMousePosition = mouseEvent.getPoint();
+
+            if (initialMousePosition == null) {
+                initialMousePosition = currentMousePosition;
+                initialElementPositions = new ArrayList<>();
+                for (RoomElement element : selectedElements) {
+                    initialElementPositions.add(new Point(element.getLocation()));
+                }
+            }
+            int deltaX = currentMousePosition.x - initialMousePosition.x;
+            int deltaY = currentMousePosition.y - initialMousePosition.y;
             for (RoomElement element : selectedElements) {
                 Point originalLocation = initialElementPositions.get(selectedElements.indexOf(element));
                 Point newLocation = new Point(
@@ -141,6 +139,5 @@ public class MoveState implements State {
 
     @Override
     public void update(Object o) {
-        // Not needed for this state
     }
 }

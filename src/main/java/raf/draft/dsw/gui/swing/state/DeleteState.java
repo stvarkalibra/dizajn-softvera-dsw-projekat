@@ -28,8 +28,8 @@ public class DeleteState implements State{
                         break;
                     }
                 }
-                //roomView.deleteElementFromTree(roomElement);
             }
+            roomView.getRoom().notifySubscriber(roomElement);
         }
         roomView.getjPanelRoom().revalidate();
         roomView.getjPanelRoom().repaint();

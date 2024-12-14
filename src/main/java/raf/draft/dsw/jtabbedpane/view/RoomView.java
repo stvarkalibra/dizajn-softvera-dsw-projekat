@@ -162,17 +162,33 @@ public class RoomView extends JPanel implements ISubscriber {
         }
     }
     public void deleteElementFromTree(RoomElement element){
-        DraftTreeItem roomNode=findTreeNodeForRoom(this.room);
-        if(roomNode!=null){
-            roomNode.removeChild(element);
-            DraftTreeItem newElementNode=new DraftTreeItem(element);
-            roomNode.remove(newElementNode);
-            DefaultTreeModel model=(DefaultTreeModel) MainFrame.getInstance().getjTree().getModel();
-            model.nodeStructureChanged(roomNode);
+        DraftTreeItem roomNode = findTreeNodeForRoom(this.room);
+        if (roomNode != null) {
+            DraftTreeItem elementNode = findDraftTreeItemByElement(roomNode, element);
+
+            if (elementNode != null) {
+                roomNode.remove(elementNode);
+                DefaultTreeModel model = (DefaultTreeModel) MainFrame.getInstance().getjTree().getModel();
+                model.nodeStructureChanged(roomNode);
+            }
         }
+    }
+
+    private DraftTreeItem findDraftTreeItemByElement(DraftTreeItem parent, RoomElement element) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) parent.getChildAt(i);
+            if (child instanceof DraftTreeItem) {
+                DraftTreeItem draftTreeItem = (DraftTreeItem) child;
+                if (draftTreeItem.getDraftNode() == element) {
+                    return draftTreeItem;  // Found the DraftTreeItem for the RoomElement
+                }
+            }
+        }
+        return null;  // Return null if the DraftTreeItem is not found
     }
     private DraftTreeItem findTreeNodeForRoom(Room room) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) MainFrame.getInstance().getjTree().getModel().getRoot();
+        System.out.println("PRETRAGA " + searchTreeNode(root,room) + " ROOT " + root + " ROOM " + room );
         return searchTreeNode(root, room);
     }
 
@@ -217,8 +233,14 @@ public class RoomView extends JPanel implements ISubscriber {
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
         } else if (o instanceof RoomElement) {
-            jPanelRoom.revalidate();
-            jPanelRoom.repaint();
+            if(room.getChildrenList().contains(o))
+                jPanelRoom.revalidate();
+                jPanelRoom.repaint();
+            if(!room.getChildrenList().contains(o)){
+                deleteElementFromTree((RoomElement) o);
+                jPanelRoom.revalidate();
+                jPanelRoom.repaint();
+            }
         }
     }
     public List<RoomElement> getSelectedElements () {

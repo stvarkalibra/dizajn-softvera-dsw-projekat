@@ -8,7 +8,7 @@ import raf.draft.dsw.model.structures.ProjectExplorer;
 public interface DraftTree extends ISubscriber {
     DraftTreeView generateTree(ProjectExplorer projectExplorer);
     void addChild(DraftTreeItem parent);
-    void removeChild(DraftTreeItem parent);
+    void removeChild(DraftTreeItem parent,boolean deleteElement);
     DraftTreeItem getSelectedNode();
 
     @Override

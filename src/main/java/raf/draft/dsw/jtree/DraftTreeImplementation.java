@@ -78,7 +78,7 @@ public class DraftTreeImplementation implements DraftTree,ISubscriber{
 
 
     @Override
-    public void removeChild(DraftTreeItem parent) {
+    public void removeChild(DraftTreeItem parent, boolean deleteElement) {
         if(parent==null){
             MessageGenerator messageGenerator = new MessageGenerator();
             FileLogger fileLogger = new FileLogger("files/log.txt");
@@ -110,8 +110,12 @@ public class DraftTreeImplementation implements DraftTree,ISubscriber{
             if (!(parent.getDraftNode() instanceof DraftNodeComposite) && !(parent.getDraftNode() instanceof ProjectExplorer)){
                 ((DraftTreeItem)parent.getParent()).remove(parent);
             }else{
-                parent.removeAllChildren();
-                ((DraftTreeItem)parent.getParent()).remove(parent);
+                if(deleteElement==true){
+
+                }else {
+                    parent.removeAllChildren();
+                    ((DraftTreeItem) parent.getParent()).remove(parent);
+                }
             }
         }
 

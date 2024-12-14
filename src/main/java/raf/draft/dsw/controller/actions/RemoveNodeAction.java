@@ -25,7 +25,7 @@ public class RemoveNodeAction extends AbstractRoomAction implements IPublisher {
     public void actionPerformed(ActionEvent arg0) {
         if(MainFrame.getInstance().isFlag()==true){
             DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedNode();
-            MainFrame.getInstance().getDraftTree().removeChild(selected);
+            MainFrame.getInstance().getDraftTree().removeChild(selected,false);
             if(selected.getDraftNode() instanceof DraftNodeComposite){
                 addSubscriber(MainFrame.getInstance());
                 notifySubscriber(selected.getDraftNode());
@@ -34,7 +34,7 @@ public class RemoveNodeAction extends AbstractRoomAction implements IPublisher {
                 notifySubscriber(selected.getDraftNode());
             }
         }else{
-            MainFrame.getInstance().getDraftTree().removeChild(null);
+            MainFrame.getInstance().getDraftTree().removeChild(null,false);
         }
     }
 
