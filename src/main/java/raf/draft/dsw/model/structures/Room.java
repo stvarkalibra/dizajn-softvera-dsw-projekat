@@ -18,6 +18,7 @@ public class Room extends DraftNodeComposite implements IPublisher {
     private RoomElement pendingElement;
     private List<ISubscriber> subscriberList=new ArrayList<>();
     private List<RoomElement> roomElements=new ArrayList<>();
+    private List<RoomElement> cpyModel = new ArrayList<>();
     public Room(String nodeName, DraftNode parent) {
         super(nodeName, parent);
     }
@@ -98,4 +99,7 @@ public class Room extends DraftNodeComposite implements IPublisher {
         this.roomElements = roomElements;
     }
 
+    public List<RoomElement> getCpyModel() {
+        return cpyModel;
+    }
 }

@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class RoomElement extends DraftNode implements Prototype, IPublisher {
+public abstract class RoomElement extends DraftNode implements Prototype, IPublisher, Cloneable {
     private Point location;
     private int napravljen=0;
     private double scale = 1.0;
@@ -122,7 +122,12 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
 
     @Override
     public Prototype clone(){
-        return null;
+        try {
+            return (RoomElement) super.clone(); // Omogućava kloniranje u svim podklasama
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     @Override
     public void addSubscriber(ISubscriber s) {
@@ -144,6 +149,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
             subscriber.update(o);
         }
     }
+
 
     public List<ISubscriber> getSubscriberList() {
         return subscriberList;
