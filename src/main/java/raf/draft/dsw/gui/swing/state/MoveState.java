@@ -13,6 +13,7 @@ public class MoveState implements State {
 
     private Point initialMousePosition;
     private List<Point> initialElementPositions;
+    private Point initialRoomPosition;
 
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
@@ -28,6 +29,7 @@ public class MoveState implements State {
     public void myMouseReleased(RoomView roomView) {
 
         List<RoomElement> selectedElements = roomView.getSelectedElements();
+
         if (selectedElements.isEmpty()) return;
         boolean hasIntersection = false;
         for (RoomElement element : selectedElements) {
@@ -55,28 +57,59 @@ public class MoveState implements State {
     @Override
     public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
         List<RoomElement> selectedElements = roomView.getSelectedElements();
-        if (selectedElements.isEmpty()) return;
 
-        Point currentMousePosition = mouseEvent.getPoint();
-        if (initialMousePosition == null) {
-            initialMousePosition = currentMousePosition;
-            initialElementPositions = new ArrayList<>();
-            for (RoomElement element : selectedElements) {
-                initialElementPositions.add(new Point(element.getLocation()));
+        // Ako nema selektovanih elemenata, pomeramo samo jPanelRoom
+        if (selectedElements.isEmpty()) {
+            Point currentMousePosition = mouseEvent.getPoint();
+
+            // Ako je ovo prvi put da pomeramo jPanelRoom, čuvamo početnu poziciju jPanelRoom
+            if (initialRoomPosition == null) {
+                initialMousePosition = currentMousePosition;  // Postavljamo početnu poziciju miša
+                initialRoomPosition = roomView.getjPanelRoom().getLocation();  // Čuvamo početnu poziciju jPanelRoom
             }
-        }
-        int deltaX = currentMousePosition.x - initialMousePosition.x;
-        int deltaY = currentMousePosition.y - initialMousePosition.y;
-        for (RoomElement element : selectedElements) {
-            Point originalLocation = initialElementPositions.get(selectedElements.indexOf(element));
-            Point newLocation = new Point(
-                    originalLocation.x + deltaX,
-                    originalLocation.y + deltaY
+
+            // Računamo pomeranje sobe
+            int deltaX = currentMousePosition.x - initialMousePosition.x;
+            int deltaY = currentMousePosition.y - initialMousePosition.y;
+
+            // Nova pozicija jPanelRoom
+            Point newRoomPosition = new Point(
+                    initialRoomPosition.x + deltaX,
+                    initialRoomPosition.y + deltaY
             );
-            newLocation = snapToEdge(newLocation, roomView, element);
-            element.setLocation(newLocation);
+
+            // Pomeramo samo jPanelRoom unutar JScrollPane
+            roomView.getjPanelRoom().setLocation(newRoomPosition);
+        } else {
+            // Postojeći kod za pomeranje selektovanih elemenata
+            Point currentMousePosition = mouseEvent.getPoint();
+
+            // Inicijalizuj samo prvi put kad se pomera
+            if (initialMousePosition == null) {
+                initialMousePosition = currentMousePosition;
+                initialElementPositions = new ArrayList<>();
+                for (RoomElement element : selectedElements) {
+                    initialElementPositions.add(new Point(element.getLocation()));
+                }
+            }
+
+            // Računanje pomeranja elemenata
+            int deltaX = currentMousePosition.x - initialMousePosition.x;
+            int deltaY = currentMousePosition.y - initialMousePosition.y;
+
+            // Pomeri svaki selektovani element
+            for (RoomElement element : selectedElements) {
+                Point originalLocation = initialElementPositions.get(selectedElements.indexOf(element));
+                Point newLocation = new Point(
+                        originalLocation.x + deltaX,
+                        originalLocation.y + deltaY
+                );
+                newLocation = snapToEdge(newLocation, roomView, element);
+                element.setLocation(newLocation);
+            }
+
+            roomView.getjPanelRoom().repaint();
         }
-        roomView.getjPanelRoom().repaint();
     }
 
     private Point snapToEdge(Point location, RoomView roomView, RoomElement element) {

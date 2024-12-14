@@ -51,11 +51,21 @@ public class ElementDimensionFrame extends JFrame {
         int option = JOptionPane.showConfirmDialog(null, panelDimensions, "Enter Element Dimensions", JOptionPane.OK_CANCEL_OPTION);
 
         if (option == JOptionPane.OK_OPTION) {
+            String widthText = widthField.getText();
+            String lenghtText = lenghtField.getText();
             try {
-                String widthText = widthField.getText();
-                String lenghtText = lenghtField.getText();
-                width=Integer.parseInt(widthText);
-                lenght=Integer.parseInt(lenghtText);
+                if (widthText.isEmpty() && !lenghtField.getText().isEmpty()) {
+                    width = 0;
+                    lenght=Integer.parseInt(lenghtText);
+                }
+                if (lenghtField.getText().isEmpty() && !widthText.isEmpty()) {
+                    lenght = 0;
+                    width=Integer.parseInt(widthText);
+                }
+                if (!lenghtText.isEmpty() && !widthText.isEmpty()) {
+                    lenght=Integer.parseInt(lenghtText);
+                    width=Integer.parseInt(widthText);
+                }
 
                 dispose();
             } catch (NumberFormatException ex) {
