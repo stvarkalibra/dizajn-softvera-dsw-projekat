@@ -13,6 +13,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class BoilerState implements State{
     private BoilerPainter bop;
@@ -62,7 +63,7 @@ public class BoilerState implements State{
     }
 
     @Override
-    public void myMouseScrolled() {
+    public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
 
     }
 

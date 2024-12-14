@@ -14,6 +14,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class TableState implements State {
     private TablePainter tp;
@@ -59,7 +60,7 @@ public class TableState implements State {
     }
 
     @Override
-    public void myMouseScrolled() {
+    public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
 
     }
 

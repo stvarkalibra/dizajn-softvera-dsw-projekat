@@ -11,6 +11,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class DoorState implements State {
     private DoorPainter dp;
@@ -57,7 +58,7 @@ public class DoorState implements State {
     }
 
     @Override
-    public void myMouseScrolled() {
+    public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
 
     }
 

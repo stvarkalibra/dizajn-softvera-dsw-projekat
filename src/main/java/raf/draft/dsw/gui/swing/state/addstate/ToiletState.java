@@ -11,6 +11,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class ToiletState implements State {
     private ToiletPainter top;
@@ -58,7 +59,7 @@ public class ToiletState implements State {
     }
 
     @Override
-    public void myMouseScrolled() {
+    public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
 
     }
 

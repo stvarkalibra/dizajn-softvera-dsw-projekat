@@ -9,6 +9,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 
 public class BedState implements State {
@@ -56,7 +57,7 @@ public class BedState implements State {
     }
 
     @Override
-    public void myMouseScrolled() {
+    public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
 
     }
 

@@ -12,6 +12,7 @@ public class ZoomAction extends AbstractRoomAction {
         putValue(NAME, "ChangeProjectInfo");
         putValue(SHORT_DESCRIPTION, "Change project info");
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         int index= MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
