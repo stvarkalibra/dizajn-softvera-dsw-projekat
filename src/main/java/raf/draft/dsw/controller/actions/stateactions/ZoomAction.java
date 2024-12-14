@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 
 public class ZoomAction extends AbstractRoomAction {
     public ZoomAction() {
-        putValue(SMALL_ICON, loadIcon("/images/editProject.png"));
-        putValue(NAME, "ChangeProjectInfo");
-        putValue(SHORT_DESCRIPTION, "Change project info");
+        putValue(SMALL_ICON, loadIcon("/images/zoom.png"));
+        putValue(NAME, "Zoom");
+        putValue(SHORT_DESCRIPTION, "Zoom");
     }
 
     @Override
