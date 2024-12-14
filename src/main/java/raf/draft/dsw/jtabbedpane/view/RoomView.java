@@ -27,10 +27,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +43,9 @@ public class RoomView extends JPanel implements ISubscriber {
     private List<MyPainter> painterList=new ArrayList<>();
     private List<RoomElement> selectedElements=new ArrayList<>();
     private MouseEvent mouseEvent;
-    double k=0;
+    private MouseWheelEvent mouseWheelEvent;
+    private double k=0;
+    private double k_scaled=0;
     private Point initialMousePosition;
     private Point initialRoomPosition;
     public RoomView(Room room){
@@ -76,7 +75,6 @@ public class RoomView extends JPanel implements ISubscriber {
                 mouseLocation = e.getPoint();
                 myMouseClicked();
             }
-
             @Override
             public void mousePressed(MouseEvent e) {
                 if (stateManager.getCurrentState() instanceof SelectState) {
@@ -84,9 +82,7 @@ public class RoomView extends JPanel implements ISubscriber {
                 } if(stateManager.getCurrentState() instanceof ResizeState){
                     ((ResizeState) stateManager.getCurrentState()).myMousePressed(roomView,e);
                 }
-
             }
-
             @Override
             public void mouseReleased(MouseEvent e) {
                 myMouseReleased();
@@ -100,8 +96,6 @@ public class RoomView extends JPanel implements ISubscriber {
             public void mouseExited(MouseEvent e) {
             }
         });
-
-        // Mouse motion listener to move the room
         jPanelRoom.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -112,6 +106,13 @@ public class RoomView extends JPanel implements ISubscriber {
             @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
+            }
+        });
+        jPanelRoom.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                mouseWheelEvent=e;
+                myMouseScrolled();
             }
         });
     }
@@ -135,6 +136,9 @@ public class RoomView extends JPanel implements ISubscriber {
     public void startEdit(){
         stateManager.setEditState();
     }
+    public void startZoom(){
+        stateManager.setZoomState();
+    }
     public void myMouseClicked(){
         stateManager.getCurrentState().myMouseClicked(this,mouseLocation);
     }
@@ -142,7 +146,7 @@ public class RoomView extends JPanel implements ISubscriber {
         stateManager.getCurrentState().myMouseReleased(this);
     }
     public void myMouseScrolled () {
-        stateManager.getCurrentState().myMouseScrolled();
+        stateManager.getCurrentState().myMouseScrolled(this,mouseWheelEvent);
     }
     public void myMouseDragged () {
         stateManager.getCurrentState().myMouseDragged(this, mouseEvent);
@@ -303,5 +307,13 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public void setEditStateEntered(boolean editStateEntered) {
         this.editStateEntered = editStateEntered;
+    }
+
+    public double getK_scaled() {
+        return k_scaled;
+    }
+
+    public void setK_scaled(double k_scaled) {
+        this.k_scaled = k_scaled;
     }
 }

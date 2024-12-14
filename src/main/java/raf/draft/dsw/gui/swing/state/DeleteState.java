@@ -6,6 +6,7 @@ import raf.draft.dsw.jtabbedpane.view.RoomView;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +36,7 @@ public class DeleteState implements State{
     }
 
     @Override
-    public void myMouseScrolled() {
+    public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
 
     }
 

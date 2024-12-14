@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class AddState implements State {
     AddStateManager addStateManager=new AddStateManager();
@@ -37,26 +38,21 @@ public class AddState implements State {
     }public void startWashingMachine(){
         addStateManager.setWashingMachineState();
     }
-
-
     public void myMouseClickedElement(RoomView roomView,Point location){
         addStateManager.getCurrentState().myMouseClicked(roomView, location);
     }
     public void myMouseReleasedElement(RoomView roomView){
         addStateManager.getCurrentState().myMouseReleased(roomView);
     }
-    public void myMouseScrolledElement(){
-        addStateManager.getCurrentState().myMouseScrolled();
+    public void myMouseScrolledElement(RoomView roomView,MouseWheelEvent e){
+        addStateManager.getCurrentState().myMouseScrolled(roomView,e);
     }
     public void myMouseDraggedElement(){
         addStateManager.getCurrentState().myMouseDragged(null,null);
     }
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-
-
         JPopupMenu popupMenu = new JPopupMenu();
-
         String[] options = {
                 "Vrata",
                 "Krevet",
@@ -83,8 +79,7 @@ public class AddState implements State {
     }
 
     @Override
-    public void myMouseScrolled() {
-
+    public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
     }
 
     @Override

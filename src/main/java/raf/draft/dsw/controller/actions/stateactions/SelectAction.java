@@ -16,7 +16,9 @@ public class SelectAction extends AbstractRoomAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         int index = MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
-        Room room = MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
-        room.getRoomView().startSelect();
+        Object o = MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
+        if(o instanceof Room){
+            ((Room) o).getRoomView().startSelect();
+        }
     }
 }

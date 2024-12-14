@@ -20,6 +20,7 @@ public class WashingMachinePainter extends MyPainter{
 
         int centerX = startPoint.x + width / 2;
         int centerY = startPoint.y + height / 2;
+        g.scale(getRoomElement().getScale(), getRoomElement().getScale());
         g.rotate(Math.toRadians(getRoomElement().getRotation() * 90), centerX, centerY);
         g.transform(affineTransform);
 
