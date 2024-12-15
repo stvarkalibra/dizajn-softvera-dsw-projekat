@@ -25,7 +25,6 @@ public class CopyAndPasteAction extends AbstractRoomAction {
             Room room = (Room)o;
             Boolean hasCollision = false;
 
-            //COPY
             room.getCpyModel().clear();
             for (MyPainter painter : room.getRoomView().getPainterList()){
                 for (RoomElement element : room.getRoomView().getSelectedElements()){
@@ -34,8 +33,6 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     }
                 }
             }
-
-            //PASTE
             for (RoomElement element : room.getCpyModel()){
                 RoomElement newElement = null;
                 MyPainter newPainter = null;
@@ -109,10 +106,8 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     for (MyPainter painter : room.getRoomView().getPainterList()){
                         System.out.println(painter);
                     }
-
-
-                    room.getRoomView().getjPanelRoom().revalidate();
-                    room.getRoomView().getjPanelRoom().repaint();
+                    newElement.addSubscriber(room.getRoomView());
+                    newElement.notifySubscriber(newElement);
                 }
             }
         }

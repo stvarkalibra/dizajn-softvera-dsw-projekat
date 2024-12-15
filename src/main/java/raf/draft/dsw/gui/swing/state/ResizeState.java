@@ -64,6 +64,8 @@ public class ResizeState implements State {
                 ));
                 element.setDimensionWidth((int) (initialBounds.getWidth() / roomView.getK()), roomView.getK());
                 element.setDimensionLength((int) (initialBounds.getHeight() / roomView.getK()), roomView.getK());
+                element.addSubscriber(roomView);
+                element.notifySubscriber(element);
             }
         }
         dragStartPoint = null;
@@ -71,8 +73,7 @@ public class ResizeState implements State {
         elementsBeingResized.clear();
         initialBoundsList.clear();
         elementBeingResized = null;
-        roomView.getjPanelRoom().revalidate();
-        roomView.getjPanelRoom().repaint();
+
     }
 
     @Override
@@ -148,8 +149,6 @@ public class ResizeState implements State {
                 }
             }
         }
-
-        // Only update dimensions if resizing is starting
         if (elementBeingResized != null && !mousePressed) {
             oldDimensionHeight = elementBeingResized.getDimensionLength();
             oldDimensionWidth = elementBeingResized.getDimensionWidth();

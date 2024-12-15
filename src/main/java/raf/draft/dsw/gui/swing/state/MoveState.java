@@ -10,19 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoveState implements State {
-
     private Point initialMousePosition;
     private List<Point> initialElementPositions;
-    private Point initialRoomPosition;
-
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
-        // Not needed for movement
     }
 
     @Override
     public void myMouseScrolled(RoomView roomView, MouseWheelEvent event) {
-        // Not needed for movement
     }
 
     @Override
@@ -31,7 +26,22 @@ public class MoveState implements State {
         List<RoomElement> selectedElements = roomView.getSelectedElements();
 
         if (selectedElements.isEmpty()) {
-            return;
+            if (initialMousePosition == null || initialElementPositions == null) {
+                return;
+            }
+
+            // Update the location of all elements to finalize the room movement
+            List<RoomElement> allElements = roomView.getRoom().getRoomElements();
+            for (int i = 0; i < allElements.size(); i++) {
+                RoomElement element = allElements.get(i);
+                Point newLocation = element.getLocation(); // Already moved during drag
+                element.setBounds(new Rectangle(newLocation, new Dimension(
+                        element.getDimensionWidth() * (int) roomView.getK(),
+                        element.getDimensionLength() * (int) roomView.getK()
+                )));
+                element.addSubscriber(roomView);
+                element.notifySubscriber(element);
+            }
         }
 
         boolean hasIntersection = false;
@@ -44,20 +54,17 @@ public class MoveState implements State {
             }
             if (hasIntersection) break;
         }
-
         if (hasIntersection) {
             for (int i = 0; i < selectedElements.size(); i++) {
                 selectedElements.get(i).setLocation(initialElementPositions.get(i));
-                System.out.println(selectedElements.get(i));
+                selectedElements.get(i).addSubscriber(roomView);
+                selectedElements.get(i).notifySubscriber(selectedElements.get(i));
             }
         }
-
         if (selectedElements.isEmpty()) {
             initialMousePosition = null;
             initialElementPositions = null;
         }
-
-        roomView.getjPanelRoom().repaint();
     }
 
     @Override

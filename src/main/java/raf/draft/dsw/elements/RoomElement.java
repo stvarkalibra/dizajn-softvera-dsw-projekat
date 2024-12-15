@@ -123,7 +123,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     @Override
     public Prototype clone(){
         try {
-            return (RoomElement) super.clone(); // Omogućava kloniranje u svim podklasama
+            return (RoomElement) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;
