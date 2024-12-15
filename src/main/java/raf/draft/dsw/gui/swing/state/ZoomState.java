@@ -10,17 +10,21 @@ import java.awt.event.MouseWheelEvent;
 
 public class ZoomState implements State {
     private double k_scaled = 1.0;
-    private static final double ZOOM_STEP = 0.2;
+    private static final double ZOOM_STEP = 0.1;
+    private static final double MIN_SCALE = 0.8;
+    private static final double MAX_SCALE = 2.3;
 
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
+
+        //OVDE SMO POKUSALI DA NAPRAVIMO DA KAD SE 2 PUTA KLIKNE NA EKRAN DA SE RESTARTUJE ZOOM ALI NAM NIJE USPELO
+        //SKILL ISSUE
         roomView.getjPanelRoom().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount() == 2) {
-                    k_scaled =1.0;
+                if (e.getClickCount() == 2) {
+                    k_scaled = 1.0;
                     for (RoomElement element : roomView.getRoom().getRoomElements()) {
-
                         element.setScale(k_scaled);
                         element.resetPosition();
                         element.setDimensionWidth(element.getOriginalDimensionWidth(), k_scaled);
@@ -42,46 +46,47 @@ public class ZoomState implements State {
         Point mousePosition = e.getPoint();
 
         if (scrollAmount != 0) {
-            k_scaled += scrollAmount < 0 ? -ZOOM_STEP : ZOOM_STEP;
-            if (k_scaled < 0.1) k_scaled = 0.1;
+            double newScale = k_scaled + (scrollAmount > 0 ? -ZOOM_STEP : ZOOM_STEP);
+            if (newScale < MIN_SCALE) {
+                newScale = MIN_SCALE;
+            } else if (newScale > MAX_SCALE) {
+                newScale = MAX_SCALE;
+            }
+            if (newScale == k_scaled) {
+                return;
+            }
 
-            double scaleFactor = scrollAmount > 0 ? 1 + ZOOM_STEP : 1 - ZOOM_STEP;
+            double scaleFactor = newScale / k_scaled;
+            k_scaled = newScale;
 
             for (RoomElement element : roomView.getRoom().getRoomElements()) {
-
                 int newWidth = (int) (element.getDimensionWidth() * scaleFactor);
                 int newHeight = (int) (element.getDimensionLength() * scaleFactor);
 
-                element.setDimensionWidth(newWidth,k_scaled);
-                element.setDimensionLength(newHeight,k_scaled);
-
-                // Prilagoditi poziciju elementa tako da se zoomira oko tačke miša
+                element.setDimensionWidth(newWidth, k_scaled);
+                element.setDimensionLength(newHeight, k_scaled);
                 int newX = (int) ((element.getLocation().getX() - mousePosition.x) * scaleFactor + mousePosition.x);
                 int newY = (int) ((element.getLocation().getY() - mousePosition.y) * scaleFactor + mousePosition.y);
 
-                // Ažuriranje pozicije i skaliranja
                 element.setLocation(new Point(newX, newY));
-                element.setScale(k_scaled); // Postavi skaliranje za element
+                element.setScale(k_scaled);
+                element.addSubscriber(roomView);
+                element.notifySubscriber(element);
             }
 
-            // Ponovno iscrtavanje sa novim skaliranjem
-            roomView.getjPanelRoom().revalidate();
-            roomView.getjPanelRoom().repaint();
+
         }
     }
 
     @Override
     public void myMouseReleased(RoomView roomView) {
-        // Implementirati kod za kada se otpusti taster miša, ako je potrebno
     }
 
     @Override
     public void myMouseDragged(RoomView roomView, MouseEvent mouseEvent) {
-        // Implementirati kod za pomeranje miša, ako je potrebno
     }
 
     @Override
     public void update(Object o) {
-        // Implementirati metod za obraditi notifikacije, ako je potrebno
     }
 }
