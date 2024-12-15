@@ -166,6 +166,6 @@ public class ResizeState implements State {
 
     @Override
     public void update(Object o) {
-        // No specific update behavior needed for resizing.
+
     }
 }
