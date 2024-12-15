@@ -30,11 +30,10 @@ public class MoveState implements State {
                 return;
             }
 
-            // Update the location of all elements to finalize the room movement
             List<RoomElement> allElements = roomView.getRoom().getRoomElements();
             for (int i = 0; i < allElements.size(); i++) {
                 RoomElement element = allElements.get(i);
-                Point newLocation = element.getLocation(); // Already moved during drag
+                Point newLocation = element.getLocation();
                 element.setBounds(new Rectangle(newLocation, new Dimension(
                         element.getDimensionWidth() * (int) roomView.getK(),
                         element.getDimensionLength() * (int) roomView.getK()
