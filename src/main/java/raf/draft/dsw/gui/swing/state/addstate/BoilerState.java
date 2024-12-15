@@ -51,7 +51,6 @@ public class BoilerState implements State{
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            BoilerPainter bop = new BoilerPainter(boiler);
             for (RoomElement roomElement : roomView.getRoom().getRoomElements()) {
                 if(roomElement instanceof Boiler) {
                     bop=new BoilerPainter(roomElement);

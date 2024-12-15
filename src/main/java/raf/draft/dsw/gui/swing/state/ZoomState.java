@@ -27,10 +27,11 @@ public class ZoomState implements State {
         } else {
             zoomOut();
         }
-        for(RoomElement roomElement:roomView.getRoom().getRoomElements()){
-            roomElement.setBounds(new Rectangle(roomElement.getLocation().x,roomElement.getLocation().y,roomElement.getDimensionWidth()*(int)zoomScale,roomElement.getDimensionLength()*(int)zoomScale));
-        }
         roomView.setZoomScale(zoomScale);
+        for(RoomElement roomElement:roomView.getRoom().getRoomElements()){
+            roomElement.setBounds(new Rectangle(roomElement.getLocation().x,roomElement.getLocation().y,(roomElement.getDimensionWidth()*(int)roomView.getK())*(int)zoomScale,(roomElement.getDimensionLength()*(int)roomView.getK())*(int)zoomScale));
+        }
+
         roomView.getjPanelRoom().revalidate();
         roomView.getjPanelRoom().repaint();
     }

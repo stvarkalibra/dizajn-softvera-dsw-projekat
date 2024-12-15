@@ -163,8 +163,9 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         return bounds;
     }
 
-    public void setBounds(Rectangle bounds) {
+    public Rectangle setBounds(Rectangle bounds) {
         this.bounds = bounds;
+        return this.bounds;
     }
 
     public boolean isRotatable() {

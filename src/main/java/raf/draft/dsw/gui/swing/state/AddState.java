@@ -4,6 +4,7 @@ import raf.draft.dsw.elements.*;
 import raf.draft.dsw.elements.contoller.ElementsController;
 import raf.draft.dsw.gui.swing.ElementDimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.gui.swing.state.addstate.AddStateManager;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.model.structures.Room;
@@ -38,7 +39,7 @@ public class AddState implements State {
     }public void startWashingMachine(){
         addStateManager.setWashingMachineState();
     }
-    public void myMouseClickedElement(RoomView roomView,Point location){
+    public void myMouseClickedElement(RoomView roomView, Point location){
         addStateManager.getCurrentState().myMouseClicked(roomView, location);
     }
     public void myMouseReleasedElement(RoomView roomView){
