@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.state;
 
+import raf.draft.dsw.commandPattern.ResizeCommand;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 
@@ -20,6 +21,7 @@ public class ResizeState implements State {
     private double oldDimensionHeight;
     private double oldDimensionWidth;
     private boolean mousePressed=false;
+    private List<Rectangle2D> newBounds=new ArrayList<>();
 
 
     @Override
@@ -68,13 +70,24 @@ public class ResizeState implements State {
                 element.notifySubscriber(element);
             }
         }
-        dragStartPoint = null;
+        if(!hasCollision){
+            for (int i = 0; i < elementsBeingResized.size(); i++) {
+                double scaleX = (dragEndPoint.getX() - dragStartPoint.getX()) / dragStartPoint.getX();
+                double scaleY = (dragEndPoint.getY() - dragStartPoint.getY()) / dragStartPoint.getY();
+                double newWidth = elementsBeingResized.get(i).getBounds().getWidth() * (1 + scaleX);
+                double newHeight = elementsBeingResized.get(i).getBounds().getHeight() * (1 + scaleY);
+                newBounds.add(new Rectangle((int) elementsBeingResized.get(i).getBounds().getX(),(int) elementsBeingResized.get(i).getBounds().getY(), (int) newWidth,(int)newHeight));
+                ResizeCommand resizeCommand=new ResizeCommand(roomView,initialBoundsList,elementsBeingResized,newBounds);
+                roomView.getCommandManager().addCommand(resizeCommand);
+            }
+        }
+        dragStartPoint=null;
         dragEndPoint = null;
         elementsBeingResized.clear();
         initialBoundsList.clear();
         elementBeingResized = null;
-
     }
+
 
     @Override
     public void myMouseDragged(RoomView roomView, MouseEvent e) {
@@ -108,7 +121,6 @@ public class ResizeState implements State {
 
             double newWidth = initialBounds.getWidth() * (1 + scaleX);
             double newHeight = initialBounds.getHeight() * (1 + scaleY);
-
             elementBeingResized.setBounds(new Rectangle(
                     (int) initialBounds.getX(),
                     (int) initialBounds.getY(),

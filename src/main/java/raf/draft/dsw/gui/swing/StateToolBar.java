@@ -22,6 +22,8 @@ public class StateToolBar extends JToolBar {
         ZoomAction zoomAction = actionStateManager.getZoomAction();
         EditAction editAction = actionStateManager.getEditAction();
         DeleteAction deleteAction = actionStateManager.getDeleteAction();
+        RedoAction redoAction=actionStateManager.getRedoAction();
+        UndoAction undoAction=actionStateManager.getUndoAction();
 
         add(editRoomAction);
         add(addAction);
@@ -34,5 +36,8 @@ public class StateToolBar extends JToolBar {
         add(zoomAction);
         add(editAction);
         add(deleteAction);
+        add(undoAction);
+        add(redoAction);
+
     }
 }

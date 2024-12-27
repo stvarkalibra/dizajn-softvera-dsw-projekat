@@ -2,6 +2,7 @@
 package raf.draft.dsw.jtabbedpane.view;
 
 import org.w3c.dom.ls.LSOutput;
+import raf.draft.dsw.commandPattern.CommandManager;
 import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
@@ -36,6 +37,7 @@ import java.util.List;
 public class RoomView extends JPanel implements ISubscriber {
     private JPanel jPanelRoom;
     private boolean editStateEntered=false;
+    private CommandManager commandManager=new CommandManager(this);
     private Room room;
     private RoomController roomController;
     private int width, height;
@@ -188,15 +190,14 @@ public class RoomView extends JPanel implements ISubscriber {
             if (child instanceof DraftTreeItem) {
                 DraftTreeItem draftTreeItem = (DraftTreeItem) child;
                 if (draftTreeItem.getDraftNode() == element) {
-                    return draftTreeItem;  // Found the DraftTreeItem for the RoomElement
+                    return draftTreeItem;
                 }
             }
         }
-        return null;  // Return null if the DraftTreeItem is not found
+        return null;
     }
     private DraftTreeItem findTreeNodeForRoom(Room room) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) MainFrame.getInstance().getjTree().getModel().getRoot();
-        System.out.println("PRETRAGA " + searchTreeNode(root,room) + " ROOT " + root + " ROOM " + room );
         return searchTreeNode(root, room);
     }
 
@@ -322,5 +323,13 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public boolean isEditStateEntered() {
         return editStateEntered;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    public void setCommandManager(CommandManager commandManager) {
+        this.commandManager = commandManager;
     }
 }

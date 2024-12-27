@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
+import raf.draft.dsw.commandPattern.AddCommand;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.elements.WashingMachine;
 import raf.draft.dsw.gui.swing.painters.WashingMachinePainter;
@@ -20,6 +21,8 @@ public class WashingMachineState implements State {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(wp);
+            AddCommand addCommand=new AddCommand(roomView,roomView.getRoom().getPendingElement(),wp);
+            roomView.getCommandManager().addCommand(addCommand);
             roomView.addElementToTree(roomView.getRoom().getPendingElement());
             WashingMachineState.FrameWork framework = new WashingMachineState.FrameWork((WashingMachine) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());

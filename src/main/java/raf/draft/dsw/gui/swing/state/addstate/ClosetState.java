@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
+import raf.draft.dsw.commandPattern.AddCommand;
 import raf.draft.dsw.elements.*;
 import raf.draft.dsw.gui.swing.painters.BathtubPainter;
 import raf.draft.dsw.gui.swing.painters.BedPainter;
@@ -21,6 +22,8 @@ public class ClosetState implements State{
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(cp);
+            AddCommand addCommand=new AddCommand(roomView,roomView.getRoom().getPendingElement(),cp);
+            roomView.getCommandManager().addCommand(addCommand);
             roomView.addElementToTree(roomView.getRoom().getPendingElement());
             ClosetState.FrameWork framework = new ClosetState.FrameWork((Closet) roomView.getRoom().getPendingElement(), location, roomView.getK(), roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());

@@ -95,12 +95,10 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     );
                     break;
                 } else{
-                    newElement.setNodeName("Cloned_"+element.getNodeName());
                     room.addChild(newElement);
                     room.getRoomView().addElementToTree(newElement);
                     room.getRoomElements().add(newElement);
                     room.getChildrenList().add(newElement);
-                    System.out.println(newElement);
 
                     room.getRoomView().getPainterList().add(newPainter);
                     for (MyPainter painter : room.getRoomView().getPainterList()){
