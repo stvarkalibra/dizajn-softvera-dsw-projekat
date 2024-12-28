@@ -34,16 +34,18 @@ public class ResizeState implements State {
     @Override
     public void myMouseReleased(RoomView roomView) {
         boolean hasCollision = false;
-        for (RoomElement resizedElement : elementsBeingResized) {
-            System.out.println(newWidth.size());
-            System.out.println(elementsBeingResized.indexOf(resizedElement));
-            if(newWidth.size()-1>=elementsBeingResized.indexOf(resizedElement)){
-                newWidth.set(elementsBeingResized.indexOf(resizedElement),resizedElement.getDimensionWidth());
-                newHeight.set(elementsBeingResized.indexOf(resizedElement),resizedElement.getDimensionLenght());
-            }else{
-                newWidth.add(resizedElement.getDimensionWidth());
-                newHeight.add(resizedElement.getDimensionLenght());
+        if (newWidth.size() < elementsBeingResized.size()) {
+            for (RoomElement element : elementsBeingResized) {
+                newWidth.add(element.getDimensionWidth());
+                newHeight.add(element.getDimensionLenght());
             }
+        }else{
+            for (RoomElement element : elementsBeingResized) {
+                newWidth.set(elementsBeingResized.indexOf(element),element.getDimensionWidth());
+                newHeight.set(elementsBeingResized.indexOf(element),element.getDimensionLenght());
+            }
+        }
+        for (RoomElement resizedElement : elementsBeingResized) {
 
             for (RoomElement otherElement : roomView.getRoom().getRoomElements()) {
                 if (resizedElement == otherElement) continue;
@@ -79,9 +81,11 @@ public class ResizeState implements State {
                 element.notifySubscriber(element);
             }
         }
+        else{
+            ResizeCommand resizeCommand=new ResizeCommand(roomView, elementsBeingResized,oldWidth,oldHeight,newWidth,newHeight);
+            roomView.getCommandManager().addCommand(resizeCommand);
+        }
 
-        ResizeCommand resizeCommand=new ResizeCommand(roomView, elementsBeingResized,oldWidth,oldHeight,newWidth,newHeight);
-        roomView.getCommandManager().addCommand(resizeCommand);
         dragStartPoint=null;
         dragEndPoint = null;
         elementsBeingResized.clear();
@@ -139,6 +143,8 @@ public class ResizeState implements State {
         dragStartPoint = e.getPoint();
         elementsBeingResized.clear();
         initialBoundsList.clear();
+        oldWidth.clear();
+        oldHeight.clear();
         elementBeingResized = null;
 
         if (roomView.getSelectedElements().size() == 1) {
@@ -149,8 +155,6 @@ public class ResizeState implements State {
                 oldWidth.add(selectedElement.getDimensionWidth());
                 oldHeight.add(selectedElement.getDimensionLenght());
                 elementBeingResized = selectedElement;
-            } else if (selectedElement.getBounds().contains(dragStartPoint)) {
-                elementBeingResized = selectedElement;
             }
         } else if (!roomView.getSelectedElements().isEmpty()) {
             for (RoomElement element : roomView.getSelectedElements()) {
@@ -158,6 +162,8 @@ public class ResizeState implements State {
                     elementsBeingResized.addAll(roomView.getSelectedElements());
                     for (RoomElement el : elementsBeingResized) {
                         initialBoundsList.add((Rectangle2D) el.getBounds().clone());
+                        oldWidth.add(el.getDimensionWidth());
+                        oldHeight.add(el.getDimensionLenght());
                     }
                     elementBeingResized = element;
                     break;

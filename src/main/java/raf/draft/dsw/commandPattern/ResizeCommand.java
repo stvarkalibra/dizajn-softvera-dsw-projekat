@@ -26,21 +26,25 @@ public class ResizeCommand extends AbstractCommand{
 
     @Override
     public void doCommand() {
-        for(int i=0; i<roomElements.size();i++){
-            roomElements.get(i).setDimensionWidth(newWidth.get(i),roomView.getK());
-            roomElements.get(i).setDimensionLength(newHeight.get(i),roomView.getK());
-            roomView.revalidate();
-            roomView.repaint();
+        for (int i = 0; i < roomElements.size(); i++) {
+            if (i < newWidth.size() && i < newHeight.size()) {
+                roomElements.get(i).setDimensionWidth(newWidth.get(i), roomView.getK());
+                roomElements.get(i).setDimensionLength(newHeight.get(i), roomView.getK());
+            }
         }
+        roomView.revalidate();
+        roomView.repaint();
     }
 
     @Override
     public void undoCommand() {
-        for(int i=0; i<roomElements.size();i++){
-            roomElements.get(i).setDimensionWidth(oldWidth.get(i),roomView.getK());
-            roomElements.get(i).setDimensionLength(oldHeight.get(i),roomView.getK());
-            roomView.revalidate();
-            roomView.repaint();
+        for (int i = 0; i < roomElements.size(); i++) {
+            if (i < oldWidth.size() && i < oldHeight.size()) {
+                roomElements.get(i).setDimensionWidth(oldWidth.get(i), roomView.getK());
+                roomElements.get(i).setDimensionLength(oldHeight.get(i), roomView.getK());
+            }
         }
+        roomView.revalidate();
+        roomView.repaint();
     }
 }
