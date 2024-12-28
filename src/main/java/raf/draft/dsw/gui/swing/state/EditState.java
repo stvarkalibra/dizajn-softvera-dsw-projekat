@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.state;
 
+import raf.draft.dsw.commandPattern.EditCommand;
 import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
@@ -18,6 +19,13 @@ public class EditState implements State{
     public void myMouseClicked(RoomView roomView, Point location) {
         for(RoomElement roomElement:roomView.getRoom().getRoomElements()){
             if(roomElement.getBounds().contains(location)){
+                int oldWidth= roomElement.getDimensionWidth();
+                int oldLength=roomElement.getDimensionLength();
+                int oldRotation=roomElement.getRotation();
+                int newWidth=oldWidth;
+                int newLength=oldLength;
+                int newRotation=oldRotation;
+
                 JTextField widthField = new JTextField(10);
                 JTextField heightField = new JTextField(10);
                 JTextField rotationField = new JTextField(10);
@@ -61,12 +69,15 @@ public class EditState implements State{
                 if(option==0){
                     try {
                         if (!heightField.getText().isEmpty()) {
+                             newLength=Integer.parseInt(heightField.getText());
                             roomElement.setDimensionLength(Integer.parseInt(heightField.getText()),roomView.getK());
                         }
                         if (!widthField.getText().isEmpty()) {
+                             newWidth=Integer.parseInt(widthField.getText());
                             roomElement.setDimensionWidth(Integer.parseInt(heightField.getText()), roomView.getK());
                         }
-                        if (!widthField.getText().isEmpty()) {
+                        if (!rotationField.getText().isEmpty()) {
+                             newRotation=Integer.parseInt(rotationField.getText());
                             roomElement.setRotation(Integer.parseInt(rotationField.getText()));
                         }
                     }catch (NumberFormatException ex) {
@@ -81,6 +92,10 @@ public class EditState implements State{
                         messageGenerator.createMessage(message.getContent(), message.getType());
                         JOptionPane.showMessageDialog(null, message);
                     }
+                    EditCommand editCommand=new EditCommand(roomView,oldLength,oldWidth,oldRotation,newLength,newWidth,newRotation,roomElement);
+                    roomView.getCommandManager().addCommand(editCommand);
+                    roomView.getjPanelRoom().revalidate();
+                    roomView.getjPanelRoom().repaint();
                 }
             }
         }

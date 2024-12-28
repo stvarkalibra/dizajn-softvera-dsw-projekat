@@ -45,9 +45,7 @@ public class AddCommand extends AbstractCommand{
                     }
                 }
             }
-            roomView.getRoom().notifySubscriber(roomElement);
+            roomView.getRoom().notifySubscriber(this.roomElement);
         }
-        roomView.getjPanelRoom().revalidate();
-        roomView.getjPanelRoom().repaint();
     }
 }

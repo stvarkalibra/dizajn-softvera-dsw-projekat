@@ -1,5 +1,6 @@
 package raf.draft.dsw.controller.actions.stateactions;
 
+import raf.draft.dsw.commandPattern.CopyPasteCommand;
 import raf.draft.dsw.controller.actions.AbstractRoomAction;
 import raf.draft.dsw.elements.*;
 import raf.draft.dsw.gui.swing.MainFrame;
@@ -76,7 +77,8 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     newElement.setLocation(newPoint);
                     newPainter = new WashingMachinePainter(newElement);
                 }
-
+                CopyPasteCommand copyPasteCommand=new CopyPasteCommand(room.getRoomView(),newElement,newPainter,room);
+                room.getRoomView().getCommandManager().addCommand(copyPasteCommand);
 
                 for (RoomElement otherElement : room.getRoomElements()) {
                     if (newElement == otherElement) continue;

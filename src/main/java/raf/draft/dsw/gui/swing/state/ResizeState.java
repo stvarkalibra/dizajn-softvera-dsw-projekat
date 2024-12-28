@@ -17,13 +17,12 @@ public class ResizeState implements State {
     private Point dragEndPoint;
     private List<RoomElement> elementsBeingResized = new ArrayList<>();
     private List<Rectangle2D> initialBoundsList = new ArrayList<>();
+    private List<Integer> oldWidth=new ArrayList<>();
+    private List<Integer> oldHeight=new ArrayList<>();
+    private List<Integer> newWidth=new ArrayList<>();
+    private List<Integer> newHeight=new ArrayList<>();
     private RoomElement elementBeingResized;
-    private double oldDimensionHeight;
-    private double oldDimensionWidth;
     private boolean mousePressed=false;
-    private List<Rectangle2D> newBounds=new ArrayList<>();
-
-
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
     }
@@ -36,6 +35,16 @@ public class ResizeState implements State {
     public void myMouseReleased(RoomView roomView) {
         boolean hasCollision = false;
         for (RoomElement resizedElement : elementsBeingResized) {
+            System.out.println(newWidth.size());
+            System.out.println(elementsBeingResized.indexOf(resizedElement));
+            if(newWidth.size()-1>=elementsBeingResized.indexOf(resizedElement)){
+                newWidth.set(elementsBeingResized.indexOf(resizedElement),resizedElement.getDimensionWidth());
+                newHeight.set(elementsBeingResized.indexOf(resizedElement),resizedElement.getDimensionLenght());
+            }else{
+                newWidth.add(resizedElement.getDimensionWidth());
+                newHeight.add(resizedElement.getDimensionLenght());
+            }
+
             for (RoomElement otherElement : roomView.getRoom().getRoomElements()) {
                 if (resizedElement == otherElement) continue;
                 if (resizedElement.getBounds().intersects(otherElement.getBounds())) {
@@ -70,17 +79,9 @@ public class ResizeState implements State {
                 element.notifySubscriber(element);
             }
         }
-        if(!hasCollision){
-            for (int i = 0; i < elementsBeingResized.size(); i++) {
-                double scaleX = (dragEndPoint.getX() - dragStartPoint.getX()) / dragStartPoint.getX();
-                double scaleY = (dragEndPoint.getY() - dragStartPoint.getY()) / dragStartPoint.getY();
-                double newWidth = elementsBeingResized.get(i).getBounds().getWidth() * (1 + scaleX);
-                double newHeight = elementsBeingResized.get(i).getBounds().getHeight() * (1 + scaleY);
-                newBounds.add(new Rectangle((int) elementsBeingResized.get(i).getBounds().getX(),(int) elementsBeingResized.get(i).getBounds().getY(), (int) newWidth,(int)newHeight));
-                ResizeCommand resizeCommand=new ResizeCommand(roomView,initialBoundsList,elementsBeingResized,newBounds);
-                roomView.getCommandManager().addCommand(resizeCommand);
-            }
-        }
+
+        ResizeCommand resizeCommand=new ResizeCommand(roomView, elementsBeingResized,oldWidth,oldHeight,newWidth,newHeight);
+        roomView.getCommandManager().addCommand(resizeCommand);
         dragStartPoint=null;
         dragEndPoint = null;
         elementsBeingResized.clear();
@@ -145,6 +146,8 @@ public class ResizeState implements State {
             if (isNearBottomRightCorner(selectedElement.getBounds(), dragStartPoint)) {
                 elementsBeingResized.add(selectedElement);
                 initialBoundsList.add((Rectangle2D) selectedElement.getBounds().clone());
+                oldWidth.add(selectedElement.getDimensionWidth());
+                oldHeight.add(selectedElement.getDimensionLenght());
                 elementBeingResized = selectedElement;
             } else if (selectedElement.getBounds().contains(dragStartPoint)) {
                 elementBeingResized = selectedElement;
@@ -162,8 +165,6 @@ public class ResizeState implements State {
             }
         }
         if (elementBeingResized != null && !mousePressed) {
-            oldDimensionHeight = elementBeingResized.getDimensionLength();
-            oldDimensionWidth = elementBeingResized.getDimensionWidth();
             mousePressed = true;
         }
     }
