@@ -1,5 +1,7 @@
 package raf.draft.dsw.gui.swing.state;
 
+import raf.draft.dsw.commandPattern.CommandManager;
+import raf.draft.dsw.commandPattern.MoveCommand;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 
@@ -42,9 +44,10 @@ public class MoveState implements State {
                 element.notifySubscriber(element);
             }
         }
-
+        List<Point> newLocations=new ArrayList<>();
         boolean hasIntersection = false;
         for (RoomElement element : selectedElements) {
+            newLocations.add(element.getLocation());
             for (RoomElement other : roomView.getRoom().getRoomElements()) {
                 if (other != element && other.getBounds().intersects(element.getBounds())) {
                     hasIntersection = true;
@@ -59,7 +62,12 @@ public class MoveState implements State {
                 selectedElements.get(i).addSubscriber(roomView);
                 selectedElements.get(i).notifySubscriber(selectedElements.get(i));
             }
+        }else if(!hasIntersection){
+            MoveCommand moveCommand=new MoveCommand(roomView,initialElementPositions, newLocations);
+            roomView.getCommandManager().addCommand(moveCommand);
         }
+
+
         if (selectedElements.isEmpty()) {
             initialMousePosition = null;
             initialElementPositions = null;
@@ -105,8 +113,9 @@ public class MoveState implements State {
             }
             int deltaX = currentMousePosition.x - initialMousePosition.x;
             int deltaY = currentMousePosition.y - initialMousePosition.y;
-            for (RoomElement element : selectedElements) {
-                Point originalLocation = initialElementPositions.get(selectedElements.indexOf(element));
+            for (int i = 0; i < selectedElements.size(); i++) {
+                RoomElement element = selectedElements.get(i);
+                Point originalLocation = initialElementPositions.get(i); // Use the index directly
                 Point newLocation = new Point(
                         originalLocation.x + deltaX,
                         originalLocation.y + deltaY

@@ -19,7 +19,7 @@ public class CommandManager {
         while(currentCommand < commands.size())
             commands.remove(currentCommand);
         commands.add(command);
-        doCommand();
+        currentCommand++;
     }
     public void doCommand(){
         if(currentCommand < commands.size()){

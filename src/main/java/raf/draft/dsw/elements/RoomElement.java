@@ -107,17 +107,18 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     public void setRotation(int rotation) {
-        if (rotation < 0){
-            rotation = 3;
+        if(this.rotation!=rotation){
+            if (rotation < 0){
+                rotation = 3;
+            } else if (rotation == 4){
+                rotation = 0;
+            }else if(rotation>4){
+                rotation=rotation%4;
+            }
+            rotatable = true;
+            this.rotation = rotation;
+            this.notifySubscriber(this);
         }
-        else if (rotation == 4){
-            rotation = 0;
-        }else if(rotation>4){
-            rotation=rotation%4;
-        }
-        rotatable = true;
-        this.rotation = rotation;
-        this.notifySubscriber(this);
     }
 
     @Override
