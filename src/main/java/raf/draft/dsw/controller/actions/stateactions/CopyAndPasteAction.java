@@ -10,8 +10,12 @@ import raf.draft.dsw.model.structures.Room;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CopyAndPasteAction extends AbstractRoomAction {
+    private List<MyPainter> painterList=new ArrayList<>();
+    private List<RoomElement> roomElementList=new ArrayList<>();
     public CopyAndPasteAction() {
         putValue(SMALL_ICON, loadIcon("/images/copy.png"));
         putValue(NAME, "Copy&Paste");
@@ -77,8 +81,9 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     newElement.setLocation(newPoint);
                     newPainter = new WashingMachinePainter(newElement);
                 }
-                CopyPasteCommand copyPasteCommand=new CopyPasteCommand(room.getRoomView(),newElement,newPainter,room);
-                room.getRoomView().getCommandManager().addCommand(copyPasteCommand);
+                roomElementList.add(newElement);
+                painterList.add(newPainter);
+
 
                 for (RoomElement otherElement : room.getRoomElements()) {
                     if (newElement == otherElement) continue;
@@ -103,13 +108,12 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     room.getChildrenList().add(newElement);
 
                     room.getRoomView().getPainterList().add(newPainter);
-                    for (MyPainter painter : room.getRoomView().getPainterList()){
-                        System.out.println(painter);
-                    }
                     newElement.addSubscriber(room.getRoomView());
                     newElement.notifySubscriber(newElement);
                 }
             }
+            CopyPasteCommand copyPasteCommand=new CopyPasteCommand(room.getRoomView(),roomElementList,painterList,room);
+            room.getRoomView().getCommandManager().addCommand(copyPasteCommand);
         }
     }
 }

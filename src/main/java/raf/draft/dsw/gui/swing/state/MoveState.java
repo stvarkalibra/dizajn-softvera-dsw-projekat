@@ -102,25 +102,48 @@ public class MoveState implements State {
             roomView.getjPanelRoom().revalidate();
             roomView.getjPanelRoom().repaint();
         } else {
+            // Trenutna pozicija miša
             Point currentMousePosition = mouseEvent.getPoint();
 
-            if (initialMousePosition == null) {
+            // Inicijalizacija početnih pozicija i miša ako je potrebno
+            if (initialMousePosition == null || initialElementPositions == null) {
                 initialMousePosition = currentMousePosition;
                 initialElementPositions = new ArrayList<>();
+
+                // Kreiranje početnih pozicija za trenutne selektovane elemente
                 for (RoomElement element : selectedElements) {
                     initialElementPositions.add(new Point(element.getLocation()));
                 }
             }
+
+            // Ako veličine liste nisu usklađene, uskladi ih
+            if (initialElementPositions.size() != selectedElements.size()) {
+                // Sinhronizacija početnih pozicija s trenutnim selektovanim elementima
+                initialElementPositions.clear();
+                for (RoomElement element : selectedElements) {
+                    initialElementPositions.add(new Point(element.getLocation()));
+                }
+            }
+
+            // Izračunaj pomeraj miša (delta)
             int deltaX = currentMousePosition.x - initialMousePosition.x;
             int deltaY = currentMousePosition.y - initialMousePosition.y;
+
+            // Pomeranje svih selektovanih elemenata
             for (int i = 0; i < selectedElements.size(); i++) {
                 RoomElement element = selectedElements.get(i);
-                Point originalLocation = initialElementPositions.get(i); // Use the index directly
+                Point originalLocation = initialElementPositions.get(i);
+
+                // Nova pozicija elementa bazirana na delta pomeraju
                 Point newLocation = new Point(
                         originalLocation.x + deltaX,
                         originalLocation.y + deltaY
                 );
+
+                // Opcionalno: Snap na ivice (ako je potrebno)
                 newLocation = snapToEdge(newLocation, roomView, element);
+
+                // Postavi novu lokaciju elementa
                 element.setLocation(newLocation);
             }
             roomView.getjPanelRoom().repaint();
