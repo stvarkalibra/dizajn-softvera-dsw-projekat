@@ -1,5 +1,8 @@
 package raf.draft.dsw.model.nodes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +53,7 @@ public abstract class DraftNode {
     }
 
     //----------------------
-
+    @JsonIgnore
     public DraftNode getParent() {
         return parent;
     }

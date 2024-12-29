@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
@@ -14,7 +15,9 @@ import java.util.List;
 public class Room extends DraftNodeComposite implements IPublisher {
     int width;
     int height;
+    @JsonIgnore
     private RoomView roomView;
+    @JsonIgnore
     private RoomElement pendingElement;
     private List<ISubscriber> subscriberList=new ArrayList<>();
     private List<RoomElement> roomElements=new ArrayList<>();
@@ -56,6 +59,11 @@ public class Room extends DraftNodeComposite implements IPublisher {
     public void notifySubscriber(Object o) {
         for(ISubscriber s:subscriberList){
             if(s!=null) {
+                if(this.getParent() instanceof Project){
+                    ((Project) this.getParent()).setChanged(true);
+                }else{
+                    ((Project)this.getParent().getParent()).setChanged(true);
+                }
                 s.update(o);
             }
         }
@@ -80,6 +88,11 @@ public class Room extends DraftNodeComposite implements IPublisher {
     }
 
     public void setPendingElement(RoomElement pendingElement) {
+        if(this.getParent() instanceof Project){
+            ((Project) this.getParent()).setChanged(true);
+        }else{
+            ((Project)this.getParent().getParent()).setChanged(true);
+        }
         this.pendingElement = pendingElement;
     }
 

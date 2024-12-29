@@ -20,7 +20,7 @@ public class DraftTreeFactory {
     public DraftNode createChild(DraftNode parent) {
         if (parent instanceof ProjectExplorer){
             projectNumber++;
-            x = new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", " ");
+            x = new Project("Project" + projectNumber, parent, "Project" + projectNumber, "User", "");
         }
         else if(parent instanceof Project){
             ImageIcon imageIcon = new ImageIcon(getClass().getResource("/images/matrix.png"));

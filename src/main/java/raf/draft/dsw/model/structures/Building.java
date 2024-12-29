@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.nodes.DraftNode;
@@ -62,9 +63,8 @@ public class Building extends DraftNodeComposite implements IPublisher {
     }
     @Override
     public void notifySubscriber(Object o) {
-        System.out.println("Zuriosm");
         for(ISubscriber s:subscriberList){
-            System.out.println(subscriberList.size());
+            ((Project)this.getParent()).setChanged(true);
             s.update(o);
         }
     }

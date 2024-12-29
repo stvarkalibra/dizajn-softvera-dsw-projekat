@@ -19,6 +19,7 @@ import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.serializer.Gson;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -36,6 +37,7 @@ public class MainFrame extends JFrame implements ISubscriber{
     private static MainFrame mainFrameInstance;
     private DraftTree draftTree;
     private JTree jTree;
+    private Project currentProject;
     private ProjectExplorer projectExplorer;
     private java.util.List<Room> roomList = new ArrayList<Room>();
     private Label labelBuilding = new Label("Building");
@@ -94,6 +96,20 @@ public class MainFrame extends JFrame implements ISubscriber{
         split.setDividerLocation(250);
         split.setOneTouchExpandable(true);
 
+        //LISTENER
+        jTree.addTreeSelectionListener(event -> {
+            TreePath selectedPath = jTree.getSelectionPath();
+            if (selectedPath != null) {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+                System.out.println(selectedNode.getUserObject());
+                if (selectedNode.getUserObject() instanceof Project) {
+                    System.out.println("POZVAT");
+                    Project selectedProject = (Project) selectedNode.getUserObject();
+                    handleProjectSelection(selectedProject);
+                }
+            }
+        });
+
         //JTABBEDPANE
         jTabbedPaneView=new JTabbedPaneView();
         stateJPanel.add(jTabbedPaneView.getjTabbedPane(), BorderLayout.CENTER);
@@ -109,134 +125,44 @@ public class MainFrame extends JFrame implements ISubscriber{
     }
     /*--------------------------------------------------------------------------------*/
     //GETTERS && SETTERS
-
     public DraftTree getDraftTree() {
         return draftTree;
     }
-
     public boolean isFlag() {
         return flagIsSelected;
     }
-
     public void setFlag(boolean flag) {
         this.flagIsSelected = flag;
     }
-
     public List<Room> getRoomList() {
         return roomList;
     }
-
-    public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
-    }
-
-    public Label getLabelProject() {
-        return labelProject;
-    }
-
-    public void setLabelProject(Label labelProject) {
-        this.labelProject = labelProject;
-    }
-
-    public Label getLabelAutor() {
-        return labelAutor;
-    }
-
-    public void setLabelAutor(Label labelAutor) {
-        this.labelAutor = labelAutor;
-    }
-
-    public JTabbedPanePublisher getjTabbedPanePublisher() {
-        return jTabbedPanePublisher;
-    }
-
-
-    public void setjTabbedPanePublisher(JTabbedPanePublisher jTabbedPanePublisher) {
-        this.jTabbedPanePublisher = jTabbedPanePublisher;
-    }
-
     public JTabbedPaneRightPanel getjTabbedPaneRightPanel() {
         return jTabbedPaneRightPanel;
     }
-
-    public void setjTabbedPaneRightPanel(JTabbedPaneRightPanel jTabbedPaneRightPanel) {
-        this.jTabbedPaneRightPanel = jTabbedPaneRightPanel;
-    }
-
-    public ActionManager getActionManager() {
-        return actionManager;
-    }
-
-    public void setActionManager(ActionManager actionManager) {
-        this.actionManager = actionManager;
-    }
-
     public static MainFrame getMainFrameInstance() {
         return mainFrameInstance;
     }
-
-    public static void setMainFrameInstance(MainFrame mainFrameInstance) {
-        MainFrame.mainFrameInstance = mainFrameInstance;
-    }
-
-    public void setDraftTree(DraftTree draftTree) {
-        this.draftTree = draftTree;
-    }
-
     public JTree getjTree() {
         return jTree;
     }
-
-    public void setjTree(JTree jTree) {
-        this.jTree = jTree;
-    }
-
-    public Label getLabelBuilding() {
-        return labelBuilding;
-    }
-
-    public void setLabelBuilding(Label labelBuilding) {
-        this.labelBuilding = labelBuilding;
-    }
-
-    public boolean isFlagIsSelected() {
-        return flagIsSelected;
-    }
-
-    public void setFlagIsSelected(boolean flagIsSelected) {
-        this.flagIsSelected = flagIsSelected;
-    }
-
-    public List<ISubscriber> getListSubscriber() {
-        return listSubscriber;
-    }
-
-    public void setListSubscriber(List<ISubscriber> listSubscriber) {
-        this.listSubscriber = listSubscriber;
-    }
-
-    public JTabbedPaneView getjTabbedPaneView() {
-        return jTabbedPaneView;
-    }
-
-    public void setjTabbedPaneView(JTabbedPaneView jTabbedPaneView) {
-        this.jTabbedPaneView = jTabbedPaneView;
-    }
-
     public JTabbedPaneImplementation getjTabbedPaneImplementation() {
         return jTabbedPaneImplementation;
     }
-
-    public void setjTabbedPaneImplementation(JTabbedPaneImplementation jTabbedPaneImplementation) {
-        this.jTabbedPaneImplementation = jTabbedPaneImplementation;
-    }
-
     public ActionStateManager getActionStateManager() {
         return actionStateManager;
     }
+    public Project getCurrentProject() {
+        return currentProject;
+    }
 
-    public void setActionStateManager(ActionStateManager actionStateManager) {
-        this.actionStateManager = actionStateManager;
+    public void setCurrentProject(Project currentProject) {
+        this.currentProject = currentProject;
+    }
+
+    private void handleProjectSelection(Project selectedProject) {
+        this.currentProject = selectedProject;
+        System.out.println("Selected project: " + selectedProject.getProjectName());
     }
     /*--------------------------------------------------------------------------------*/
 
@@ -293,7 +219,6 @@ public class MainFrame extends JFrame implements ISubscriber{
             jTabbedPaneImplementation.setPrikazi(false);
         }
     }
-
 }
 
 
