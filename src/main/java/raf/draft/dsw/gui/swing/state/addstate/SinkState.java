@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
+import raf.draft.dsw.commandPattern.AddCommand;
 import raf.draft.dsw.elements.Bed;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.elements.Sink;
@@ -23,6 +24,8 @@ public class SinkState implements State {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(sp);
+            AddCommand addCommand=new AddCommand(roomView,roomView.getRoom().getPendingElement(),sp);
+            roomView.getCommandManager().addCommand(addCommand);
             roomView.addElementToTree(roomView.getRoom().getPendingElement());
             SinkState.FrameWork framework = new SinkState.FrameWork((Sink) roomView.getRoom().getPendingElement(), location, roomView.getK(), roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());

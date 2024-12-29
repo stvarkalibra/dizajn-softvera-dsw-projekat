@@ -1,5 +1,6 @@
 package raf.draft.dsw.controller.actions.stateactions;
 
+import raf.draft.dsw.commandPattern.CopyPasteCommand;
 import raf.draft.dsw.controller.actions.AbstractRoomAction;
 import raf.draft.dsw.elements.*;
 import raf.draft.dsw.gui.swing.MainFrame;
@@ -9,8 +10,12 @@ import raf.draft.dsw.model.structures.Room;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CopyAndPasteAction extends AbstractRoomAction {
+    private List<MyPainter> painterList=new ArrayList<>();
+    private List<RoomElement> roomElementList=new ArrayList<>();
     public CopyAndPasteAction() {
         putValue(SMALL_ICON, loadIcon("/images/copy.png"));
         putValue(NAME, "Copy&Paste");
@@ -76,6 +81,8 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     newElement.setLocation(newPoint);
                     newPainter = new WashingMachinePainter(newElement);
                 }
+                roomElementList.add(newElement);
+                painterList.add(newPainter);
 
 
                 for (RoomElement otherElement : room.getRoomElements()) {
@@ -95,21 +102,18 @@ public class CopyAndPasteAction extends AbstractRoomAction {
                     );
                     break;
                 } else{
-                    newElement.setNodeName("Cloned_"+element.getNodeName());
                     room.addChild(newElement);
                     room.getRoomView().addElementToTree(newElement);
                     room.getRoomElements().add(newElement);
                     room.getChildrenList().add(newElement);
-                    System.out.println(newElement);
 
                     room.getRoomView().getPainterList().add(newPainter);
-                    for (MyPainter painter : room.getRoomView().getPainterList()){
-                        System.out.println(painter);
-                    }
                     newElement.addSubscriber(room.getRoomView());
                     newElement.notifySubscriber(newElement);
                 }
             }
+            CopyPasteCommand copyPasteCommand=new CopyPasteCommand(room.getRoomView(),roomElementList,painterList,room);
+            room.getRoomView().getCommandManager().addCommand(copyPasteCommand);
         }
     }
 }

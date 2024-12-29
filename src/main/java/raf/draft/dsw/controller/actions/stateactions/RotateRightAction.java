@@ -1,8 +1,10 @@
 package raf.draft.dsw.controller.actions.stateactions;
 
+import raf.draft.dsw.commandPattern.RotateCommand;
 import raf.draft.dsw.controller.actions.AbstractRoomAction;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.model.structures.Room;
 
 import java.awt.event.ActionEvent;
@@ -25,7 +27,11 @@ public class RotateRightAction extends AbstractRoomAction {
             Room room = (Room)o;
             room.addSubscriber(room.getRoomView());
             for(RoomElement roomElement : room.getRoomView().getSelectedElements()){
-                roomElement.setRotation(roomElement.getRotation()+1);
+                roomElement.addSubscriber(room.getRoomView());
+                int oldRotation=roomElement.getRotation();
+                roomElement.setRotation(oldRotation+1);
+                RotateCommand rotateCommand=new RotateCommand(room.getRoomView(),roomElement.getRotation(),oldRotation,room.getRoomView().getSelectedElements());
+                room.getRoomView().getCommandManager().addCommand(rotateCommand);
             }
         }
     }

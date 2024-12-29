@@ -14,6 +14,16 @@ public class ActionStateManager {
     private ZoomAction zoomAction = new ZoomAction();
     private EditAction editAction = new EditAction();
     private DeleteAction deleteAction = new DeleteAction();
+    private UndoAction undoAction=new UndoAction();
+    private RedoAction redoAction=new RedoAction();
+
+    public UndoAction getUndoAction() {
+        return undoAction;
+    }
+
+    public RedoAction getRedoAction() {
+        return redoAction;
+    }
 
     public AddAction getAddAction() {
         addAction.setEnabled(false);

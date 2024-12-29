@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.state;
 
+import raf.draft.dsw.commandPattern.DeleteCommand;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.painters.MyPainter;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
@@ -17,6 +18,7 @@ public class DeleteState implements State{
         Iterator<RoomElement> roomElementIterator = roomView.getRoom().getRoomElements().iterator();
         while (roomElementIterator.hasNext()) {
             RoomElement roomElement = roomElementIterator.next();
+
             if (roomElement.getBounds().contains(location)) {
                 roomElementIterator.remove();
                 roomView.getRoom().getChildrenList().remove(roomElement);
@@ -25,6 +27,8 @@ public class DeleteState implements State{
                     MyPainter painter = painterIterator.next();
                     if (painter.getRoomElement().equals(roomElement)) {
                         painterIterator.remove();
+                        DeleteCommand deleteCommand=new DeleteCommand(roomView,roomElement,painter);
+                        roomView.getCommandManager().addCommand(deleteCommand);
                         break;
                     }
                 }

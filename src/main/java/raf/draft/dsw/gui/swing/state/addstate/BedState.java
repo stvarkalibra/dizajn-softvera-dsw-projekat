@@ -1,5 +1,7 @@
 package raf.draft.dsw.gui.swing.state.addstate;
 
+import raf.draft.dsw.commandPattern.AddCommand;
+import raf.draft.dsw.controller.actions.stateactions.AddAction;
 import raf.draft.dsw.elements.Bed;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.painters.BedPainter;
@@ -21,6 +23,8 @@ public class BedState implements State {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());
             roomView.getPainterList().add(bp);
+            AddCommand addCommand=new AddCommand(roomView,roomView.getRoom().getPendingElement(),bp);
+            roomView.getCommandManager().addCommand(addCommand);
             roomView.addElementToTree(roomView.getRoom().getPendingElement());
             BedState.FrameWork framework = new BedState.FrameWork((Bed) roomView.getRoom().getPendingElement(), location, roomView.getK(),roomView);
             roomView.getjPanelRoom().setLayout(new BorderLayout());

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class RoomElement extends DraftNode implements Prototype, IPublisher, Cloneable {
     private Point location;
@@ -107,17 +108,18 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     public void setRotation(int rotation) {
-        if (rotation < 0){
-            rotation = 3;
+        if(this.rotation!=rotation){
+            if (rotation < 0){
+                rotation = 3;
+            } else if (rotation == 4){
+                rotation = 0;
+            }else if(rotation>4){
+                rotation=rotation%4;
+            }
+            rotatable = true;
+            this.rotation = rotation;
+            this.notifySubscriber(this);
         }
-        else if (rotation == 4){
-            rotation = 0;
-        }else if(rotation>4){
-            rotation=rotation%4;
-        }
-        rotatable = true;
-        this.rotation = rotation;
-        this.notifySubscriber(this);
     }
 
     @Override
@@ -197,5 +199,19 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
 
     public void setOriginalDimensionLenght(int originalDimensionLenght) {
         this.originalDimensionLenght = originalDimensionLenght;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        RoomElement that = (RoomElement) object;
+        return napravljen == that.napravljen && Double.compare(scale, that.scale) == 0 && dimensionWidth == that.dimensionWidth && dimensionLenght == that.dimensionLenght && originalDimensionWidth == that.originalDimensionWidth && originalDimensionLenght == that.originalDimensionLenght && rotation == that.rotation && Objects.equals(location, that.location) && Objects.equals(originalLocation, that.originalLocation) && Objects.equals(subscriberList, that.subscriberList) && Objects.equals(bounds, that.bounds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), location, napravljen, scale, originalLocation, dimensionWidth, dimensionLenght, originalDimensionWidth, originalDimensionLenght, rotation, subscriberList, bounds);
     }
 }
