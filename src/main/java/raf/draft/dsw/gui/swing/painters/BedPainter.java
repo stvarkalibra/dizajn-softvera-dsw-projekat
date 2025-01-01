@@ -67,8 +67,12 @@ public class BedPainter extends MyPainter {
     @Override
     public boolean elementAt(RoomElement element, Point pos) {
         Rectangle2D newBounds = getMyBounds(element);
+
         if (element.getParent() instanceof Room) {
+            System.out.println("STARI: " + ((Room) element.getParent()).getRoomElements().getLast());
+            System.out.println("STARI: " + ((Room) element.getParent()).getRoomElements().getFirst());
             for (RoomElement roomElement : ((Room) element.getParent()).getRoomElements()) {
+
                 if (roomElement.getBounds().intersects(newBounds)) {
                     return true;
                 }

@@ -16,20 +16,25 @@ import java.util.List;
 import java.util.Random;
 
 public class Project extends DraftNodeComposite implements IPublisher {
+    @JsonIgnore
     private List<ISubscriber> subscriberList=new ArrayList<>();
     private String projectName;
     private String projectAutor;
     private String pathToFolder;
     private boolean changed=false;
+    @JsonIgnore
     private Random rand=new Random();
     private float r=rand.nextFloat();
     private float g=rand.nextFloat();
     private float b=rand.nextFloat();
+    @JsonIgnore
     private Color color=new Color(r,g,b);
     @JsonCreator
-    public Project(@JsonProperty("name") String name){
-        super(name, null);
-        this.projectName = name;
+    public Project(@JsonProperty("nodeName") String nodeName, @JsonProperty("projectName") String projectName, @JsonProperty("projectAutor") String projectAutor, @JsonProperty("pathToFolder") String pathToFolder){
+        super(nodeName, null);
+        this.projectName = projectName;
+        this.projectAutor = projectAutor;
+        this.pathToFolder = pathToFolder;
     }
     public Project(String nodeName, DraftNode parent, String projectName, String projectAutor, String pathToFolder) {
         super(nodeName, parent);

@@ -96,20 +96,6 @@ public class MainFrame extends JFrame implements ISubscriber{
         split.setDividerLocation(250);
         split.setOneTouchExpandable(true);
 
-        //LISTENER
-        jTree.addTreeSelectionListener(event -> {
-            TreePath selectedPath = jTree.getSelectionPath();
-            if (selectedPath != null) {
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
-                System.out.println(selectedNode.getUserObject());
-                if (selectedNode.getUserObject() instanceof Project) {
-                    System.out.println("POZVAT");
-                    Project selectedProject = (Project) selectedNode.getUserObject();
-                    handleProjectSelection(selectedProject);
-                }
-            }
-        });
-
         //JTABBEDPANE
         jTabbedPaneView=new JTabbedPaneView();
         stateJPanel.add(jTabbedPaneView.getjTabbedPane(), BorderLayout.CENTER);
@@ -160,9 +146,12 @@ public class MainFrame extends JFrame implements ISubscriber{
         this.currentProject = currentProject;
     }
 
-    private void handleProjectSelection(Project selectedProject) {
-        this.currentProject = selectedProject;
-        System.out.println("Selected project: " + selectedProject.getProjectName());
+    public ProjectExplorer getProjectExplorer() {
+        return projectExplorer;
+    }
+
+    public void setProjectExplorer(ProjectExplorer projectExplorer) {
+        this.projectExplorer = projectExplorer;
     }
     /*--------------------------------------------------------------------------------*/
 

@@ -70,7 +70,6 @@ public class EditRoomState implements State{
                 JOptionPane.showMessageDialog(null, message);
             }
         }
-
     }
 
     @Override

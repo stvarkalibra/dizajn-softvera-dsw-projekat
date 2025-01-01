@@ -1,10 +1,16 @@
 package raf.draft.dsw.serializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.jtree.controller.DraftTreeSelectionListener;
+import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,9 +31,6 @@ public class Gson implements Serializer{
     @Override
     public void saveProject(Project project) {
         File file = new File(project.getPathToFolder());
-        if (!file.exists()) {
-            System.out.println("File does not exist, creating new one.");
-        }
         try {
             objectMapper.writeValue(file, project);
             project.setChanged(false);
@@ -36,4 +39,5 @@ public class Gson implements Serializer{
             System.err.println("Error saving project to file: " + e.getMessage());
         }
     }
+
 }

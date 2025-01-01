@@ -26,10 +26,7 @@ public class ProjectSaveAsAction extends AbstractRoomAction{
     }
 
     public void saveAs() {
-        int index = MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
-        Room room = MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
-        Project project = (Project) room.getParent();
-
+        Project project=(Project) MainFrame.getMainFrameInstance().getDraftTree().getSelectedNode().getDraftNode();
         if (project == null) {
             System.out.println("No project to save.");
             return;

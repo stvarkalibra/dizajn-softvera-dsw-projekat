@@ -25,6 +25,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     private int originalDimensionLenght;
     private int rotation;
     private boolean rotatable = false;
+    @JsonIgnore
     private List<ISubscriber> subscriberList=new ArrayList<>();
     @JsonIgnore
     private Rectangle bounds;
@@ -71,7 +72,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         updateBounds(k);
     }
 
-    private void updateBounds(double k) {
+    public void updateBounds(double k) {
         this.bounds = new Rectangle(location.x, location.y, (int)(dimensionWidth*k), (int)(dimensionLenght*k));
     }
     public void resetPosition() {
