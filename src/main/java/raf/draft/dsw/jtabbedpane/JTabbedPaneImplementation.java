@@ -140,6 +140,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
         this.roomView = roomView;
     }
 
+
     @Override
     public void update(Object o) {
         if (o instanceof Room) {

@@ -1,5 +1,8 @@
 package raf.draft.dsw.model.structures;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.nodes.DraftNode;
@@ -11,12 +14,19 @@ import java.util.List;
 import java.util.Random;
 
 public class Building extends DraftNodeComposite implements IPublisher {
+    @JsonIgnore
     Random rand=new Random();
+    @JsonIgnore
     private List<ISubscriber> subscriberList=new ArrayList<>();
     private float r=rand.nextFloat();
     private float g=rand.nextFloat();
     private float b=rand.nextFloat();
+    @JsonIgnore
     private Color color=new Color(r,g,b);
+    @JsonCreator
+    public Building(@JsonProperty("nodeName") String nodeName){
+        super(nodeName, null);
+    }
     public Building(String nodeName, DraftNode parent) {
         super(nodeName, parent);
     }
@@ -62,9 +72,8 @@ public class Building extends DraftNodeComposite implements IPublisher {
     }
     @Override
     public void notifySubscriber(Object o) {
-        System.out.println("Zuriosm");
         for(ISubscriber s:subscriberList){
-            System.out.println(subscriberList.size());
+            ((Project)this.getParent()).setChanged(true);
             s.update(o);
         }
     }

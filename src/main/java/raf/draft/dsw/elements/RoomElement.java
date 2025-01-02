@@ -1,9 +1,11 @@
 package raf.draft.dsw.elements;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.jtabbedpane.view.RoomView;
 import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
@@ -23,7 +25,9 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     private int originalDimensionLenght;
     private int rotation;
     private boolean rotatable = false;
+    @JsonIgnore
     private List<ISubscriber> subscriberList=new ArrayList<>();
+    @JsonIgnore
     private Rectangle bounds;
 
     public RoomElement(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {
@@ -60,10 +64,15 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
             k=((Room) this.getParent()).getRoomView().getK();
         }
         setBounds(new Rectangle(this.location.x,this.location.y,dimensionWidth,dimensionLenght));
+        if(this.getParent().getParent() instanceof Project){
+            ((Project) this.getParent()).setChanged(true);
+        }else{
+            ((Project)this.getParent().getParent().getParent()).setChanged(true);
+        }
         updateBounds(k);
     }
 
-    private void updateBounds(double k) {
+    public void updateBounds(double k) {
         this.bounds = new Rectangle(location.x, location.y, (int)(dimensionWidth*k), (int)(dimensionLenght*k));
     }
     public void resetPosition() {
@@ -79,6 +88,11 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
             originalDimensionWidth=dimensionWidth;
         }
         this.dimensionWidth = dimensionWidth;
+        if(this.getParent().getParent() instanceof Project){
+            ((Project) this.getParent()).setChanged(true);
+        }else{
+            ((Project)this.getParent().getParent().getParent()).setChanged(true);
+        }
         updateBounds(k);
     }
 
@@ -91,6 +105,11 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
             originalDimensionLenght=dimensionLenght;
         }
         this.dimensionLenght = dimensionLenght;
+        if(this.getParent().getParent() instanceof Project){
+            ((Project) this.getParent()).setChanged(true);
+        }else{
+            ((Project)this.getParent().getParent().getParent()).setChanged(true);
+        }
         updateBounds(k);
     }
 
@@ -125,6 +144,11 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     @Override
     public Prototype clone(){
         try {
+            if(this.getParent().getParent() instanceof Project){
+                ((Project) this.getParent()).setChanged(true);
+            }else{
+                ((Project)this.getParent().getParent().getParent()).setChanged(true);
+            }
             return (RoomElement) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -148,6 +172,11 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     @Override
     public void notifySubscriber(Object o) {
         for(ISubscriber subscriber: subscriberList){
+            if(this.getParent().getParent() instanceof Project){
+                ((Project) this.getParent()).setChanged(true);
+            }else{
+                ((Project)this.getParent().getParent().getParent()).setChanged(true);
+            }
             subscriber.update(o);
         }
     }

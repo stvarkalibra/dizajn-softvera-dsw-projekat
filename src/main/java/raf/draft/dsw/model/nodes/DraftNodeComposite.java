@@ -1,9 +1,13 @@
 package raf.draft.dsw.model.nodes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DraftNodeComposite extends DraftNode {
+
     private List<DraftNode> childrenList;
 
     public DraftNodeComposite(String nodeName, DraftNode parent) {
@@ -34,5 +38,14 @@ public abstract class DraftNodeComposite extends DraftNode {
 
     public List<DraftNode> getChildrenList() {
         return childrenList;
+    }
+    @JsonIgnore
+    @Override
+    public DraftNode getParent() {
+        return super.getParent();
+    }
+
+    public void setChildrenList(List<DraftNode> childrenList) {
+        this.childrenList = childrenList;
     }
 }

@@ -10,14 +10,21 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 public class DraftTreeSelectionListener implements TreeSelectionListener {
+    private DraftTreeItem draftTreeItem;
     @Override
     public void valueChanged(TreeSelectionEvent e) {
         MainFrame.getInstance().setFlag(true);
         TreePath path=e.getPath();
-        DraftTreeItem draftTreeItem=(DraftTreeItem)path.getLastPathComponent();
+        draftTreeItem=(DraftTreeItem)path.getLastPathComponent();
         System.out.println("Selektovan cvor:"+ draftTreeItem.getDraftNode().getNodeName());
         System.out.println("getPath: "+e.getPath());
     }
 
+    public DraftTreeItem getDraftTreeItem() {
+        return draftTreeItem;
+    }
 
+    public void setDraftTreeItem(DraftTreeItem draftTreeItem) {
+        this.draftTreeItem = draftTreeItem;
+    }
 }

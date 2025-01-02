@@ -255,7 +255,6 @@ public class RoomView extends JPanel implements ISubscriber {
     public List<RoomElement> getSelectedElements () {
         return selectedElements;
     }
-
     public void setSelectedElements (List < RoomElement > selectedElements) {
         this.selectedElements = selectedElements;
     }
