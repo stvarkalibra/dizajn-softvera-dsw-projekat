@@ -19,7 +19,6 @@ public class BedState implements State {
     @Override
     public void myMouseClicked(RoomView roomView, Point location) {
         bp=new BedPainter(roomView.getRoom().getPendingElement());
-        System.out.println("NOVI: "+roomView.getRoom().getPendingElement().getBounds());
         if (!bp.elementAt(roomView.getRoom().getPendingElement(), location)) {
             roomView.getRoom().getRoomElements().add(roomView.getRoom().getPendingElement());
             roomView.getRoom().getChildrenList().add(roomView.getRoom().getPendingElement());

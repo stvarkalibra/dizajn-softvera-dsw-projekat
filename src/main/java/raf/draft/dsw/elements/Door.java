@@ -17,8 +17,6 @@ public class Door extends RoomElement{
             @JsonProperty("rotation") int rotation) {
 
         super(nodeName, null, location, dimensionWidth, dimensionLength, rotation);
-        number++;
-        setNodeName("Door" + number);
     }
 
     public Door(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {

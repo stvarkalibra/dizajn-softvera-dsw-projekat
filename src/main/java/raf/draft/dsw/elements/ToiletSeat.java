@@ -17,8 +17,6 @@ public class ToiletSeat extends RoomElement{
             @JsonProperty("rotation") int rotation) {
 
         super(nodeName, null, location, dimensionWidth, dimensionLength, rotation);
-        number++;
-        setNodeName("ToiletSeat" + number);
     }
     public ToiletSeat(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {
         super(nodeName, parent, location, dimensionWidth, dimensionLenght, rotation);

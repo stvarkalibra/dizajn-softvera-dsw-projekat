@@ -17,8 +17,6 @@ public class Boiler extends RoomElement{
             @JsonProperty("rotation") int rotation) {
 
         super(nodeName, null, location, dimensionWidth, dimensionLength, rotation);
-        number++;
-        setNodeName("Boiler" + number);
     }
 
     public Boiler(String nodeName, DraftNode parent, Point location, int dimensionWidth, int dimensionLenght, int rotation) {

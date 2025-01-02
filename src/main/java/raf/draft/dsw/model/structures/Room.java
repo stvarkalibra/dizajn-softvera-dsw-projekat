@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Room extends DraftNodeComposite implements IPublisher {
-    int width;
-    int height;
+    int width=0;
+    int height=0;
     private double k=0;
     @JsonIgnore
     private RoomView roomView;
@@ -154,4 +154,5 @@ public class Room extends DraftNodeComposite implements IPublisher {
     public List<RoomElement> getCpyModel() {
         return cpyModel;
     }
+
 }

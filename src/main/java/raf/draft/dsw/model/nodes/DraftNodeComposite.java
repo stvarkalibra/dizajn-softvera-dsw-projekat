@@ -44,4 +44,8 @@ public abstract class DraftNodeComposite extends DraftNode {
     public DraftNode getParent() {
         return super.getParent();
     }
+
+    public void setChildrenList(List<DraftNode> childrenList) {
+        this.childrenList = childrenList;
+    }
 }
