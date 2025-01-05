@@ -1,20 +1,21 @@
 package raf.draft.dsw.core;
 
 import raf.draft.dsw.controller.actions.*;
-import raf.draft.dsw.gui.swing.MainFrame;
-import raf.draft.dsw.serializer.Gson;
+import raf.draft.dsw.serializer.JacksonSerializer;
 
 
 public class ActionManager {
-    private Gson gson=new Gson();
+    private JacksonSerializer jacksonSerializer =new JacksonSerializer();
     private ExitAction exitAction = new ExitAction();
     private AboutUsAction aboutUsAction = new AboutUsAction();
     private NewNodeAction newNodeAction=new NewNodeAction();
     private RemoveNodeAction removeNodeAction=new RemoveNodeAction();
     private ChangeInfoAction changeInfoAction=new ChangeInfoAction();
-    private ProjectSaveAsAction projectSaveAsAction=new ProjectSaveAsAction(gson);
-    private ProjectSaveAction projectSaveAction=new ProjectSaveAction(gson);
-    private OpenProjectAction openProject=new OpenProjectAction(gson);
+    private ProjectSaveAsAction projectSaveAsAction=new ProjectSaveAsAction(jacksonSerializer);
+    private ProjectSaveAction projectSaveAction=new ProjectSaveAction(jacksonSerializer);
+    private OpenProjectAction openProject=new OpenProjectAction(jacksonSerializer);
+    private OpenTemplate openTemplate=new OpenTemplate();
+    private SaveTemplate saveTemplate=new SaveTemplate();
     public NewNodeAction getNewNodeAction(){
         return this.newNodeAction;
     }
@@ -39,5 +40,13 @@ public class ActionManager {
 
     public OpenProjectAction getOpenProject() {
         return openProject;
+    }
+
+    public OpenTemplate getOpenTemplate() {
+        return openTemplate;
+    }
+
+    public SaveTemplate getSaveTemplate() {
+        return saveTemplate;
     }
 }

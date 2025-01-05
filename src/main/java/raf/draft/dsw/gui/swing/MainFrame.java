@@ -4,30 +4,21 @@ import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ActionManager;
 import raf.draft.dsw.core.ActionStateManager;
 import raf.draft.dsw.elements.RoomElement;
-import raf.draft.dsw.gui.swing.state.State;
-import raf.draft.dsw.gui.swing.state.StateManager;
 import raf.draft.dsw.jtabbedpane.JTabbedPaneImplementation;
 import raf.draft.dsw.jtabbedpane.view.JTabbedPaneRightPanel;
 import raf.draft.dsw.jtabbedpane.view.JTabbedPaneView;
 import raf.draft.dsw.jtree.DraftTree;
 import raf.draft.dsw.jtree.DraftTreeImplementation;
 import raf.draft.dsw.jtabbedpane.model.JTabbedPanePublisher;
-import raf.draft.dsw.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.nodes.DraftNode;
-import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 import raf.draft.dsw.model.structures.Room;
-import raf.draft.dsw.serializer.Gson;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 public class MainFrame extends JFrame implements ISubscriber{

@@ -17,6 +17,8 @@ public class MyToolBar extends JToolBar {
         ProjectSaveAction projectSaveAction=actionManager.getProjectSaveAction();
         ProjectSaveAsAction projectSaveAsAction=actionManager.getProjectSaveAsAction();
         OpenProjectAction openProjectAction=actionManager.getOpenProject();
+        SaveTemplate saveTemplate=actionManager.getSaveTemplate();
+        OpenTemplate openTemplate=actionManager.getOpenTemplate();
         add(exitAction);
         add(newNodeAction);
         add(changeInfoAction);
@@ -25,5 +27,7 @@ public class MyToolBar extends JToolBar {
         add(projectSaveAction);
         add(projectSaveAsAction);
         add(openProjectAction);
+        add(saveTemplate);
+        add(openTemplate);
     }
 }

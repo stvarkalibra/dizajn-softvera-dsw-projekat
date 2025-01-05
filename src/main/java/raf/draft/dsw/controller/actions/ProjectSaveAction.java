@@ -2,14 +2,11 @@ package raf.draft.dsw.controller.actions;
 
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.model.structures.Project;
-import raf.draft.dsw.model.structures.Room;
-import raf.draft.dsw.serializer.Gson;
 import raf.draft.dsw.serializer.Serializer;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Random;
 
 public class ProjectSaveAction extends AbstractRoomAction{
     private final Serializer serializer;

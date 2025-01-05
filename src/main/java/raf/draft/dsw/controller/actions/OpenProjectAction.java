@@ -11,20 +11,19 @@ import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 import raf.draft.dsw.model.structures.Room;
-import raf.draft.dsw.serializer.Gson;
+import raf.draft.dsw.serializer.JacksonSerializer;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.util.List;
 
 public class OpenProjectAction extends AbstractRoomAction{
-    private final Gson serializer;
-    public OpenProjectAction(Gson serializer){
+    private final JacksonSerializer serializer;
+    public OpenProjectAction(JacksonSerializer serializer){
         this.serializer = serializer;
         putValue(SMALL_ICON, loadIcon("/images/addNode.png"));
         putValue(NAME, "AddNode");
