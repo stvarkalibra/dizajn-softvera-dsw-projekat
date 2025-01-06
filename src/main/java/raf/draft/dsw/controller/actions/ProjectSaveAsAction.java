@@ -35,7 +35,13 @@ public class ProjectSaveAsAction extends AbstractRoomAction{
 
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            project.setPathToFolder(selectedFile.getAbsolutePath());
+            String filePath = selectedFile.getAbsolutePath();
+
+            if (!filePath.toLowerCase().endsWith(".json")) {
+                filePath += ".json";
+            }
+            project.setPathToFolder(filePath);
+            System.out.println("Project path set to: " + selectedFile.getAbsolutePath());
             serializer.saveProject(project);
         } else {
             System.out.println("Save As operation canceled.");

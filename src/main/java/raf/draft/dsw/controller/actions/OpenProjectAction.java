@@ -202,7 +202,6 @@ public class OpenProjectAction extends AbstractRoomAction{
         if(draftNode instanceof Room){
             Room room = (Room) draftNode;
             RoomView roomView = room.getRoomView();
-            System.out.println(roomView.getPainterList());
             JPanel paintPanel = new JPanel() {
                 @Override
                 protected void paintComponent(Graphics g) {
@@ -239,9 +238,12 @@ public class OpenProjectAction extends AbstractRoomAction{
         if(draftNode instanceof DraftNodeComposite){
             DraftNodeComposite compositeNode=(DraftNodeComposite) draftNode;
             for(DraftNode childNode:compositeNode.getChildrenList()){
-                drawAllPainters(childNode);
+                enableAddButton(childNode);
             }
         }
+    }
+    private void setParentForRoomElement(DraftNode draftNode){
+
     }
 }
 

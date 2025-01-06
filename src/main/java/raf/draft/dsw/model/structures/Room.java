@@ -108,6 +108,7 @@ public class Room extends DraftNodeComposite implements IPublisher {
         }
     }
 
+
     public double convertCmIntoPixel(int n){
         final double inch=2.54;
         int dpi= Toolkit.getDefaultToolkit().getScreenResolution();

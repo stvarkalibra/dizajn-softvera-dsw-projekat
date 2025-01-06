@@ -2,10 +2,12 @@ package raf.draft.dsw.core;
 
 import raf.draft.dsw.controller.actions.*;
 import raf.draft.dsw.serializer.JacksonSerializer;
+import raf.draft.dsw.serializer.TemplateSerializer;
 
 
 public class ActionManager {
     private JacksonSerializer jacksonSerializer =new JacksonSerializer();
+    private TemplateSerializer templateSerializer=new TemplateSerializer();
     private ExitAction exitAction = new ExitAction();
     private AboutUsAction aboutUsAction = new AboutUsAction();
     private NewNodeAction newNodeAction=new NewNodeAction();
@@ -14,8 +16,8 @@ public class ActionManager {
     private ProjectSaveAsAction projectSaveAsAction=new ProjectSaveAsAction(jacksonSerializer);
     private ProjectSaveAction projectSaveAction=new ProjectSaveAction(jacksonSerializer);
     private OpenProjectAction openProject=new OpenProjectAction(jacksonSerializer);
-    private OpenTemplate openTemplate=new OpenTemplate();
-    private SaveTemplate saveTemplate=new SaveTemplate();
+    private OpenTemplate openTemplate=new OpenTemplate(templateSerializer);
+    private SaveTemplate saveTemplate=new SaveTemplate(templateSerializer);
     public NewNodeAction getNewNodeAction(){
         return this.newNodeAction;
     }
