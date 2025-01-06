@@ -7,6 +7,7 @@ import raf.draft.dsw.controller.messagegenerator.ConsoleLogger;
 import raf.draft.dsw.controller.messagegenerator.FileLogger;
 import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.elements.Bed;
 import raf.draft.dsw.elements.RoomElement;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.painters.BedPainter;
@@ -242,10 +243,10 @@ public class RoomView extends JPanel implements ISubscriber {
             jPanelRoom.revalidate();
             jPanelRoom.repaint();
         } else if (o instanceof RoomElement) {
-            if(room.getChildrenList().contains(o))
+            if(room.getRoomElements().contains(o))
                 jPanelRoom.revalidate();
                 jPanelRoom.repaint();
-            if(!room.getChildrenList().contains(o)){
+            if(!room.getRoomElements().contains(o)){
                 deleteElementFromTree((RoomElement) o);
                 jPanelRoom.revalidate();
                 jPanelRoom.repaint();
@@ -311,7 +312,6 @@ public class RoomView extends JPanel implements ISubscriber {
     public void setEditStateEntered(boolean editStateEntered) {
         this.editStateEntered = editStateEntered;
     }
-
     public double getK_scaled() {
         return k_scaled;
     }

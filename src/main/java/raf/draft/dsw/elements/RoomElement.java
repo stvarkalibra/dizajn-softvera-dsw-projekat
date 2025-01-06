@@ -16,17 +16,17 @@ import java.util.Objects;
 
 public abstract class RoomElement extends DraftNode implements Prototype, IPublisher, Cloneable {
     private Point location;
-    private int napravljen=0;
+    private int napravljen = 0;
     private double scale = 1.0;
     private Point originalLocation;
-    private int dimensionWidth=0;
-    private int dimensionLenght=0;
+    private int dimensionWidth = 0;
+    private int dimensionLenght = 0;
     private int originalDimensionWidth;
     private int originalDimensionLenght;
     private int rotation;
     private boolean rotatable = false;
     @JsonIgnore
-    private List<ISubscriber> subscriberList=new ArrayList<>();
+    private List<ISubscriber> subscriberList = new ArrayList<>();
     @JsonIgnore
     private Rectangle bounds;
 
@@ -35,7 +35,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         this.location = location;
         this.dimensionWidth = dimensionWidth;
         this.dimensionLenght = dimensionLenght;
-        this.rotation = rotation%4;
+        this.rotation = rotation % 4;
     }
 
     @Override
@@ -53,30 +53,31 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     public void setLocation(Point location) {
-        if(napravljen==0){
-            this.originalLocation=location;
+        if (napravljen == 0) {
+            this.originalLocation = location;
             napravljen++;
         }
         this.location = location;
 
-        double k=0;
-        if(this.getParent() instanceof Room){
-            k=((Room) this.getParent()).getRoomView().getK();
+        double k = 0;
+        if (this.getParent() instanceof Room) {
+            k = ((Room) this.getParent()).getRoomView().getK();
         }
-        setBounds(new Rectangle(this.location.x,this.location.y,dimensionWidth,dimensionLenght));
-        if(this.getParent().getParent() instanceof Project){
+        setBounds(new Rectangle(this.location.x, this.location.y, dimensionWidth, dimensionLenght));
+        if (this.getParent().getParent() instanceof Project) {
             ((Project) this.getParent()).setChanged(true);
-        }else{
-            ((Project)this.getParent().getParent().getParent()).setChanged(true);
+        } else {
+            ((Project) this.getParent().getParent().getParent()).setChanged(true);
         }
         updateBounds(k);
     }
 
     public void updateBounds(double k) {
-        this.bounds = new Rectangle(location.x, location.y, (int)(dimensionWidth*k), (int)(dimensionLenght*k));
+        this.bounds = new Rectangle(location.x, location.y, (int) (dimensionWidth * k), (int) (dimensionLenght * k));
     }
+
     public void resetPosition() {
-        location=originalLocation;
+        location = originalLocation;
     }
 
     public int getDimensionWidth() {
@@ -84,14 +85,14 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     public void setDimensionWidth(int dimensionWidth, double k) {
-        if(this.dimensionWidth==0){
-            originalDimensionWidth=dimensionWidth;
+        if (this.dimensionWidth == 0) {
+            originalDimensionWidth = dimensionWidth;
         }
         this.dimensionWidth = dimensionWidth;
-        if(this.getParent().getParent() instanceof Project){
+        if (this.getParent().getParent() instanceof Project) {
             ((Project) this.getParent()).setChanged(true);
-        }else{
-            ((Project)this.getParent().getParent().getParent()).setChanged(true);
+        } else {
+            ((Project) this.getParent().getParent().getParent()).setChanged(true);
         }
         updateBounds(k);
     }
@@ -100,15 +101,15 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         return dimensionLenght;
     }
 
-    public void setDimensionLength(int dimensionLenght,double k) {
-        if(dimensionLenght==0){
-            originalDimensionLenght=dimensionLenght;
+    public void setDimensionLength(int dimensionLenght, double k) {
+        if (dimensionLenght == 0) {
+            originalDimensionLenght = dimensionLenght;
         }
         this.dimensionLenght = dimensionLenght;
-        if(this.getParent().getParent() instanceof Project){
+        if (this.getParent().getParent() instanceof Project) {
             ((Project) this.getParent()).setChanged(true);
-        }else{
-            ((Project)this.getParent().getParent().getParent()).setChanged(true);
+        } else {
+            ((Project) this.getParent().getParent().getParent()).setChanged(true);
         }
         updateBounds(k);
     }
@@ -127,13 +128,13 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     public void setRotation(int rotation) {
-        if(this.rotation!=rotation){
-            if (rotation < 0){
+        if (this.rotation != rotation) {
+            if (rotation < 0) {
                 rotation = 3;
-            } else if (rotation == 4){
+            } else if (rotation == 4) {
                 rotation = 0;
-            }else if(rotation>4){
-                rotation=rotation%4;
+            } else if (rotation > 4) {
+                rotation = rotation % 4;
             }
             rotatable = true;
             this.rotation = rotation;
@@ -142,12 +143,12 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     @Override
-    public Prototype clone(){
+    public Prototype clone() {
         try {
-            if(this.getParent().getParent() instanceof Project){
+            if (this.getParent().getParent() instanceof Project) {
                 ((Project) this.getParent()).setChanged(true);
-            }else{
-                ((Project)this.getParent().getParent().getParent()).setChanged(true);
+            } else {
+                ((Project) this.getParent().getParent().getParent()).setChanged(true);
             }
             return (RoomElement) super.clone();
         } catch (CloneNotSupportedException e) {
@@ -155,27 +156,28 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
             return null;
         }
     }
+
     @Override
     public void addSubscriber(ISubscriber s) {
-        if(!subscriberList.contains(s)){
+        if (!subscriberList.contains(s)) {
             subscriberList.add(s);
         }
     }
 
     @Override
     public void removeSubscriber(ISubscriber s) {
-        if(subscriberList.contains(s)){
+        if (subscriberList.contains(s)) {
             subscriberList.remove(s);
         }
     }
 
     @Override
     public void notifySubscriber(Object o) {
-        for(ISubscriber subscriber: subscriberList){
-            if(this.getParent().getParent() instanceof Project){
+        for (ISubscriber subscriber : subscriberList) {
+            if (this.getParent().getParent() instanceof Project) {
                 ((Project) this.getParent()).setChanged(true);
-            }else{
-                ((Project)this.getParent().getParent().getParent()).setChanged(true);
+            } else {
+                ((Project) this.getParent().getParent().getParent()).setChanged(true);
             }
             subscriber.update(o);
         }
