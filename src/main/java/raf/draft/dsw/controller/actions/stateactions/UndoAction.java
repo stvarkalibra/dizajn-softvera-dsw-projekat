@@ -9,9 +9,9 @@ import java.awt.event.ActionEvent;
 
 public class UndoAction extends AbstractRoomAction {
     public UndoAction() {
-        putValue(SMALL_ICON, loadIcon("/images/rotateLeft.png"));
-        putValue(NAME, "RotateToLeft");
-        putValue(SHORT_DESCRIPTION, "Rotate to left");
+        putValue(SMALL_ICON, loadIcon("/images/undo.png"));
+        putValue(NAME, "Undo");
+        putValue(SHORT_DESCRIPTION, "Undo");
     }
 
     @Override

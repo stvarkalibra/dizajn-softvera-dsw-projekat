@@ -9,9 +9,9 @@ import java.awt.event.ActionEvent;
 
 public class RedoAction extends AbstractRoomAction {
     public RedoAction() {
-        putValue(SMALL_ICON, loadIcon("/images/rotateLeft.png"));
-        putValue(NAME, "RotateToLeft");
-        putValue(SHORT_DESCRIPTION, "Rotate to left");
+        putValue(SMALL_ICON, loadIcon("/images/redo.png"));
+        putValue(NAME, "Redo");
+        putValue(SHORT_DESCRIPTION, "Redo");
     }
 
     @Override

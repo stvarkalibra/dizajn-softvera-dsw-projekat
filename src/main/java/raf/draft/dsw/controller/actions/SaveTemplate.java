@@ -14,9 +14,9 @@ public class SaveTemplate extends AbstractRoomAction{
     private final TemplateSerializer serializer;
     public SaveTemplate(TemplateSerializer serializer) {
         this.serializer = serializer;
-        putValue(SMALL_ICON, loadIcon("/images/save.png"));
+        putValue(SMALL_ICON, loadIcon("/images/save_template.png"));
         putValue(NAME, "Save Template");
-        putValue(SHORT_DESCRIPTION, "Save Project");
+        putValue(SHORT_DESCRIPTION, "Save Template");
     }
 
     @Override

@@ -13,7 +13,7 @@ public class ProjectSaveAction extends AbstractRoomAction{
 
     public ProjectSaveAction(Serializer serializer) {
         this.serializer = serializer;
-        putValue(SMALL_ICON, loadIcon("/images/save.png"));
+        putValue(SMALL_ICON, loadIcon("/images/save_project.png"));
         putValue(NAME, "Save Project");
         putValue(SHORT_DESCRIPTION, "Save Project");
     }

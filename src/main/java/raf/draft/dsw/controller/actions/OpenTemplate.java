@@ -17,9 +17,9 @@ public class OpenTemplate extends AbstractRoomAction{
     private final TemplateSerializer templateSerializer;
     public OpenTemplate(TemplateSerializer templateSerializer) {
         this.templateSerializer=templateSerializer;
-        putValue(SMALL_ICON, loadIcon("/images/save.png"));
+        putValue(SMALL_ICON, loadIcon("/images/open_template.png"));
         putValue(NAME, "Open Template");
-        putValue(SHORT_DESCRIPTION, "Save Project");
+        putValue(SHORT_DESCRIPTION, "Open Template");
     }
 
     @Override

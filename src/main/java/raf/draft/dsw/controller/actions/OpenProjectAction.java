@@ -25,9 +25,9 @@ public class OpenProjectAction extends AbstractRoomAction{
     private final JacksonSerializer serializer;
     public OpenProjectAction(JacksonSerializer serializer){
         this.serializer = serializer;
-        putValue(SMALL_ICON, loadIcon("/images/addNode.png"));
-        putValue(NAME, "AddNode");
-        putValue(SHORT_DESCRIPTION, "Add New Node");
+        putValue(SMALL_ICON, loadIcon("/images/open_project.png"));
+        putValue(NAME, "OpenProject");
+        putValue(SHORT_DESCRIPTION, "Open Project");
     }
 
     @Override
