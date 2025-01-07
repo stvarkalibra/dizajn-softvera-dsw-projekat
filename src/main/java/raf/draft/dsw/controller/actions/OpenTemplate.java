@@ -50,6 +50,10 @@ public class OpenTemplate extends AbstractRoomAction{
         int index= MainFrame.getInstance().getjTabbedPaneImplementation().getjTabbedPane().getSelectedIndex();
         Room oldRoom=MainFrame.getInstance().getjTabbedPaneImplementation().getRoomList().get(index);
         deleteRoomElementsFromTree(oldRoom);
+        oldRoom.getChildrenList().clear();
+        oldRoom.getRoomElements().clear();
+        oldRoom.getRoomView().getPainterList().clear();
+
         oldRoom.setWidth(newRoom.getWidth());
         oldRoom.setHeight(newRoom.getHeight());
         oldRoom.setK();
@@ -100,23 +104,26 @@ public class OpenTemplate extends AbstractRoomAction{
             room.getRoomView().getPainterList().add(makePainterForRoomElement(roomElement));
             roomElement.notifySubscriber(roomElement);
         }
-        JPanel paintPanel = new JPanel() {
+        JPanel paintPanel = room.getRoomView().getjPanelRoom();
+        Color originalColor = paintPanel.getBackground();
+        paintPanel.setLayout(new BorderLayout());
+        paintPanel.removeAll();
+        paintPanel.add(new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+                setBackground(originalColor);
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
 
                 for (MyPainter painter : room.getRoomView().getPainterList()) {
-                    painter.paint(g2d,painter.getRoomElement().getLocation(), painter.getRoomElement().getDimensionLength()*(int)room.getK(),
-                            painter.getRoomElement().getDimensionWidth()*(int)room.getK());
+                    painter.paint(g2d, painter.getRoomElement().getLocation(), painter.getRoomElement().getDimensionLength() * (int) room.getK(),
+                            painter.getRoomElement().getDimensionWidth() * (int) room.getK());
                 }
             }
-        };
-        paintPanel.setOpaque(false);
-        room.getRoomView().getjPanelRoom().setLayout(new BorderLayout());
-        room.getRoomView().getjPanelRoom().add(paintPanel, BorderLayout.CENTER);
-        room.getRoomView().getjPanelRoom().revalidate();
-        room.getRoomView().getjPanelRoom().repaint();
+        }, BorderLayout.CENTER);
+        paintPanel.revalidate();
+        paintPanel.repaint();
+
     }
     private MyPainter makePainterForRoomElement(RoomElement roomElement){
         MyPainter newPainter = null;

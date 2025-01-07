@@ -209,8 +209,8 @@ public class OpenProjectAction extends AbstractRoomAction{
                     Graphics2D g2d = (Graphics2D) g;
 
                     for (MyPainter painter : roomView.getPainterList()) {
-                        painter.paint(g2d,painter.getRoomElement().getLocation(), painter.getRoomElement().getDimensionLength()*(int)((Room) draftNode).getK(),
-                                painter.getRoomElement().getDimensionWidth()*(int)((Room) draftNode).getK());
+                        painter.paint(g2d, painter.getRoomElement().getLocation(), painter.getRoomElement().getDimensionLength() * (int) room.getK(),
+                                painter.getRoomElement().getDimensionWidth() * (int) room.getK());
                     }
                 }
             };

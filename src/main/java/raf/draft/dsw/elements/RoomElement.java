@@ -65,7 +65,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         }
         setBounds(new Rectangle(this.location.x, this.location.y, dimensionWidth, dimensionLenght));
         if (this.getParent().getParent() instanceof Project) {
-            ((Project) this.getParent()).setChanged(true);
+            ((Project) this.getParent().getParent()).setChanged(true);
         } else {
             ((Project) this.getParent().getParent().getParent()).setChanged(true);
         }
@@ -90,7 +90,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         }
         this.dimensionWidth = dimensionWidth;
         if (this.getParent().getParent() instanceof Project) {
-            ((Project) this.getParent()).setChanged(true);
+            ((Project) this.getParent().getParent()).setChanged(true);
         } else {
             ((Project) this.getParent().getParent().getParent()).setChanged(true);
         }
@@ -107,7 +107,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         }
         this.dimensionLenght = dimensionLenght;
         if (this.getParent().getParent() instanceof Project) {
-            ((Project) this.getParent()).setChanged(true);
+            ((Project) this.getParent().getParent()).setChanged(true);
         } else {
             ((Project) this.getParent().getParent().getParent()).setChanged(true);
         }
@@ -146,10 +146,11 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     public Prototype clone() {
         try {
             if (this.getParent().getParent() instanceof Project) {
-                ((Project) this.getParent()).setChanged(true);
+                ((Project) this.getParent().getParent()).setChanged(true);
             } else {
                 ((Project) this.getParent().getParent().getParent()).setChanged(true);
             }
+
             return (RoomElement) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -175,7 +176,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     public void notifySubscriber(Object o) {
         for (ISubscriber subscriber : subscriberList) {
             if (this.getParent().getParent() instanceof Project) {
-                ((Project) this.getParent()).setChanged(true);
+                ((Project) this.getParent().getParent()).setChanged(true);
             } else {
                 ((Project) this.getParent().getParent().getParent()).setChanged(true);
             }

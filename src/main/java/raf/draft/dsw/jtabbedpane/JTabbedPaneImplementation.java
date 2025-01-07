@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class JTabbedPaneImplementation extends JTabbedPane implements ISubscriber {
@@ -46,6 +47,7 @@ public class JTabbedPaneImplementation extends JTabbedPane implements ISubscribe
                     for (DraftNode draftNode : project.getChildrenList()) {
                         if (draftNode instanceof Room && !roomList.contains((Room) draftNode)) {
                             Room room=(Room) draftNode;
+                            System.out.println(room);
                             roomList.add(room);
 
                             JPanel jPanel=new JPanel();
