@@ -9,10 +9,10 @@ import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 public abstract class RoomElement extends DraftNode implements Prototype, IPublisher, Cloneable {
     private Point location;
@@ -36,6 +36,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         this.dimensionWidth = dimensionWidth;
         this.dimensionLenght = dimensionLenght;
         this.rotation = rotation % 4;
+        this.bounds = new Rectangle(location.x, location.y, dimensionWidth, dimensionLenght);  // Inicijalizacija
     }
 
     @Override
@@ -59,15 +60,12 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
         }
         this.location = location;
 
-        double k = 0;
+        double k = 1.0;
         if (this.getParent() instanceof Room) {
-            k = ((Room) this.getParent()).getRoomView().getK();
-        }
-        setBounds(new Rectangle(this.location.x, this.location.y, dimensionWidth, dimensionLenght));
-        if (this.getParent().getParent() instanceof Project) {
-            ((Project) this.getParent().getParent()).setChanged(true);
-        } else {
-            ((Project) this.getParent().getParent().getParent()).setChanged(true);
+            RoomView roomView = ((Room) this.getParent()).getRoomView();
+            if (roomView != null) {
+                k = roomView.getK();
+            }
         }
         updateBounds(k);
     }
@@ -89,11 +87,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
             originalDimensionWidth = dimensionWidth;
         }
         this.dimensionWidth = dimensionWidth;
-        if (this.getParent().getParent() instanceof Project) {
-            ((Project) this.getParent().getParent()).setChanged(true);
-        } else {
-            ((Project) this.getParent().getParent().getParent()).setChanged(true);
-        }
+        markProjectChanged();
         updateBounds(k);
     }
 
@@ -106,14 +100,18 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
             originalDimensionLenght = dimensionLenght;
         }
         this.dimensionLenght = dimensionLenght;
-        if (this.getParent().getParent() instanceof Project) {
-            ((Project) this.getParent().getParent()).setChanged(true);
-        } else {
-            ((Project) this.getParent().getParent().getParent()).setChanged(true);
-        }
+        markProjectChanged();
         updateBounds(k);
     }
 
+    private void markProjectChanged() {
+        DraftNode parent = this.getParent();
+        if (parent != null && parent.getParent() instanceof Project) {
+            ((Project) parent.getParent()).setChanged(true);
+        } else if (parent != null && parent.getParent() != null && parent.getParent().getParent() instanceof Project) {
+            ((Project) parent.getParent().getParent()).setChanged(true);
+        }
+    }
 
     public double getScale() {
         return scale;
@@ -145,12 +143,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     @Override
     public Prototype clone() {
         try {
-            if (this.getParent().getParent() instanceof Project) {
-                ((Project) this.getParent().getParent()).setChanged(true);
-            } else {
-                ((Project) this.getParent().getParent().getParent()).setChanged(true);
-            }
-
+            markProjectChanged();
             return (RoomElement) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -160,6 +153,9 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
 
     @Override
     public void addSubscriber(ISubscriber s) {
+        if (subscriberList == null) {
+            subscriberList = new ArrayList<>();
+        }
         if (!subscriberList.contains(s)) {
             subscriberList.add(s);
         }
@@ -167,7 +163,7 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
 
     @Override
     public void removeSubscriber(ISubscriber s) {
-        if (subscriberList.contains(s)) {
+        if (subscriberList != null && subscriberList.contains(s)) {
             subscriberList.remove(s);
         }
     }
@@ -175,15 +171,10 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     @Override
     public void notifySubscriber(Object o) {
         for (ISubscriber subscriber : subscriberList) {
-            if (this.getParent().getParent() instanceof Project) {
-                ((Project) this.getParent().getParent()).setChanged(true);
-            } else {
-                ((Project) this.getParent().getParent().getParent()).setChanged(true);
-            }
+            markProjectChanged();
             subscriber.update(o);
         }
     }
-
 
     public List<ISubscriber> getSubscriberList() {
         return subscriberList;
@@ -194,6 +185,9 @@ public abstract class RoomElement extends DraftNode implements Prototype, IPubli
     }
 
     public Rectangle getBounds() {
+        if (bounds == null) {
+            bounds = new Rectangle(location.x, location.y, dimensionWidth, dimensionLenght);
+        }
         return bounds;
     }
 

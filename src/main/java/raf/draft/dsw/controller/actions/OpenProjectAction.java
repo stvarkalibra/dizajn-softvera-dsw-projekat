@@ -198,36 +198,42 @@ public class OpenProjectAction extends AbstractRoomAction{
             }
         }
     }
-    private void drawAllPainters(DraftNode draftNode){
-        if(draftNode instanceof Room){
+    private void drawAllPainters(DraftNode draftNode) {
+        if (draftNode instanceof Room) {
             Room room = (Room) draftNode;
             RoomView roomView = room.getRoomView();
-            JPanel paintPanel = new JPanel() {
+            roomView.getjPanelRoom().removeAll();
+            roomView.getPainterList().clear();
+            for (RoomElement roomElement : room.getRoomElements()) {
+                roomElement.addSubscriber(roomView);
+                roomView.getPainterList().add(makePainterForRoomElement(roomElement));
+            }
+
+            JPanel paintPanel = roomView.getjPanelRoom();
+            paintPanel.setLayout(new BorderLayout());
+            paintPanel.add(new JPanel() {
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     Graphics2D g2d = (Graphics2D) g;
-
                     for (MyPainter painter : roomView.getPainterList()) {
-                        painter.paint(g2d, painter.getRoomElement().getLocation(), painter.getRoomElement().getDimensionLength() * (int) room.getK(),
+                        painter.paint(g2d, painter.getRoomElement().getLocation(),
+                                painter.getRoomElement().getDimensionLength() * (int) room.getK(),
                                 painter.getRoomElement().getDimensionWidth() * (int) room.getK());
                     }
                 }
-            };
-
-            paintPanel.setOpaque(false);
-            roomView.getjPanelRoom().setLayout(new BorderLayout());
-            roomView.getjPanelRoom().add(paintPanel, BorderLayout.CENTER);
-            roomView.getjPanelRoom().revalidate();
-            roomView.getjPanelRoom().repaint();
+            }, BorderLayout.CENTER);
+            paintPanel.revalidate();
+            paintPanel.repaint();
         }
-        if(draftNode instanceof DraftNodeComposite){
-            DraftNodeComposite compositeNode=(DraftNodeComposite) draftNode;
-            for(DraftNode childNode:compositeNode.getChildrenList()){
+        if (draftNode instanceof DraftNodeComposite) {
+            DraftNodeComposite compositeNode = (DraftNodeComposite) draftNode;
+            for (DraftNode childNode : compositeNode.getChildrenList()) {
                 drawAllPainters(childNode);
             }
         }
     }
+
     private void enableAddButton(DraftNode draftNode){
         if(draftNode instanceof Room){
             if (((Room) draftNode).getWidth() != 0 && ((Room) draftNode).getHeight() != 0) {
@@ -245,6 +251,30 @@ public class OpenProjectAction extends AbstractRoomAction{
     private void setParentForRoomElement(DraftNode draftNode){
 
     }
+
+    private MyPainter makePainterForRoomElement(RoomElement element) {
+        if (element instanceof Bed) {
+            return new BedPainter(element);
+        } else if (element instanceof BathTub) {
+            return new BathtubPainter(element);
+        } else if (element instanceof Boiler) {
+            return new BoilerPainter(element);
+        } else if (element instanceof Closet) {
+            return new ClosetPainter(element);
+        } else if (element instanceof Door) {
+            return new DoorPainter(element);
+        } else if (element instanceof Sink) {
+            return new SinkPainter(element);
+        } else if (element instanceof Table) {
+            return new TablePainter(element);
+        } else if (element instanceof ToiletSeat) {
+            return new ToiletPainter(element);
+        } else if (element instanceof WashingMachine) {
+            return new WashingMachinePainter(element);
+        }
+        return null; // Ili bačiti izuzetak ako nije pronađen odgovarajući painter
+    }
+
 }
 
 
